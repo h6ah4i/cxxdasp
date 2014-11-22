@@ -1,0 +1,13 @@
+# Exclude dependent library directories
+
+/cxxporthelper/
+/pffft/
+/ffts/
+/kiss_fft/
+/gp_fft/
+/ne10/
+/gmock/
+/android-ndk-profiler/
+
+# Exclude temporary cmake's build directory
+/build/

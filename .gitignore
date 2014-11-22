@@ -1,0 +1,12 @@
+/benchmark_resampler/
+/build/
+/ninja/
+
+.DS_Store
+
+*.raw
+*.wav
+
+*~
+
+gmon.out
