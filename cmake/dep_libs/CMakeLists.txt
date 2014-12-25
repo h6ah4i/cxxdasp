@@ -50,3 +50,7 @@ endif()
 if (CXXDASP_BUILD_EXAMPLE_SOXR_RESAMPLER)
     add_subdirectory(soxr)
 endif()
+
+if (CXXDASP_BUILD_EXAMPLE_FRESAMPLE_RESAMPLER)
+    add_subdirectory(fresample)
+endif()

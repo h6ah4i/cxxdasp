@@ -48,30 +48,36 @@ function div_float() {
     fi
 }
 
-function measure_simple_and_soxr() {
-    local src_freq=$1
-    local dest_freq=$2
-    local num_ch=$3
-    local quality=$4
-    local t_simple=$($SPEED_CHECK simple $src_freq $dest_freq $num_ch $quality $SOUND_DURATION $NUM_ITERATE)
-    local t_soxr=$($SPEED_CHECK soxr $src_freq $dest_freq $num_ch $quality $SOUND_DURATION $NUM_ITERATE)
-    local speed_ratio=$(div_float $t_soxr $t_simple)
+function measure_compare() {
+    local target1=$1
+    local target2=$2
+    local src_freq=$3
+    local dest_freq=$4
+    local num_ch=$5
+    local quality=$6
+    local t_1=$($SPEED_CHECK $target1 $src_freq $dest_freq $num_ch $quality $SOUND_DURATION $NUM_ITERATE)
+    local t_2=$($SPEED_CHECK $target2 $src_freq $dest_freq $num_ch $quality $SOUND_DURATION $NUM_ITERATE)
+    local speed_ratio=$(div_float $t_2 $t_1)
 
     speed_ratio=$(printf "%.1f" $speed_ratio)
+    speed_ratio_fresample=$(printf "%.1f" $speed_ratio_fresample)
 
     echo "SRC=$src_freq, DEST=$dest_freq, CH=$num_ch, Q=$quality"
-    echo "    simple: $t_simple [us]"
-    echo "    soxr: $t_soxr [us]"
+    echo "    $target1: $t_1 [us]"
+    echo "    $target2: $t_2 [us]"
     echo "    speed ratio: $speed_ratio"
     echo
 }
 
 function measure_all_combinations() {
+    local target1=$1
+    local target2=$2
+
     for dest_freq in ${DEST_FREQ_LIST[@]}; do
         for quality in ${QUALITY_LIST[@]}; do
             for src_freq in ${SRC_FREQ_LIST[@]}; do
                 for num_ch in ${NUM_CH_LIST[@]}; do
-                    measure_simple_and_soxr $src_freq $dest_freq $num_ch $quality
+                    measure_compare $target1 $target2 $src_freq $dest_freq $num_ch $quality
                 done
             done
         done
@@ -79,4 +85,5 @@ function measure_all_combinations() {
 }
 
 
-measure_all_combinations 2>&1 | tee "$BENCH_TOP_DIR/console_output_speed.txt"
+measure_all_combinations simple soxr 2>&1 | tee "$BENCH_TOP_DIR/console_output_speed_soxr.txt"
+measure_all_combinations simple fresample 2>&1 | tee "$BENCH_TOP_DIR/console_output_speed_fresample.txt"

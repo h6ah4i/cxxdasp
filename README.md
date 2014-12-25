@@ -100,6 +100,7 @@ Dependent libraries
 
 - [Google Mock : Google C++ Mocking Framework](https://code.google.com/p/googlemock/)
 - [The SoX Resampler library : High quality, one-dimensional sample-rate conversion library](http://sourceforge.net/projects/soxr/)
+- [libfresample : Fast, free sample rate conversion](https://github.com/depp/libfresample)
 - [android-ndk-profiler](https://code.google.com/p/android-ndk-profiler/)
 
 

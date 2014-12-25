@@ -1,0 +1,60 @@
+#
+#    Copyright (C) 2014 Haruki Hasegawa
+#
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+#
+
+cmake_minimum_required(VERSION 2.8)
+
+### Project: fresample
+project(fresample)
+
+set(CMAKE_BUILD_TYPE Release)
+
+set(LIB_FRESAMPLE_INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+include_directories(${LIB_FRESAMPLE_INCLUDE_DIRS})
+
+add_library(fresample STATIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/cpu.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/filter_delay.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/filter_free.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/filter_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/filter_new.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/filter_new_window.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/info_name.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/param.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/param_name.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16func.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n1s16_scalar.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n1f32_scalar.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n2s16_scalar.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n2f32_scalar.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n1s16_sse2.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n1f32_sse2.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n2s16_sse2.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n2f32_sse2.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n1s16_altivec.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n1f32_altivec.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n2s16_altivec.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/lib/resample_s16n2f32_altivec.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/swap16.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/swap16_scalar.c)
+
+if (MSVC)
+    ADD_DEFINITIONS(/arch:SSE2)
+else()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse2 -msse3 -mssse3")
+endif()

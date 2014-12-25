@@ -86,8 +86,8 @@ FFTS (when built with CXXDASP_CONFIG_USE_FFT_BACKEND_FFTS option enabled)
 ----------------------------------------------------------------------
 
 Copyright (c) 2012, Anthony M. Blake <amb@anthonix.com>
-Copyright (c) 2012, The University of Waikato 
- 
+Copyright (c) 2012, The University of Waikato
+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -136,7 +136,7 @@ Ne10 (when built with CXXDASP_CONFIG_USE_FFT_BACKEND_NE10 option enabled)
 
 Copyright 2012-14 ARM Limited
 All rights reserved.
- 
+
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
   * Redistributions of source code must retain the above copyright
@@ -147,7 +147,7 @@ modification, are permitted provided that the following conditions are met:
   * Neither the name of ARM Limited nor the
     names of its contributors may be used to endorse or promote products
     derived from this software without specific prior written permission.
- 
+
 THIS SOFTWARE IS PROVIDED BY ARM LIMITED AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -195,13 +195,17 @@ Misc.
 ----------------------------------------------------------------------
 
 - Google Mock
-    This library uses the Google Mock library for testing purepose only, 
+    This library uses the Google Mock library for testing purepose only,
     so you don't have to include the NOTICE of it.
 
 - The SoX Resampler library
-    This library uses the soxr library for example app or benchmarking purpose only, 
+    This library uses the soxr library for example app or benchmarking purpose only,
+    so you don't have to include the NOTICE of it.
+
+- libfresample library
+    This library uses the libfresample library for example app or benchmarking purpose only, 
     so you don't have to include the NOTICE of it.
 
 - android-ndk-profiler
-    This library uses the soxr library for example app or benchmarking purpose only, 
+    This library uses the soxr library for example app or benchmarking purpose only,
     so you don't have to include the NOTICE of it.
