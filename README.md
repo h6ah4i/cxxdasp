@@ -82,7 +82,7 @@ You also have to check dependent library/software licenses.
 Dependent libraries
 ---
 
-### Single-prefision FFT backend
+### Single-precision FFT backend
 
 - [PFFFT : a pretty fast FFT](https://bitbucket.org/jpommier/pffft)
     - [PFFFT (h6a h4i forked version)](https://bitbucket.org/h6a_h4i/pffft)
