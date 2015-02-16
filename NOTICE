@@ -203,7 +203,11 @@ Misc.
     so you don't have to include the NOTICE of it.
 
 - libfresample library
-    This library uses the libfresample library for example app or benchmarking purpose only, 
+    This library uses the libfresample library for example app or benchmarking purpose only,
+    so you don't have to include the NOTICE of it.
+
+- Secret Rabbit Code (libsamplerate) library
+    This library uses the Secret Rabbit Code library for example app or benchmarking purpose only,
     so you don't have to include the NOTICE of it.
 
 - android-ndk-profiler
