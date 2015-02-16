@@ -22,6 +22,7 @@ option(CXXDASP_BUILD_EXAMPLE_TSVF                   "Build trapezoidal-state-var
 option(CXXDASP_BUILD_EXAMPLE_CASCADED_TSVF          "Build cascaded-trapezoidal-state-variable-filter example app" YES)
 option(CXXDASP_BUILD_EXAMPLE_SOXR_RESAMPLER         "Build soxr-resampler example app"                  YES)
 option(CXXDASP_BUILD_EXAMPLE_FRESAMPLE_RESAMPLER    "Build fresample-resampler example app"                  YES)
+option(CXXDASP_BUILD_EXAMPLE_SECRET_RABBIT_CODE_RESAMPLER "Build src-resampler example app"            YES)
 option(CXXDASP_BUILD_EXAMPLE_X2_RESAMPLER           "Build x2-resampler example app"                    YES)
 option(CXXDASP_BUILD_EXAMPLE_SAMPLE_FORMAT_CONVERTER "Build sample-format-converter example app"        YES)
 option(CXXDASP_BUILD_EXAMPLE_WINDOW_FUNCTION        "Build window-function example app"                 YES)

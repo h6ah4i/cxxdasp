@@ -54,6 +54,10 @@ if (${CXXDASP_BUILD_EXAMPLE_FRESAMPLE_RESAMPLER})
     add_subdirectory(fresample-resampler)
 endif()
 
+if (${CXXDASP_BUILD_EXAMPLE_SECRET_RABBIT_CODE_RESAMPLER})
+    add_subdirectory(src-resampler)
+endif()
+
 if (${CXXDASP_BUILD_EXAMPLE_X2_RESAMPLER})
     add_subdirectory(x2-resampler)
 endif()

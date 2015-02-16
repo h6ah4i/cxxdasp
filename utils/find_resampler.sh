@@ -25,7 +25,7 @@ UTILS_DIR=$BASE_DIR/utils
 
 # check arguments
 if [ "$#" -lt 1 ]; then
-    echo "Usage: $0 {simple-resampler | soxr-resampler | fresample-resampler}"
+    echo "Usage: $0 {simple-resampler | soxr-resampler | fresample-resampler | src-resampler}"
     exit 1
 fi
 

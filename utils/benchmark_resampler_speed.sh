@@ -87,3 +87,4 @@ function measure_all_combinations() {
 
 measure_all_combinations simple soxr 2>&1 | tee "$BENCH_TOP_DIR/console_output_speed_soxr.txt"
 measure_all_combinations simple fresample 2>&1 | tee "$BENCH_TOP_DIR/console_output_speed_fresample.txt"
+measure_all_combinations simple src 2>&1 | tee "$BENCH_TOP_DIR/console_output_speed_src.txt"

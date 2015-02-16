@@ -54,3 +54,8 @@ endif()
 if (CXXDASP_BUILD_EXAMPLE_FRESAMPLE_RESAMPLER)
     add_subdirectory(fresample)
 endif()
+
+if (CXXDASP_BUILD_EXAMPLE_SECRET_RABBIT_CODE_RESAMPLER)
+    add_subdirectory(libsamplerate)
+endif()
+

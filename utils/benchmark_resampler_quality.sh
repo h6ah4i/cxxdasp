@@ -63,11 +63,20 @@ $QUALITY_CHECK fresample 3 2>&1 | tee "$BENCH_TOP_DIR/console_output_fresample_q
 $QUALITY_CHECK fresample 4 2>&1 | tee "$BENCH_TOP_DIR/console_output_fresample_q4.txt"
 $QUALITY_CHECK fresample 5 2>&1 | tee "$BENCH_TOP_DIR/console_output_fresample_q5.txt"
 
+#
+# src-resampler (using libsamplerate library)
+#
+$QUALITY_CHECK src 1 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q1.txt"
+$QUALITY_CHECK src 2 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q2.txt"
+$QUALITY_CHECK src 3 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q3.txt"
+$QUALITY_CHECK src 4 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q4.txt"
+$QUALITY_CHECK src 5 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q5.txt"
+
 
 #
 # concat spectrogram images
 #
-# LEFT: simple-resampler | MID: soxr-resampler | RIGHT: fresample-resampler
+# LEFT: simple-resampler | RIGHT: {soxr-resampler | fresample-resampler | src-resampler}
 #
 function gen_concat_spectrums() {
     local T1=$1
@@ -93,3 +102,9 @@ gen_concat_spectrums simple fresample 2
 gen_concat_spectrums simple fresample 3
 gen_concat_spectrums simple fresample 4
 gen_concat_spectrums simple fresample 5
+
+gen_concat_spectrums simple src 1
+gen_concat_spectrums simple src 2
+gen_concat_spectrums simple src 3
+gen_concat_spectrums simple src 4
+gen_concat_spectrums simple src 5
