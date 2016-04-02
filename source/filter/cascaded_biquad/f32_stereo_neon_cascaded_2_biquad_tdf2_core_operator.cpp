@@ -27,8 +27,14 @@ namespace impl {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
 #define vld1_f32_inc_addr(dest_var, src_addr)                                                                          \
     asm("vld1.32 {%[dest]}, [%[src]]!" : [dest] "+w"(dest_var), [src] "+r"(src_addr) : :)
+#if CXXPH_COMPILER_IS_GCC && (CXXPH_GCC_VERSION >= 40900) // GCC 4.9 >=
+#define vst1_f32_inc_addr(dest_addr, src_var)                                                                          \
+    vst1_f32(dest_addr, src_var);                                                                                      \
+    dest_addr += 2
+#else
 #define vst1_f32_inc_addr(dest_addr, src_var)                                                                          \
     asm("vst1.32 {%[src]}, [%[dest]]!" : [dest] "+r"(dest_addr), [src] "+w"(src_var) : :)
+#endif
 #else
 #define vld1_f32_inc_addr(dest_var, src_addr)                                                                          \
     dest_var = vld1_f32(src_addr);                                                                                     \
