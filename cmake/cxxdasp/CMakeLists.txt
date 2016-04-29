@@ -80,6 +80,12 @@ if (${CXXDASP_CONFIG_USE_FFT_BACKEND_NE10})
     target_compile_definitions(cxxdasp INTERFACE -DCXXDASP_USE_FFT_BACKEND_NE10=1)
 endif()
 
+if (${CXXDASP_CONFIG_USE_FFT_BACKEND_CKFFT})
+    target_link_libraries(cxxdasp ckfft)
+    target_include_directories(cxxdasp PUBLIC $<TARGET_PROPERTY:ckfft,INTERFACE_INCLUDE_DIRECTORIES_NO_EXIST_CHECK>)
+    target_compile_definitions(cxxdasp INTERFACE -DCXXDASP_USE_FFT_BACKEND_CKFFT=1)
+endif()
+
 ### double-precision FFT
 if (${CXXDASP_CONFIG_USE_FFT_BACKEND_GP_FFT})
     target_link_libraries(cxxdasp gp_fft)

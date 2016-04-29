@@ -82,6 +82,18 @@ ifeq ($(CXXDASP_USE_FFT_BACKEND_NE10), 1)
     CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += ne10_static
 endif
 
+ifeq ($(CXXDASP_USE_FFT_BACKEND_CKFFT), 1)
+    # Cricket FFT is available on all platforms
+    CXXDASP_FFT_BACKEND_LIBS_armeabi                += ckfft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a            += ckfft_static
+    CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a-no-neon    += ckfft-no-simd_static # NOTE: requires -no-simd suffixed version
+    CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += ckfft_static
+    CXXDASP_FFT_BACKEND_LIBS_x86                    += ckfft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_x86_64                 += ckfft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_mips                   += ckfft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_mips64                 += ckfft-no-simd_static
+endif
+
 ifeq ($(CXXDASP_USE_FFT_BACKEND_GP_FFT), 1)
     # General purpose FFT package is available on all platforms
     CXXDASP_FFT_BACKEND_LIBS_armeabi                += gp_fft_static

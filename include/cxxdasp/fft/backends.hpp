@@ -22,6 +22,7 @@
 #include <cxxdasp/fft/backend/fft_backend_pffft.hpp>
 #include <cxxdasp/fft/backend/fft_backend_kiss_fft.hpp>
 #include <cxxdasp/fft/backend/fft_backend_ne10.hpp>
+#include <cxxdasp/fft/backend/fft_backend_ckfft.hpp>
 #include <cxxdasp/fft/backend/fft_backend_gp_fft.hpp>
 
 #endif // CXXDASP_FFT_BACKENDS_HPP_

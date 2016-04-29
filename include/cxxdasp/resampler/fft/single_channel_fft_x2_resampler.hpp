@@ -379,6 +379,11 @@ inline single_channel_fft_x2_resampler_shared_context<
 
     fftr_f_filter.execute();
 
+    const fft_real_t post_scale = fft_real_t(1) / fftr_f_filter.scale();
+    if (post_scale != fft_real_t(1)) {
+        utils::multiply_scaler_aligned(&mem_f_filter_kernel[0], post_scale, N2);
+    }
+
     // update fields
     filter_length_ = filter_length;
     process_block_size_adjust_ = process_block_size_adjust;
@@ -598,7 +603,7 @@ inline void single_channel_fft_x2_resampler<TSrc, TDest, TCoeffs, TFFTBackend>::
     fftr_b_.execute();
 
     // normalize
-    const fft_real_t post_scale = fft_real_t(2) / fftr_b_.scale(); // 2: to cancel zero insertion effect
+    const fft_real_t post_scale = fft_real_t(2) / (fftr_f_.scale() * fftr_b_.scale()); // 2: to cancel zero insertion effect
     if (post_scale != fft_real_t(1)) {
         fft_real_t *out_data = fftr_b_.out();
         utils::multiply_scaler_aligned(&out_data[M], post_scale, L);

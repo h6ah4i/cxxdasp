@@ -39,6 +39,10 @@ if (CXXDASP_CONFIG_USE_FFT_BACKEND_NE10)
     add_subdirectory(ne10)
 endif()
 
+if (CXXDASP_CONFIG_USE_FFT_BACKEND_CKFFT)
+    add_subdirectory(ckfft)
+endif()
+
 if (CXXDASP_CONFIG_USE_FFT_BACKEND_GP_FFT)
     add_subdirectory(gp_fft)
 endif()

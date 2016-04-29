@@ -60,6 +60,12 @@ else()
     message("INFO: ''ne10'' directory is already exists.")
 endif()
 
+if (NOT EXISTS ${DEP_LIBS_PLACEMENT_DIR}/ckfft/)
+    add_subdirectory(ckfft)
+else()
+    message("INFO: ''ckfft'' directory is already exists.")
+endif()
+
 if (NOT EXISTS ${DEP_LIBS_PLACEMENT_DIR}/gp_fft/)
     add_subdirectory(gp_fft)
 else()
