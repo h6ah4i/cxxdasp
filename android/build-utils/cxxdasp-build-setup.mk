@@ -94,6 +94,18 @@ ifeq ($(CXXDASP_USE_FFT_BACKEND_CKFFT), 1)
     CXXDASP_FFT_BACKEND_LIBS_mips64                 += ckfft-no-simd_static
 endif
 
+ifeq ($(CXXDASP_USE_FFT_BACKEND_MUFFT), 1)
+    # muFFT is available on all platforms
+    CXXDASP_FFT_BACKEND_LIBS_armeabi                += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a            += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a-no-neon    += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_x86                    += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_x86_64                 += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_mips                   += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_mips64                 += mufft_static
+endif
+
 ifeq ($(CXXDASP_USE_FFT_BACKEND_GP_FFT), 1)
     # General purpose FFT package is available on all platforms
     CXXDASP_FFT_BACKEND_LIBS_armeabi                += gp_fft_static

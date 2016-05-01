@@ -1,5 +1,5 @@
 #
-#    Copyright (C) 2014 Haruki Hasegawa
+#    Copyright (C) 2016 Haruki Hasegawa
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -14,14 +14,15 @@
 #    limitations under the License.
 #
 
-# config
-CXXDASP_USE_FFT_BACKEND_FFTS := 0
-CXXDASP_USE_FFT_BACKEND_PFFFT := 1
-CXXDASP_USE_FFT_BACKEND_KISS_FFT := 0
-CXXDASP_USE_FFT_BACKEND_NE10 := 0
-CXXDASP_USE_FFT_BACKEND_CKFFT := 0
-CXXDASP_USE_FFT_BACKEND_MUFFT := 0
-CXXDASP_USE_FFT_BACKEND_GP_FFT := 1
+MY_DIR := $(call my-dir)
+CXXDASP_TOP_DIR := $(MY_DIR)/../../../..
 
-CXXDASP_ENABLE_POLYPHASE_RESAMPLER_FACTORY_LOW_QUALITY := 1
-CXXDASP_ENABLE_POLYPHASE_RESAMPLER_FACTORY_HIGH_QUALITY := 1
+include $(CXXDASP_TOP_DIR)/android/build-utils/cxxdasp-build-setup.mk
+
+#
+# library (libmufft)
+#
+
+LOCAL_PATH := $(MY_DIR)
+include $(CLEAR_VARS)
+$(call import-module, cxxdasp/dep_libs/mufft)

@@ -29,6 +29,7 @@ using namespace cxxdasp;
 // #undef CXXDASP_USE_FFT_BACKEND_FFTWF
 // #undef CXXDASP_USE_FFT_BACKEND_NE10
 // #undef CXXDASP_USE_FFT_BACKEND_CKFFT
+// #undef CXXDASP_USE_FFT_BACKEND_MUFFT
 // #undef CXXDASP_USE_FFT_BACKEND_FFTW
 // #undef CXXDASP_USE_FFT_BACKEND_GP_FFT
 
@@ -451,6 +452,23 @@ TEST_F(ForwardRealFFTTest_CKFFT_Float, forward_real) { do_forward_real_fft_test(
 
 typedef BackwardRealFFTTest<fft::backend::f::ckfft, float> BackwardRealFFTTest_CKFFT_Float;
 TEST_F(BackwardRealFFTTest_CKFFT_Float, backward_real) { do_backward_real_fft_test(this); }
+#endif
+
+//
+// muFFT
+//
+#if CXXDASP_USE_FFT_BACKEND_MUFFT
+typedef ForwardFFTTest<fft::backend::f::mufft, float> ForwardFFTTest_MUFFT_Float;
+TEST_F(ForwardFFTTest_MUFFT_Float, forward) { do_forward_fft_test(this); }
+
+typedef BackwardFFTTest<fft::backend::f::mufft, float> BackwardFFTTest_MUFFT_Float;
+TEST_F(BackwardFFTTest_MUFFT_Float, backward) { do_backward_fft_test(this); }
+
+typedef ForwardRealFFTTest<fft::backend::f::mufft, float> ForwardRealFFTTest_MUFFT_Float;
+TEST_F(ForwardRealFFTTest_MUFFT_Float, forward_real) { do_forward_real_fft_test(this); }
+
+typedef BackwardRealFFTTest<fft::backend::f::mufft, float> BackwardRealFFTTest_MUFFT_Float;
+TEST_F(BackwardRealFFTTest_MUFFT_Float, backward_real) { do_backward_real_fft_test(this); }
 #endif
 
 //

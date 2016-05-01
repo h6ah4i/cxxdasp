@@ -263,6 +263,8 @@ int main(int argc, char const *argv[])
     typedef fft::backend::f::fftw app_fft_backend_f;
 #elif CXXDASP_USE_FFT_BACKEND_CKFFT
     typedef fft::backend::f::ckfft app_fft_backend_f;
+#elif CXXDASP_USE_FFT_BACKEND_MUFFT
+    typedef fft::backend::f::mufft app_fft_backend_f;
 #else
 #error No FFT library available
 #endif

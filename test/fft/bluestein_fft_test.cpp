@@ -30,6 +30,7 @@ using namespace cxxdasp;
 #undef CXXDASP_USE_FFT_BACKEND_FFTWF
 #undef CXXDASP_USE_FFT_BACKEND_NE10
 #undef CXXDASP_USE_FFT_BACKEND_CKFFT
+#undef CXXDASP_USE_FFT_BACKEND_MUFFT
 #undef CXXDASP_USE_FFT_BACKEND_FFTW
 #undef CXXDASP_USE_FFT_BACKEND_GP_FFT
 
@@ -45,6 +46,8 @@ typedef fft::backend::f::fftw sp_fft_backend_class;
 typedef fft::backend::f::ne10 sp_fft_backend_class;
 #elif CXXDASP_USE_FFT_BACKEND_CKFFT
 typedef fft::backend::f::ckfft sp_fft_backend_class;
+#elif CXXDASP_USE_FFT_BACKEND_MUFFT
+typedef fft::backend::f::mufft sp_fft_backend_class;
 #else
 #define SINGLE_PRECISION_FFT_IS_NOT_AVAILABLE
 #endif
@@ -743,6 +746,34 @@ TEST_F(BluesteinForwardRealFFTTest_FFTWF_Float, forward_real_npot) { do_npot_for
 
 typedef BluesteinBackwardRealFFTTest<fft::backend::f::fftw, float> BluesteinBackwardRealFFTTest_FFTWF_Float;
 TEST_F(BluesteinBackwardRealFFTTest_FFTWF_Float, backward_real_npot) { do_npot_backward_real_fft_test(this); }
+#endif
+
+//
+// muFFT
+//
+#if CXXDASP_USE_FFT_BACKEND_MUFFT
+typedef BluesteinForwardFFTTest<fft::backend::f::mufft, float> BluesteinForwardFFTTest_MUFFT_Float;
+TEST_F(BluesteinForwardFFTTest_MUFFT_Float, forward_pot) { do_pot_forward_fft_test(this); }
+
+typedef BluesteinBackwardFFTTest<fft::backend::f::mufft, float> BluesteinBackwardFFTTest_MUFFT_Float;
+TEST_F(BluesteinBackwardFFTTest_MUFFT_Float, backward_pot) { do_pot_backward_fft_test(this); }
+
+typedef BluesteinForwardRealFFTTest<fft::backend::f::mufft, float> BluesteinForwardRealFFTTest_MUFFT_Float;
+TEST_F(BluesteinForwardRealFFTTest_MUFFT_Float, forward_real_pot) { do_pot_forward_real_fft_test(this); }
+
+typedef BluesteinBackwardRealFFTTest<fft::backend::f::mufft, float> BluesteinBackwardRealFFTTest_MUFFT_Float;
+TEST_F(BluesteinBackwardRealFFTTest_MUFFT_Float, backward_real_pot) { do_pot_backward_real_fft_test(this); }
+typedef BluesteinForwardFFTTest<fft::backend::f::mufft, float> BluesteinForwardFFTTest_MUFFT_Float;
+TEST_F(BluesteinForwardFFTTest_MUFFT_Float, forward_npot) { do_npot_forward_fft_test(this); }
+
+typedef BluesteinBackwardFFTTest<fft::backend::f::mufft, float> BluesteinBackwardFFTTest_MUFFT_Float;
+TEST_F(BluesteinBackwardFFTTest_MUFFT_Float, backward_npot) { do_npot_backward_fft_test(this); }
+
+typedef BluesteinForwardRealFFTTest<fft::backend::f::mufft, float> BluesteinForwardRealFFTTest_MUFFT_Float;
+TEST_F(BluesteinForwardRealFFTTest_MUFFT_Float, forward_real_npot) { do_npot_forward_real_fft_test(this); }
+
+typedef BluesteinBackwardRealFFTTest<fft::backend::f::mufft, float> BluesteinBackwardRealFFTTest_MUFFT_Float;
+TEST_F(BluesteinBackwardRealFFTTest_MUFFT_Float, backward_real_npot) { do_npot_backward_real_fft_test(this); }
 #endif
 
 //
