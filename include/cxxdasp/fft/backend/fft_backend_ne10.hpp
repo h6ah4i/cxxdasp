@@ -118,9 +118,9 @@ public:
     };
 
     /**
-     * Backward (Complex) FFT
+     * Inverse (Complex) FFT
      */
-    class backward : public fft_backend_base<fft_complex_t, fft_complex_t> {
+    class inverse : public fft_backend_base<fft_complex_t, fft_complex_t> {
         typedef fft_backend_base<fft_complex_t, fft_complex_t> base;
 
     public:
@@ -131,7 +131,7 @@ public:
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward(int n, fft_complex_t *in, fft_complex_t *out)
+        inverse(int n, fft_complex_t *in, fft_complex_t *out)
             : base(n, in, out, 1), cfg_(nullptr), fp_execute_(nullptr)
         {
             cfg_ = ::ne10_fft_alloc_c2c_float32(n);
@@ -146,7 +146,7 @@ public:
         /**
          * Destructor.
          */
-        virtual ~backward()
+        virtual ~inverse()
         {
             NE10_FREE(cfg_);
             cfg_ = nullptr;
@@ -221,9 +221,9 @@ public:
     };
 
     /**
-     * Backward (Real) FFT
+     * Inverse (Real) FFT
      */
-    class backward_real : public fft_backend_base<fft_complex_t, fft_real_t> {
+    class inverse_real : public fft_backend_base<fft_complex_t, fft_real_t> {
         typedef fft_backend_base<fft_complex_t, fft_real_t> base;
 
     public:
@@ -234,7 +234,7 @@ public:
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward_real(int n, fft_complex_t *in, fft_real_t *out)
+        inverse_real(int n, fft_complex_t *in, fft_real_t *out)
             : base(n, in, out, 1), cfg_(nullptr), fp_execute_(nullptr)
         {
             cfg_ = ::ne10_fft_alloc_r2c_float32(n);
@@ -249,7 +249,7 @@ public:
         /**
          * Destructor.
          */
-        virtual ~backward_real()
+        virtual ~inverse_real()
         {
             NE10_FREE(cfg_);
             cfg_ = nullptr;

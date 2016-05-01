@@ -95,9 +95,9 @@ struct ckfft {
     };
 
     /**
-     * Backward (Complex) FFT
+     * Inverse (Complex) FFT
      */
-    class backward : public fft_backend_base<fft_complex_t, fft_complex_t> {
+    class inverse : public fft_backend_base<fft_complex_t, fft_complex_t> {
         typedef fft_backend_base<fft_complex_t, fft_complex_t> base;
 
     public:
@@ -108,7 +108,7 @@ struct ckfft {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), context_(nullptr)
+        inverse(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), context_(nullptr)
         {
             context_ = ::CkFftInit(n, kCkFftDirection_Inverse, nullptr, nullptr);
         }
@@ -116,7 +116,7 @@ struct ckfft {
         /**
          * Destructor.
          */
-        virtual ~backward()
+        virtual ~inverse()
         {
             ::CkFftShutdown(context_);
             context_ = nullptr;
@@ -179,9 +179,9 @@ struct ckfft {
     };
 
     /**
-     * Backward (Real) FFT
+     * Inverse (Real) FFT
      */
-    class backward_real : public fft_backend_base<fft_complex_t, fft_real_t> {
+    class inverse_real : public fft_backend_base<fft_complex_t, fft_real_t> {
         typedef fft_backend_base<fft_complex_t, fft_real_t> base;
 
     public:
@@ -192,7 +192,7 @@ struct ckfft {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), context_(nullptr), tmp_()
+        inverse_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), context_(nullptr), tmp_()
         {
             cxxporthelper::aligned_memory<CkFftComplex> tmp(n / 2 + 1);
             context_ = ::CkFftInit(n, kCkFftDirection_Inverse, nullptr, nullptr);
@@ -202,7 +202,7 @@ struct ckfft {
         /**
          * Destructor.
          */
-        virtual ~backward_real()
+        virtual ~inverse_real()
         {
             ::CkFftShutdown(context_);
             context_ = nullptr;

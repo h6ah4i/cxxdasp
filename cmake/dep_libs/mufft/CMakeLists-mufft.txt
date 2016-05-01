@@ -29,9 +29,9 @@ include_directories(${LIB_MUFFT_INCLUDE_DIRS})
 if (MSVC)
     add_definitions(-D_USE_MATH_DEFINES)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4018 /wd4244 /wd4305")    # Ignore warning C4018, C4244 and C4305
-else
+else()
     add_definitions(-DMUFFT_HAVE_X86)
-    add_definitions(-DMUFFT_HAVE_SSE)
+    # add_definitions(-DMUFFT_HAVE_SSE)
     add_definitions(-DMUFFT_HAVE_SSE3)
     # add_definitions(-DMUFFT_HAVE_AVX)
 endif()
@@ -40,7 +40,5 @@ add_library(mufft STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/fft.c
     ${CMAKE_CURRENT_SOURCE_DIR}/kernel.c
     ${CMAKE_CURRENT_SOURCE_DIR}/cpu.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/x86/kernel.sse.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/x86/kernel.sse3.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/x86/kernel.c
     )
-# ${CMAKE_CURRENT_SOURCE_DIR}/x86/kernel.avx.c
