@@ -56,7 +56,7 @@ ifeq ($(CXXDASP_USE_FFT_BACKEND_PFFFT), 1)
     CXXDASP_FFT_BACKEND_LIBS_armeabi                += pffft-no-simd_static
     CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a            += pffft_static
     CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a-no-neon    += pffft-no-simd_static # NOTE: requires -no-simd suffixed version
-    CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += pffft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += pffft_static
     CXXDASP_FFT_BACKEND_LIBS_x86                    += pffft_static
     CXXDASP_FFT_BACKEND_LIBS_x86_64                 += pffft_static
     CXXDASP_FFT_BACKEND_LIBS_mips                   += pffft-no-simd_static
