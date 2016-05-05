@@ -65,7 +65,7 @@ struct ffts {
          */
         forward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, 1), plan_(0)
         {
-            plan_ = ::ffts_init_1d(n, NEGATIVE_SIGN);
+            plan_ = ::ffts_init_1d(n, FFTS_FORWARD);
         }
 
         /**
@@ -104,7 +104,7 @@ struct ffts {
          */
         inverse(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), plan_(0)
         {
-            plan_ = ::ffts_init_1d(n, POSITIVE_SIGN);
+            plan_ = ::ffts_init_1d(n, FFTS_BACKWARD);
         }
 
         /**
@@ -143,7 +143,7 @@ struct ffts {
          */
         forward_real(int n, fft_real_t *in, fft_complex_t *out) : base(n, in, out, 1), plan_(0)
         {
-            plan_ = ::ffts_init_1d_real(n, NEGATIVE_SIGN);
+            plan_ = ::ffts_init_1d_real(n, FFTS_FORWARD);
         }
 
         /**
@@ -182,7 +182,7 @@ struct ffts {
          */
         inverse_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), plan_(0)
         {
-            plan_ = ::ffts_init_1d_real(n, POSITIVE_SIGN);
+            plan_ = ::ffts_init_1d_real(n, FFTS_BACKWARD);
         }
 
         /**

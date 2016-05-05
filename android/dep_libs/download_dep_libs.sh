@@ -45,14 +45,3 @@ popd # build
 rm -rf ./build
 
 popd # $SCRIPT_DIR
-
-echo ""
-echo "================================================================"
-echo "                   Download completed!"
-echo ""
-echo "        You have to build the FFTS library manually."
-echo "        Prease refer to ffts/README"
-echo ""
-echo "================================================================"
-echo ""
-
