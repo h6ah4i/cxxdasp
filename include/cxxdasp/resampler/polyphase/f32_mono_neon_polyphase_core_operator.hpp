@@ -261,8 +261,8 @@ public:
                    const src_frame_t *CXXPH_RESTRICT src, int n) const CXXPH_NOEXCEPT
     {
 
-        int loop_cnt_1 = (n >> 5);   //(n / 32);
-        int loop_cnt_2 = (n & 0x1f); // (n % 32);
+        int32_t loop_cnt_1 = (n >> 5);   //(n / 32);
+        int32_t loop_cnt_2 = (n & 0x1f); // (n % 32);
 
         if (CXXPH_LIKELY(loop_cnt_1 > 0)) {
             asm volatile("prfm pldl1strm, [%[src], #128]\n\t"
@@ -278,7 +278,7 @@ public:
                          "st1 {v0.2d, v1.2d, v2.2d, v3.2d}, [%[dest2]], #64\n\t"
                          "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest2]], #64\n\t"
                          "prfm pstl1strm, [%[dest2], #128]\n\t"
-                         "subs %[loop_cnt], %[loop_cnt], #1\n\t"
+                         "subs %w[loop_cnt], %w[loop_cnt], #1\n\t"
                          "bne 1b\n\t"
                          : [src] "+r"(src), [dest1] "+r"(dest1), [dest2] "+r"(dest2), [loop_cnt] "+r"(loop_cnt_1)
                          :
@@ -311,8 +311,8 @@ public:
         const float32_t *CXXPH_RESTRICT coeffs_f32 = reinterpret_cast<const float32_t *>(coeffs);
         const float32_t *CXXPH_RESTRICT samples_f32 = reinterpret_cast<const float32_t *>(samples);
 
-        int loop_cnt_1 = (n >> 3);   // (n / 8);
-        int loop_cnt_2 = (n & 0x07); // (n % 8);
+        int32_t loop_cnt_1 = (n >> 3);   // (n / 8);
+        int32_t loop_cnt_2 = (n & 0x07); // (n % 8);
 
         register float32x4_t sum1 asm("v0");
         register float32x4_t sum2 asm("v1");
@@ -328,7 +328,7 @@ public:
                          "fmla v0.4s, v2.4s, v4.4s\n"
                          "fmla v1.4s, v3.4s, v5.4s\n"
                          "\n"
-                         "subs %[loop_cnt], %[loop_cnt], #1\n"
+                         "subs %w[loop_cnt], %w[loop_cnt], #1\n"
                          "bne 1b\n"
                          : [sum1] "+w"(sum1), [sum2] "+w"(sum2), [coeffs] "+r"(coeffs_f32), [samples] "+r"(samples_f32),
                            [loop_cnt] "+r"(loop_cnt_1)
