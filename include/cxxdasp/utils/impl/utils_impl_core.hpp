@@ -24,10 +24,18 @@
 
 // macros
 
+#if (CXXPH_COMPILER_IS_GCC && CXXPH_GCC_VERSION >= 40700) ||                                                           \
+    (CXXPH_COMPILER_IS_CLANG && __has_builtin(__builtin_assume_aligned))
+#define CXXDASP_UTIL_ASSUME_ALIGNED_FUNC(pointer, alignment)    \
+    cxxdasp::utils::typed_pointer_cast_helper((pointer), __builtin_assume_aligned((pointer), alignment))
+#else
+#define CXXDASP_UTIL_ASSUME_ALIGNED_FUNC(pointer, alignment) (pointer)
+#endif
+
 #define CXXDASP_UTIL_ASSUME_ALIGNED(pointer, alignment)                                                                \
     do {                                                                                                               \
         assert(utils::is_aligned((pointer), (alignment)));                                                             \
-        pointer = cxxdasp::utils::assume_aligned((pointer), (alignment));                                              \
+        pointer = CXXDASP_UTIL_ASSUME_ALIGNED_FUNC((pointer), (alignment));                                              \
     } while (0)
 
 namespace cxxdasp {
@@ -39,21 +47,12 @@ inline bool is_aligned(const void *address, std::size_t alignment) CXXPH_NOEXCEP
     return ((a & (alignment - 1)) == 0);
 }
 
-#if (CXXPH_COMPILER_IS_GCC && CXXPH_GCC_VERSION >= 40700) ||                                                           \
-    (CXXPH_COMPILER_IS_CLANG && __has_builtin(__builtin_assume_aligned))
 template <typename T>
-T *assume_aligned(T *pointer, std::size_t alignment)
+inline T *typed_pointer_cast_helper(T *unused, void *pointer)
 {
-    assert(utils::is_aligned(pointer, alignment));
-    return static_cast<T *>(__builtin_assume_aligned((void *)(pointer), alignment));
+    return static_cast<T*>(pointer);
 }
-#else
-template <typename T>
-T *assume_aligned(T *pointer, std::size_t alignment)
-{
-    return pointer;
-}
-#endif
+
 //
 #if CXXPH_COMPILER_IS_GCC
 #define CXXPH_GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)

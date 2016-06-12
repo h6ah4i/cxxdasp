@@ -57,7 +57,7 @@ namespace mixer {
                  "\n\t"                                                                                                \
                  "prfm pldl1strm, [%[src], #128]\n\t"                                                                  \
                  "prfm pstl1strm, [%[dest], #160]\n\t"                                                                 \
-                 "subs %[cnt], %[cnt], #1\n\t"                                                                         \
+                 "subs %w[cnt], %w[cnt], #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
                  "st1 {v2." DEST_ALIGN ", v3." DEST_ALIGN "}, [%[dest]], #32\n\t"                                      \
                  "\n\t"                                                                                                \
@@ -70,7 +70,7 @@ namespace mixer {
 static void neon_f32_mono_mul_scale_src_aligned_dest_aligned(
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE(":128", ":128");
@@ -82,7 +82,7 @@ static void neon_f32_mono_mul_scale_src_aligned_dest_aligned(
 static void neon_f32_mono_mul_scale_src_aligned_dest_unaligned(
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE(":128", "");
@@ -141,7 +141,7 @@ static void neon_f32_mono_mul_scale_src_aligned_dest_unaligned(
                  "\n\t"                                                                                                \
                  "prfm pldl1strm, [%[src], #128]\n\t"                                                                  \
                  "prfm pldl1strm, [%[dest], #160]\n\t"                                                                 \
-                 "subs %[cnt], %[cnt], #1\n\t"                                                                         \
+                 "subs %w[cnt], %w[cnt], #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
                  "st1 {v2." DEST_ALIGN ", v3." DEST_ALIGN "}, [%[dest]], #32\n\t"                                      \
                  "\n\t"                                                                                                \
@@ -154,7 +154,7 @@ static void neon_f32_mono_mul_scale_src_aligned_dest_unaligned(
 static void neon_f32_mono_mac_scale_src_aligned_dest_aligned(
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE(":128", ":128");
@@ -166,7 +166,7 @@ static void neon_f32_mono_mac_scale_src_aligned_dest_aligned(
 static void neon_f32_mono_mac_scale_src_unaligned_dest_aligned(
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE("", ":128");
@@ -243,7 +243,7 @@ static void neon_f32_mono_mac_scale_src_unaligned_dest_aligned(
                  "\n\t"                                                                                                \
                  "prfm pldl1strm, [%[src], #128]\n\t"                                                                  \
                  "prfm pstl1strm, [%[dest], #160]\n\t"                                                                 \
-                 "subs %[cnt], %[cnt], #1\n\t"                                                                         \
+                 "subs %w[cnt], %w[cnt], #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
                  "st1 {v2." DEST_ALIGN ", v3." DEST_ALIGN "}, [%[dest]], #32\n\t"                                      \
                  "\n\t"                                                                                                \
@@ -257,7 +257,7 @@ void neon_f32_mono_mul_forward_table_and_scale_src_aligned_dest_aligned_table_al
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE_AND_FORWARD_TABLE(":128", ":128", ":128");
@@ -270,7 +270,7 @@ void neon_f32_mono_mul_forward_table_and_scale_src_aligned_dest_aligned_table_un
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE_AND_FORWARD_TABLE(":128", ":128", "");
@@ -283,7 +283,7 @@ void neon_f32_mono_mul_forward_table_and_scale_src_aligned_dest_unaligned_table_
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE_AND_FORWARD_TABLE(":128", "", ":128");
@@ -296,7 +296,7 @@ void neon_f32_mono_mul_forward_table_and_scale_src_aligned_dest_unaligned_table_
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE_AND_FORWARD_TABLE(":128", "", "");
@@ -377,7 +377,7 @@ void neon_f32_mono_mul_forward_table_and_scale_src_aligned_dest_unaligned_table_
                  "\n\t"                                                                                                \
                  "prfm pldl1strm, [%[src], #128]\n\t"                                                                  \
                  "prfm pldl1strm, [%[dest], #160]\n\t"                                                                 \
-                 "subs %[cnt], %[cnt], #1\n\t"                                                                         \
+                 "subs %w[cnt], %w[cnt], #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
                  "st1 {v2." DEST_ALIGN ", v3." DEST_ALIGN "}, [%[dest]], #32\n\t"                                      \
                  "\n\t"                                                                                                \
@@ -391,7 +391,7 @@ void neon_f32_mono_mac_forward_table_and_scale_src_aligned_dest_aligned_table_al
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE_AND_FORWARD_TABLE(":128", ":128", ":128");
@@ -404,7 +404,7 @@ void neon_f32_mono_mac_forward_table_and_scale_src_aligned_dest_aligned_table_un
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE_AND_FORWARD_TABLE(":128", ":128", "");
@@ -417,7 +417,7 @@ void neon_f32_mono_mac_forward_table_and_scale_src_unaligned_dest_aligned_table_
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE_AND_FORWARD_TABLE("", ":128", ":128");
@@ -430,7 +430,7 @@ void neon_f32_mono_mac_forward_table_and_scale_src_unaligned_dest_aligned_table_
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE_AND_FORWARD_TABLE("", ":128", "");
@@ -525,7 +525,7 @@ void neon_f32_mono_mac_forward_table_and_scale_src_unaligned_dest_aligned_table_
                  "\n\t"                                                                                                \
                  "prfm pldl1strm, [%[src], #128]\n\t"                                                                  \
                  "prfm pstl1strm, [%[dest], #160]\n\t"                                                                 \
-                 "subs %[cnt], %[cnt], #1\n\t"                                                                         \
+                 "subs %w[cnt], %w[cnt], #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
                  "st1 {v2." DEST_ALIGN ", v3." DEST_ALIGN "}, [%[dest]], #32\n\t"                                      \
                  "\n\t"                                                                                                \
@@ -539,7 +539,7 @@ void neon_f32_mono_mul_backward_table_and_scale_src_aligned_dest_aligned_table_a
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE_AND_BACKWARD_TABLE(":128", ":128", ":128");
@@ -552,7 +552,7 @@ void neon_f32_mono_mul_backward_table_and_scale_src_aligned_dest_aligned_table_u
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE_AND_BACKWARD_TABLE(":128", ":128", "");
@@ -565,7 +565,7 @@ void neon_f32_mono_mul_backward_table_and_scale_src_aligned_dest_unaligned_table
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE_AND_BACKWARD_TABLE(":128", "", ":128");
@@ -578,7 +578,7 @@ void neon_f32_mono_mul_backward_table_and_scale_src_aligned_dest_unaligned_table
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MUL_SCALE_AND_BACKWARD_TABLE(":128", "", "");
@@ -678,7 +678,7 @@ void neon_f32_mono_mul_backward_table_and_scale_src_aligned_dest_unaligned_table
                  "\n\t"                                                                                                \
                  "prfm pldl1strm, [%[src], #128]\n\t"                                                                  \
                  "prfm pldl1strm, [%[dest], #160]\n\t"                                                                 \
-                 "subs %[cnt], %[cnt], #1\n\t"                                                                         \
+                 "subs %w[cnt], %w[cnt], #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
                  "st1 {v2." DEST_ALIGN ", v3." DEST_ALIGN "}, [%[dest]], #32\n\t"                                      \
                  "\n\t"                                                                                                \
@@ -692,7 +692,7 @@ void neon_f32_mono_mac_backward_table_and_scale_src_aligned_dest_aligned_table_a
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE_AND_BACKWARD_TABLE(":128", ":128", ":128");
@@ -705,7 +705,7 @@ void neon_f32_mono_mac_backward_table_and_scale_src_aligned_dest_aligned_table_u
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE_AND_BACKWARD_TABLE(":128", ":128", "");
@@ -718,7 +718,7 @@ void neon_f32_mono_mac_backward_table_and_scale_src_unaligned_dest_aligned_table
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE_AND_BACKWARD_TABLE("", ":128", ":128");
@@ -731,7 +731,7 @@ void neon_f32_mono_mac_backward_table_and_scale_src_unaligned_dest_aligned_table
     f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT dest,
     const f32_mono_neon_mixer_core_operator::frame_type *CXXPH_RESTRICT src,
     const f32_mono_neon_mixer_core_operator::table_coeff_type *CXXPH_RESTRICT table,
-    const f32_mono_neon_mixer_core_operator::frame_type &scale, int n) CXXPH_NOEXCEPT
+    const f32_mono_neon_mixer_core_operator::frame_type &scale, int32_t n) CXXPH_NOEXCEPT
 {
 #if CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM
     AARCH32_NEON_F32_MONO_MAC_SCALE_AND_BACKWARD_TABLE("", ":128", "");

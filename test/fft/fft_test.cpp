@@ -28,6 +28,8 @@ using namespace cxxdasp;
 // #undef CXXDASP_USE_FFT_BACKEND_KISS_FFT
 // #undef CXXDASP_USE_FFT_BACKEND_FFTWF
 // #undef CXXDASP_USE_FFT_BACKEND_NE10
+// #undef CXXDASP_USE_FFT_BACKEND_CKFFT
+// #undef CXXDASP_USE_FFT_BACKEND_MUFFT
 // #undef CXXDASP_USE_FFT_BACKEND_FFTW
 // #undef CXXDASP_USE_FFT_BACKEND_GP_FFT
 
@@ -47,13 +49,13 @@ public:
 };
 
 template <typename TFFTBackend, typename T>
-class BackwardFFTTest : public ::testing::Test {
+class InverseFFTTest : public ::testing::Test {
 protected:
     virtual void SetUp() { cxxdasp_init(); }
     virtual void TearDown() {}
 
 public:
-    typedef typename TFFTBackend::backward fft_backend_type;
+    typedef typename TFFTBackend::inverse fft_backend_type;
     typedef T data_type;
 
     fft::fft<std::complex<T>, std::complex<T>, fft_backend_type> fft_;
@@ -77,13 +79,13 @@ public:
 };
 
 template <typename TFFTBackend, typename T>
-class BackwardRealFFTTest : public ::testing::Test {
+class InverseRealFFTTest : public ::testing::Test {
 protected:
     virtual void SetUp() { cxxdasp_init(); }
     virtual void TearDown() {}
 
 public:
-    typedef typename TFFTBackend::backward_real fft_backend_type;
+    typedef typename TFFTBackend::inverse_real fft_backend_type;
     typedef T data_type;
 
     fft::fft<std::complex<T>, T, fft_backend_type> fft_;
@@ -112,24 +114,25 @@ void do_forward_fft_test(TForwardFFTTest *thiz)
     }
 
     // expected
-    ASSERT_EQ(1, thiz->fft_.scale());
+    const int scale = thiz->fft_.scale();
+    ASSERT_EQ(1, scale);
 #define COMPLEX_VALUE(real, imag) complex_type(static_cast<data_type>(real), static_cast<data_type>(imag))
-    expected.push_back(COMPLEX_VALUE(136.0, 136.0));
-    expected.push_back(COMPLEX_VALUE(-48.218715937006785, 32.218715937006785));
-    expected.push_back(COMPLEX_VALUE(-27.31370849898476, 11.313708498984761));
-    expected.push_back(COMPLEX_VALUE(-19.97284610132391, 3.9728461013239116));
-    expected.push_back(COMPLEX_VALUE(-16.0, 0.0));
-    expected.push_back(COMPLEX_VALUE(-13.34542910335439, -2.6545708966456107));
-    expected.push_back(COMPLEX_VALUE(-11.313708498984761, -4.686291501015239));
-    expected.push_back(COMPLEX_VALUE(-9.591298939037264, -6.408701060962734));
-    expected.push_back(COMPLEX_VALUE(-8.0, -8.0));
-    expected.push_back(COMPLEX_VALUE(-6.408701060962734, -9.591298939037264));
-    expected.push_back(COMPLEX_VALUE(-4.686291501015239, -11.313708498984761));
-    expected.push_back(COMPLEX_VALUE(-2.6545708966456107, -13.34542910335439));
-    expected.push_back(COMPLEX_VALUE(0.0, -16.0));
-    expected.push_back(COMPLEX_VALUE(3.9728461013239116, -19.97284610132391));
-    expected.push_back(COMPLEX_VALUE(11.313708498984761, -27.31370849898476));
-    expected.push_back(COMPLEX_VALUE(32.218715937006785, -48.218715937006785));
+    expected.push_back(COMPLEX_VALUE(136.0 * scale, 136.0 * scale));
+    expected.push_back(COMPLEX_VALUE(-48.218715937006785 * scale, 32.218715937006785 * scale));
+    expected.push_back(COMPLEX_VALUE(-27.31370849898476 * scale, 11.313708498984761 * scale));
+    expected.push_back(COMPLEX_VALUE(-19.97284610132391 * scale, 3.9728461013239116 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 0.0 * scale));
+    expected.push_back(COMPLEX_VALUE(-13.34542910335439 * scale, -2.6545708966456107 * scale));
+    expected.push_back(COMPLEX_VALUE(-11.313708498984761 * scale, -4.686291501015239 * scale));
+    expected.push_back(COMPLEX_VALUE(-9.591298939037264 * scale, -6.408701060962734 * scale));
+    expected.push_back(COMPLEX_VALUE(-8.0 * scale, -8.0 * scale));
+    expected.push_back(COMPLEX_VALUE(-6.408701060962734 * scale, -9.591298939037264 * scale));
+    expected.push_back(COMPLEX_VALUE(-4.686291501015239 * scale, -11.313708498984761 * scale));
+    expected.push_back(COMPLEX_VALUE(-2.6545708966456107 * scale, -13.34542910335439 * scale));
+    expected.push_back(COMPLEX_VALUE(0.0 * scale, -16.0 * scale));
+    expected.push_back(COMPLEX_VALUE(3.9728461013239116 * scale, -19.97284610132391 * scale));
+    expected.push_back(COMPLEX_VALUE(11.313708498984761 * scale, -27.31370849898476 * scale));
+    expected.push_back(COMPLEX_VALUE(32.218715937006785 * scale, -48.218715937006785 * scale));
 #undef COMPLEX_VALUE
 
     // perform FFT
@@ -153,11 +156,11 @@ void do_forward_fft_test(TForwardFFTTest *thiz)
     }
 }
 
-template <typename TBackwardFFTTest>
-void do_backward_fft_test(TBackwardFFTTest *thiz)
+template <typename TInverseFFTTest>
+void do_inverse_fft_test(TInverseFFTTest *thiz)
 {
-    typedef typename TBackwardFFTTest::fft_backend_type fft_backend_type;
-    typedef typename TBackwardFFTTest::data_type data_type;
+    typedef typename TInverseFFTTest::fft_backend_type fft_backend_type;
+    typedef typename TInverseFFTTest::data_type data_type;
     typedef std::complex<data_type> complex_type;
 
     const int n = 16;
@@ -240,25 +243,26 @@ void do_forward_real_fft_test(TForwardFFTTest *thiz)
     }
 
     // expected
-    ASSERT_EQ(1, thiz->fft_.scale());
+    const int scale = thiz->fft_.scale();
+    // ASSERT_EQ(1, scale);
 #define COMPLEX_VALUE(real, imag) complex_type(static_cast<data_type>(real), static_cast<data_type>(imag))
-    expected.push_back(COMPLEX_VALUE(528.0, 0.0));
-    expected.push_back(COMPLEX_VALUE(-16.0, 162.45072620174176));
-    expected.push_back(COMPLEX_VALUE(-16.0, 80.43743187401357));
-    expected.push_back(COMPLEX_VALUE(-16.0, 52.74493134301312));
-    expected.push_back(COMPLEX_VALUE(-16.0, 38.62741699796952));
-    expected.push_back(COMPLEX_VALUE(-16.0, 29.933894588630228));
-    expected.push_back(COMPLEX_VALUE(-16.0, 23.945692202647823));
-    expected.push_back(COMPLEX_VALUE(-16.0, 19.496056409407625));
-    expected.push_back(COMPLEX_VALUE(-16.0, 16.0));
-    expected.push_back(COMPLEX_VALUE(-16.0, 13.130860653258562));
-    expected.push_back(COMPLEX_VALUE(-16.0, 10.690858206708779));
-    expected.push_back(COMPLEX_VALUE(-16.0, 8.55217817521267));
-    expected.push_back(COMPLEX_VALUE(-16.0, 6.627416997969522));
-    expected.push_back(COMPLEX_VALUE(-16.0, 4.8535469377174785));
-    expected.push_back(COMPLEX_VALUE(-16.0, 3.1825978780745316));
-    expected.push_back(COMPLEX_VALUE(-16.0, 1.5758624537146346));
-    expected.push_back(COMPLEX_VALUE(-16.0, 0.0));
+    expected.push_back(COMPLEX_VALUE(528.0 * scale, 0.0 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 162.45072620174176 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 80.43743187401357 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 52.74493134301312 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 38.62741699796952 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 29.933894588630228 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 23.945692202647823 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 19.496056409407625 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 16.0 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 13.130860653258562 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 10.690858206708779 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 8.55217817521267 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 6.627416997969522 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 4.8535469377174785 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 3.1825978780745316 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 1.5758624537146346 * scale));
+    expected.push_back(COMPLEX_VALUE(-16.0 * scale, 0.0 * scale));
 #undef COMPLEX_VALUE
 
     // perform FFT
@@ -281,11 +285,11 @@ void do_forward_real_fft_test(TForwardFFTTest *thiz)
     }
 }
 
-template <typename TBackwardFFTTest>
-void do_backward_real_fft_test(TBackwardFFTTest *thiz)
+template <typename TInverseFFTTest>
+void do_inverse_real_fft_test(TInverseFFTTest *thiz)
 {
-    typedef typename TBackwardFFTTest::fft_backend_type fft_backend_type;
-    typedef typename TBackwardFFTTest::data_type data_type;
+    typedef typename TInverseFFTTest::fft_backend_type fft_backend_type;
+    typedef typename TInverseFFTTest::data_type data_type;
     typedef std::complex<data_type> complex_type;
 
     const int n = 32;
@@ -355,14 +359,14 @@ void do_backward_real_fft_test(TBackwardFFTTest *thiz)
 typedef ForwardFFTTest<fft::backend::f::pffft, float> ForwardFFTTest_PFFFT_Float;
 TEST_F(ForwardFFTTest_PFFFT_Float, forward) { do_forward_fft_test(this); }
 
-typedef BackwardFFTTest<fft::backend::f::pffft, float> BackwardFFTTest_PFFFT_Float;
-TEST_F(BackwardFFTTest_PFFFT_Float, backward) { do_backward_fft_test(this); }
+typedef InverseFFTTest<fft::backend::f::pffft, float> InverseFFTTest_PFFFT_Float;
+TEST_F(InverseFFTTest_PFFFT_Float, inverse) { do_inverse_fft_test(this); }
 
 typedef ForwardRealFFTTest<fft::backend::f::pffft, float> ForwardRealFFTTest_PFFFT_Float;
 TEST_F(ForwardRealFFTTest_PFFFT_Float, forward_real) { do_forward_real_fft_test(this); }
 
-typedef BackwardRealFFTTest<fft::backend::f::pffft, float> BackwardRealFFTTest_PFFFT_Float;
-TEST_F(BackwardRealFFTTest_PFFFT_Float, backward_real) { do_backward_real_fft_test(this); }
+typedef InverseRealFFTTest<fft::backend::f::pffft, float> InverseRealFFTTest_PFFFT_Float;
+TEST_F(InverseRealFFTTest_PFFFT_Float, inverse_real) { do_inverse_real_fft_test(this); }
 #endif
 
 //
@@ -372,14 +376,14 @@ TEST_F(BackwardRealFFTTest_PFFFT_Float, backward_real) { do_backward_real_fft_te
 typedef ForwardFFTTest<fft::backend::f::ffts, float> ForwardFFTTest_FFTS_Float;
 TEST_F(ForwardFFTTest_FFTS_Float, forward) { do_forward_fft_test(this); }
 
-typedef BackwardFFTTest<fft::backend::f::ffts, float> BackwardFFTTest_FFTS_Float;
-TEST_F(BackwardFFTTest_FFTS_Float, backward) { do_backward_fft_test(this); }
+typedef InverseFFTTest<fft::backend::f::ffts, float> InverseFFTTest_FFTS_Float;
+TEST_F(InverseFFTTest_FFTS_Float, inverse) { do_inverse_fft_test(this); }
 
 typedef ForwardRealFFTTest<fft::backend::f::ffts, float> ForwardRealFFTTest_FFTS_Float;
 TEST_F(ForwardRealFFTTest_FFTS_Float, forward_real) { do_forward_real_fft_test(this); }
 
-typedef BackwardRealFFTTest<fft::backend::f::ffts, float> BackwardRealFFTTest_FFTS_Float;
-TEST_F(BackwardRealFFTTest_FFTS_Float, backward_real) { do_backward_real_fft_test(this); }
+typedef InverseRealFFTTest<fft::backend::f::ffts, float> InverseRealFFTTest_FFTS_Float;
+TEST_F(InverseRealFFTTest_FFTS_Float, inverse_real) { do_inverse_real_fft_test(this); }
 #endif
 
 //
@@ -389,14 +393,14 @@ TEST_F(BackwardRealFFTTest_FFTS_Float, backward_real) { do_backward_real_fft_tes
 typedef ForwardFFTTest<fft::backend::f::kiss_fft, float> ForwardFFTTest_KissFFT_Float;
 TEST_F(ForwardFFTTest_KissFFT_Float, forward) { do_forward_fft_test(this); }
 
-typedef BackwardFFTTest<fft::backend::f::kiss_fft, float> BackwardFFTTest_KissFFT_Float;
-TEST_F(BackwardFFTTest_KissFFT_Float, backward) { do_backward_fft_test(this); }
+typedef InverseFFTTest<fft::backend::f::kiss_fft, float> InverseFFTTest_KissFFT_Float;
+TEST_F(InverseFFTTest_KissFFT_Float, inverse) { do_inverse_fft_test(this); }
 
 typedef ForwardRealFFTTest<fft::backend::f::kiss_fft, float> ForwardRealFFTTest_KissFFT_Float;
 TEST_F(ForwardRealFFTTest_KissFFT_Float, forward_real) { do_forward_real_fft_test(this); }
 
-typedef BackwardRealFFTTest<fft::backend::f::kiss_fft, float> BackwardRealFFTTest_KissFFT_Float;
-TEST_F(BackwardRealFFTTest_KissFFT_Float, backward_real) { do_backward_real_fft_test(this); }
+typedef InverseRealFFTTest<fft::backend::f::kiss_fft, float> InverseRealFFTTest_KissFFT_Float;
+TEST_F(InverseRealFFTTest_KissFFT_Float, inverse_real) { do_inverse_real_fft_test(this); }
 #endif
 
 //
@@ -406,14 +410,14 @@ TEST_F(BackwardRealFFTTest_KissFFT_Float, backward_real) { do_backward_real_fft_
 typedef ForwardFFTTest<fft::backend::f::fftw, float> ForwardFFTTest_FFTWF_Float;
 TEST_F(ForwardFFTTest_FFTWF_Float, forward) { do_forward_fft_test(this); }
 
-typedef BackwardFFTTest<fft::backend::f::fftw, float> BackwardFFTTest_FFTWF_Float;
-TEST_F(BackwardFFTTest_FFTWF_Float, backward) { do_backward_fft_test(this); }
+typedef InverseFFTTest<fft::backend::f::fftw, float> InverseFFTTest_FFTWF_Float;
+TEST_F(InverseFFTTest_FFTWF_Float, inverse) { do_inverse_fft_test(this); }
 
 typedef ForwardRealFFTTest<fft::backend::f::fftw, float> ForwardRealFFTTest_FFTWF_Float;
 TEST_F(ForwardRealFFTTest_FFTWF_Float, forward_real) { do_forward_real_fft_test(this); }
 
-typedef BackwardRealFFTTest<fft::backend::f::fftw, float> BackwardRealFFTTest_FFTWF_Float;
-TEST_F(BackwardRealFFTTest_FFTWF_Float, backward_real) { do_backward_real_fft_test(this); }
+typedef InverseRealFFTTest<fft::backend::f::fftw, float> InverseRealFFTTest_FFTWF_Float;
+TEST_F(InverseRealFFTTest_FFTWF_Float, inverse_real) { do_inverse_real_fft_test(this); }
 #endif
 
 //
@@ -423,14 +427,48 @@ TEST_F(BackwardRealFFTTest_FFTWF_Float, backward_real) { do_backward_real_fft_te
 typedef ForwardFFTTest<fft::backend::f::ne10, float> ForwardFFTTest_Ne10_Float;
 TEST_F(ForwardFFTTest_Ne10_Float, forward) { do_forward_fft_test(this); }
 
-typedef BackwardFFTTest<fft::backend::f::ne10, float> BackwardFFTTest_Ne10_Float;
-TEST_F(BackwardFFTTest_Ne10_Float, backward) { do_backward_fft_test(this); }
+typedef InverseFFTTest<fft::backend::f::ne10, float> InverseFFTTest_Ne10_Float;
+TEST_F(InverseFFTTest_Ne10_Float, inverse) { do_inverse_fft_test(this); }
 
 typedef ForwardRealFFTTest<fft::backend::f::ne10, float> ForwardRealFFTTest_Ne10_Float;
 TEST_F(ForwardRealFFTTest_Ne10_Float, forward_real) { do_forward_real_fft_test(this); }
 
-typedef BackwardRealFFTTest<fft::backend::f::ne10, float> BackwardRealFFTTest_Ne10_Float;
-TEST_F(BackwardRealFFTTest_Ne10_Float, backward_real) { do_backward_real_fft_test(this); }
+typedef InverseRealFFTTest<fft::backend::f::ne10, float> InverseRealFFTTest_Ne10_Float;
+TEST_F(InverseRealFFTTest_Ne10_Float, inverse_real) { do_inverse_real_fft_test(this); }
+#endif
+
+//
+// Cricket FFT
+//
+#if CXXDASP_USE_FFT_BACKEND_CKFFT
+typedef ForwardFFTTest<fft::backend::f::ckfft, float> ForwardFFTTest_CKFFT_Float;
+TEST_F(ForwardFFTTest_CKFFT_Float, forward) { do_forward_fft_test(this); }
+
+typedef InverseFFTTest<fft::backend::f::ckfft, float> InverseFFTTest_CKFFT_Float;
+TEST_F(InverseFFTTest_CKFFT_Float, inverse) { do_inverse_fft_test(this); }
+
+typedef ForwardRealFFTTest<fft::backend::f::ckfft, float> ForwardRealFFTTest_CKFFT_Float;
+TEST_F(ForwardRealFFTTest_CKFFT_Float, forward_real) { do_forward_real_fft_test(this); }
+
+typedef InverseRealFFTTest<fft::backend::f::ckfft, float> InverseRealFFTTest_CKFFT_Float;
+TEST_F(InverseRealFFTTest_CKFFT_Float, inverse_real) { do_inverse_real_fft_test(this); }
+#endif
+
+//
+// muFFT
+//
+#if CXXDASP_USE_FFT_BACKEND_MUFFT
+typedef ForwardFFTTest<fft::backend::f::mufft, float> ForwardFFTTest_MUFFT_Float;
+TEST_F(ForwardFFTTest_MUFFT_Float, forward) { do_forward_fft_test(this); }
+
+typedef InverseFFTTest<fft::backend::f::mufft, float> InverseFFTTest_MUFFT_Float;
+TEST_F(InverseFFTTest_MUFFT_Float, inverse) { do_inverse_fft_test(this); }
+
+typedef ForwardRealFFTTest<fft::backend::f::mufft, float> ForwardRealFFTTest_MUFFT_Float;
+TEST_F(ForwardRealFFTTest_MUFFT_Float, forward_real) { do_forward_real_fft_test(this); }
+
+typedef InverseRealFFTTest<fft::backend::f::mufft, float> InverseRealFFTTest_MUFFT_Float;
+TEST_F(InverseRealFFTTest_MUFFT_Float, inverse_real) { do_inverse_real_fft_test(this); }
 #endif
 
 //
@@ -440,14 +478,14 @@ TEST_F(BackwardRealFFTTest_Ne10_Float, backward_real) { do_backward_real_fft_tes
 typedef ForwardFFTTest<fft::backend::d::fftw, double> ForwardFFTTest_FFTW_Double;
 TEST_F(ForwardFFTTest_FFTW_Double, forward) { do_forward_fft_test(this); }
 
-typedef BackwardFFTTest<fft::backend::d::fftw, double> BackwardFFTTest_FFTW_Double;
-TEST_F(BackwardFFTTest_FFTW_Double, backward) { do_backward_fft_test(this); }
+typedef InverseFFTTest<fft::backend::d::fftw, double> InverseFFTTest_FFTW_Double;
+TEST_F(InverseFFTTest_FFTW_Double, inverse) { do_inverse_fft_test(this); }
 
 typedef ForwardRealFFTTest<fft::backend::d::fftw, double> ForwardRealFFTTest_FFTW_Double;
 TEST_F(ForwardRealFFTTest_FFTW_Double, forward_real) { do_forward_real_fft_test(this); }
 
-typedef BackwardRealFFTTest<fft::backend::d::fftw, double> BackwardRealFFTTest_FFTW_Double;
-TEST_F(BackwardRealFFTTest_FFTW_Double, backward_real) { do_backward_real_fft_test(this); }
+typedef InverseRealFFTTest<fft::backend::d::fftw, double> InverseRealFFTTest_FFTW_Double;
+TEST_F(InverseRealFFTTest_FFTW_Double, inverse_real) { do_inverse_real_fft_test(this); }
 #endif
 
 //
@@ -457,12 +495,12 @@ TEST_F(BackwardRealFFTTest_FFTW_Double, backward_real) { do_backward_real_fft_te
 typedef ForwardFFTTest<fft::backend::d::gp_fft, double> ForwardFFTTest_GP_FFT_Double;
 TEST_F(ForwardFFTTest_GP_FFT_Double, forward) { do_forward_fft_test(this); }
 
-typedef BackwardFFTTest<fft::backend::d::gp_fft, double> BackwardFFTTest_GP_FFT_Double;
-TEST_F(BackwardFFTTest_GP_FFT_Double, backward) { do_backward_fft_test(this); }
+typedef InverseFFTTest<fft::backend::d::gp_fft, double> InverseFFTTest_GP_FFT_Double;
+TEST_F(InverseFFTTest_GP_FFT_Double, inverse) { do_inverse_fft_test(this); }
 
 typedef ForwardRealFFTTest<fft::backend::d::gp_fft, double> ForwardRealFFTTest_GP_FFT_Double;
 TEST_F(ForwardRealFFTTest_GP_FFT_Double, forward_real) { do_forward_real_fft_test(this); }
 
-typedef BackwardRealFFTTest<fft::backend::d::gp_fft, double> BackwardRealFFTTest_GP_FFT_Double;
-TEST_F(BackwardRealFFTTest_GP_FFT_Double, backward_real) { do_backward_real_fft_test(this); }
+typedef InverseRealFFTTest<fft::backend::d::gp_fft, double> InverseRealFFTTest_GP_FFT_Double;
+TEST_F(InverseRealFFTTest_GP_FFT_Double, inverse_real) { do_inverse_real_fft_test(this); }
 #endif

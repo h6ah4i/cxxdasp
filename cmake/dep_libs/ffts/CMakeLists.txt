@@ -19,29 +19,10 @@
 #
 include(ExternalProject)
 
-set(CONFIGURE_OPTIONS --enable-static --enable-single)
-
-if (CXXDASP_TOOLSET_PREFIX)
-    set(CONFIGURE_OPTIONS ${CONFIGURE_OPTIONS} --host=${CXXDASP_TOOLSET_PREFIX})
-    if(CXXDASP_TOOLSET_PREFIX MATCHES "^arm-.*$")
-        set(CONFIGURE_OPTIONS ${CONFIGURE_OPTIONS} --enable-neon)
-    endif()
-else()
-    if(CMAKE_SYSTEM_PROCESSOR MATCHES "i.86" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
-        set(CONFIGURE_OPTIONS ${CONFIGURE_OPTIONS} --enable-sse)
-    endif()
-endif()
-
 ExternalProject_Add(ext_ffts
     PREFIX master
-    # TODO ./configure fails if downloaded from the git repository. Why???
-    # GIT_REPOSITORY https://github.com/anthonix/ffts.git
-    URL https://github.com/anthonix/ffts/archive/master.tar.gz
-    BUILD_IN_SOURCE 1
-    # PATCH_COMMAND sh -c "if [ ! -f ./force_autoreconf_done ]$<SEMICOLON> then autoreconf --force --install && touch force_autoreconf_done$<SEMICOLON> fi"
-    # CONFIGURE_COMMAND sh -c "if [ ! -f ./configure_done ]$<SEMICOLON> then ./configure --enable-static --enable-single --enable-sse && touch configure_done$<SEMICOLON> fi"
-    CONFIGURE_COMMAND ./configure ${CONFIGURE_OPTIONS}
-    BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} -j8
+    GIT_REPOSITORY https://github.com/h6ah4i/ffts.git
+    GIT_TAG 1f4b9a249263e083d03138957f3cd6a293ae26e5
     INSTALL_COMMAND ""
 )
 
@@ -52,7 +33,7 @@ ExternalProject_Get_Property(ext_ffts SOURCE_DIR)
 ExternalProject_Get_Property(ext_ffts BINARY_DIR)
 
 set_target_properties(ffts PROPERTIES 
-    IMPORTED_LOCATION ${BINARY_DIR}/src/.libs/libffts.a
+    IMPORTED_LOCATION ${BINARY_DIR}/libffts.a
     # INTERFACE_INCLUDE_DIRECTORIES $<BUILD_INTERFACE:${SOURCE_DIR}/include>
 )
 

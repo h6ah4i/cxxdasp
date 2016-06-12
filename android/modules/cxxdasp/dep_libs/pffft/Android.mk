@@ -32,7 +32,7 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 LOCAL_EXPORT_CFLAGS := -DCXXDASP_USE_FFT_BACKEND_PFFFT=1
 
 # if $(TARGET_ARCH_ABI) == {armeabi-v7a | armeabi-v7a-hard}
-ifneq (, $(filter armeabi-v7a armeabi-v7a-hard, $(TARGET_ARCH_ABI)))
+ifneq (, $(filter armeabi-v7a armeabi-v7a-hard arm64-v8a, $(TARGET_ARCH_ABI)))
     LOCAL_ARM_NEON  := true
 endif
 

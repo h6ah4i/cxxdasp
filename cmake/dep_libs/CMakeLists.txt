@@ -39,6 +39,14 @@ if (CXXDASP_CONFIG_USE_FFT_BACKEND_NE10)
     add_subdirectory(ne10)
 endif()
 
+if (CXXDASP_CONFIG_USE_FFT_BACKEND_CKFFT)
+    add_subdirectory(ckfft)
+endif()
+
+if (CXXDASP_CONFIG_USE_FFT_BACKEND_MUFFT)
+    add_subdirectory(mufft)
+endif()
+
 if (CXXDASP_CONFIG_USE_FFT_BACKEND_GP_FFT)
     add_subdirectory(gp_fft)
 endif()
@@ -50,3 +58,12 @@ endif()
 if (CXXDASP_BUILD_EXAMPLE_SOXR_RESAMPLER)
     add_subdirectory(soxr)
 endif()
+
+if (CXXDASP_BUILD_EXAMPLE_FRESAMPLE_RESAMPLER)
+    add_subdirectory(fresample)
+endif()
+
+if (CXXDASP_BUILD_EXAMPLE_SECRET_RABBIT_CODE_RESAMPLER)
+    add_subdirectory(libsamplerate)
+endif()
+

@@ -100,9 +100,9 @@ struct pffft {
     };
 
     /**
-     * Backward (Complex) FFT
+     * Inverse (Complex) FFT
      */
-    class backward : public fft_backend_base<fft_complex_t, fft_complex_t> {
+    class inverse : public fft_backend_base<fft_complex_t, fft_complex_t> {
         typedef fft_backend_base<fft_complex_t, fft_complex_t> base;
 
     public:
@@ -113,7 +113,7 @@ struct pffft {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), setup_(0), work_()
+        inverse(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), setup_(0), work_()
         {
             cxxporthelper::aligned_memory<fft_complex_t> work(n);
             setup_ = ::pffft_new_setup(n, PFFFT_COMPLEX);
@@ -123,7 +123,7 @@ struct pffft {
         /**
          * Destructor.
          */
-        virtual ~backward()
+        virtual ~inverse()
         {
             ::pffft_destroy_setup(setup_);
             setup_ = 0;
@@ -199,9 +199,9 @@ struct pffft {
     };
 
     /**
-     * Backward (Real) FFT
+     * Inverse (Real) FFT
      */
-    class backward_real : public fft_backend_base<fft_complex_t, fft_real_t> {
+    class inverse_real : public fft_backend_base<fft_complex_t, fft_real_t> {
         typedef fft_backend_base<fft_complex_t, fft_real_t> base;
 
     public:
@@ -212,7 +212,7 @@ struct pffft {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), setup_(0), work_()
+        inverse_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), setup_(0), work_()
         {
             cxxporthelper::aligned_memory<fft_real_t> work(n);
             setup_ = ::pffft_new_setup(n, PFFFT_REAL);
@@ -222,7 +222,7 @@ struct pffft {
         /**
          * Destructor.
          */
-        virtual ~backward_real()
+        virtual ~inverse_real()
         {
             ::pffft_destroy_setup(setup_);
             setup_ = 0;

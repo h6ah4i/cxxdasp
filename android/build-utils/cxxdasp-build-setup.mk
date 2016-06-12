@@ -56,7 +56,7 @@ ifeq ($(CXXDASP_USE_FFT_BACKEND_PFFFT), 1)
     CXXDASP_FFT_BACKEND_LIBS_armeabi                += pffft-no-simd_static
     CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a            += pffft_static
     CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a-no-neon    += pffft-no-simd_static # NOTE: requires -no-simd suffixed version
-    CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += pffft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += pffft_static
     CXXDASP_FFT_BACKEND_LIBS_x86                    += pffft_static
     CXXDASP_FFT_BACKEND_LIBS_x86_64                 += pffft_static
     CXXDASP_FFT_BACKEND_LIBS_mips                   += pffft-no-simd_static
@@ -80,6 +80,30 @@ ifeq ($(CXXDASP_USE_FFT_BACKEND_NE10), 1)
     CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a            += ne10_static
     CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a-no-neon    += ne10_static
     CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += ne10_static
+endif
+
+ifeq ($(CXXDASP_USE_FFT_BACKEND_CKFFT), 1)
+    # Cricket FFT is available on all platforms
+    CXXDASP_FFT_BACKEND_LIBS_armeabi                += ckfft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a            += ckfft_static
+    CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a-no-neon    += ckfft-no-simd_static # NOTE: requires -no-simd suffixed version
+    CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += ckfft_static
+    CXXDASP_FFT_BACKEND_LIBS_x86                    += ckfft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_x86_64                 += ckfft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_mips                   += ckfft-no-simd_static
+    CXXDASP_FFT_BACKEND_LIBS_mips64                 += ckfft-no-simd_static
+endif
+
+ifeq ($(CXXDASP_USE_FFT_BACKEND_MUFFT), 1)
+    # muFFT is available on all platforms
+    CXXDASP_FFT_BACKEND_LIBS_armeabi                += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a            += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_armeabi-v7a-no-neon    += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_arm64-v8a              += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_x86                    += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_x86_64                 += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_mips                   += mufft_static
+    CXXDASP_FFT_BACKEND_LIBS_mips64                 += mufft_static
 endif
 
 ifeq ($(CXXDASP_USE_FFT_BACKEND_GP_FFT), 1)

@@ -118,6 +118,10 @@ endif
 ### enable ASM output
 APP_CFLAGS += -save-temps=obj -fverbose-asm
 
+### enable PIE
+APP_CFLAGS += -fPIE
+APP_LDFLAGS += -fPIE -pie
+
 ### enable android-ndk-profiler
 ### NOTE: requres GCC 4.8 (4.9 and clang won't work)
 USE_ANDROID_NDK_PROFILER := 0

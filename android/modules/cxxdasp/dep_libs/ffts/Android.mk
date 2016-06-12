@@ -35,22 +35,23 @@ ifneq (, $(filter armeabi-v7a armeabi-v7a-hard, $(TARGET_ARCH_ABI)))
 # refer pre-built library
 LOCAL_MODULE := ffts_static
 LOCAL_MODULE_FILENAME := ffts
+LOCAL_SRC_FILES := \
+	$(LOCAL_PATH)/src/codegen.c \
+	$(LOCAL_PATH)/src/ffts.c \
+	$(LOCAL_PATH)/src/ffts_nd.c \
+	$(LOCAL_PATH)/src/ffts_real.c \
+	$(LOCAL_PATH)/src/ffts_real_nd.c \
+	$(LOCAL_PATH)/src/ffts_static.c \
+	$(LOCAL_PATH)/src/ffts_transpose.c \
+	$(LOCAL_PATH)/src/ffts_trig.c \
+	$(LOCAL_PATH)/src/neon.s
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+LOCAL_CFLAGS := -DHAVE_MALLOC_H -DHAVE_STDINT_H -DHAVE_STDLIB_H -DHAVE_STRING_H -DHAVE_SYS_MMAN_H -DHAVE_UNISTD_H -DHAVE_NEON
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
+LOCAL_EXPORT_CFLAGS := -DCXXDASP_USE_FFT_BACKEND_FFTS=1
+LOCAL_ARM_NEON  := true
 
-# check prebuilt library file is available
-ifneq ("$(wildcard $(LOCAL_PATH)/java/android/bin/lib/libffts.a)","")
-    # found
-    LOCAL_SRC_FILES := java/android/bin/lib/libffts.a
-    LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
-    LOCAL_EXPORT_CFLAGS := -DCXXDASP_USE_FFT_BACKEND_FFTS=1
-    LOCAL_EXPORT_LDLIBS := -llog
-    
-    include $(PREBUILT_STATIC_LIBRARY)
-else
-    # not found... create dummy library 
-    $(info libffts.a is not found)
-    include $(BUILD_STATIC_LIBRARY)
-endif
-
+include $(BUILD_STATIC_LIBRARY)
 
 else
 

@@ -54,25 +54,57 @@ $QUALITY_CHECK soxr 3 2>&1 | tee "$BENCH_TOP_DIR/console_output_soxr_q3.txt"
 $QUALITY_CHECK soxr 4 2>&1 | tee "$BENCH_TOP_DIR/console_output_soxr_q4.txt"
 $QUALITY_CHECK soxr 5 2>&1 | tee "$BENCH_TOP_DIR/console_output_soxr_q5.txt"
 
+#
+# fresample-resampler (using fresample library)
+#
+$QUALITY_CHECK fresample 1 2>&1 | tee "$BENCH_TOP_DIR/console_output_fresample_q1.txt"
+$QUALITY_CHECK fresample 2 2>&1 | tee "$BENCH_TOP_DIR/console_output_fresample_q2.txt"
+$QUALITY_CHECK fresample 3 2>&1 | tee "$BENCH_TOP_DIR/console_output_fresample_q3.txt"
+$QUALITY_CHECK fresample 4 2>&1 | tee "$BENCH_TOP_DIR/console_output_fresample_q4.txt"
+$QUALITY_CHECK fresample 5 2>&1 | tee "$BENCH_TOP_DIR/console_output_fresample_q5.txt"
+
+#
+# src-resampler (using libsamplerate library)
+#
+$QUALITY_CHECK src 1 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q1.txt"
+$QUALITY_CHECK src 2 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q2.txt"
+$QUALITY_CHECK src 3 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q3.txt"
+$QUALITY_CHECK src 4 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q4.txt"
+$QUALITY_CHECK src 5 2>&1 | tee "$BENCH_TOP_DIR/console_output_src_q5.txt"
+
 
 #
 # concat spectrogram images
 #
-# LEFT: simple-resampler | RIGHT: soxr-resampler
+# LEFT: simple-resampler | RIGHT: {soxr-resampler | fresample-resampler | src-resampler}
 #
 function gen_concat_spectrums() {
-    QUALITY=$1
+    local T1=$1
+    local T2=$2
+    local QUALITY=$3
 
-    echo "Generating concatenated spectrogram images (quality = $QUALITY)"
+    echo "Generating concatenated spectrogram images ($T1 & $T2, quality = $QUALITY)"
 
     $CONCAT_SPECTROGRAMS \
-        $BENCH_TOP_DIR"/resampled_simple_q"$QUALITY"_spectrogram" \
-        $BENCH_TOP_DIR"/resampled_soxr_q"$QUALITY"_spectrogram" \
-        $BENCH_TOP_DIR"/resampled_concat_q"$QUALITY"_spectrogram"
+        $BENCH_TOP_DIR"/resampled_"$T1"_q"$QUALITY"_spectrogram" \
+        $BENCH_TOP_DIR"/resampled_"$T2"_q"$QUALITY"_spectrogram" \
+        $BENCH_TOP_DIR"/resampled_concat_"$T1"_"$T2"_q"$QUALITY"_spectrogram"
 }
 
-gen_concat_spectrums 1
-gen_concat_spectrums 2
-gen_concat_spectrums 3
-gen_concat_spectrums 4
-gen_concat_spectrums 5
+gen_concat_spectrums simple soxr 1
+gen_concat_spectrums simple soxr 2
+gen_concat_spectrums simple soxr 3
+gen_concat_spectrums simple soxr 4
+gen_concat_spectrums simple soxr 5
+
+gen_concat_spectrums simple fresample 1
+gen_concat_spectrums simple fresample 2
+gen_concat_spectrums simple fresample 3
+gen_concat_spectrums simple fresample 4
+gen_concat_spectrums simple fresample 5
+
+gen_concat_spectrums simple src 1
+gen_concat_spectrums simple src 2
+gen_concat_spectrums simple src 3
+gen_concat_spectrums simple src 4
+gen_concat_spectrums simple src 5

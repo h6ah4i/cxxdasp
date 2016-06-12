@@ -52,7 +52,7 @@ for src1_file in $(ls $SRC1_DIR/*.png); do
 done
 
 # replace ":" -> "\n"
-TARGET_FILE_LIST=$(echo "$TARGET_FILE_LIST" | sed "s/:/\n/g")
+TARGET_FILE_LIST=$(echo "$TARGET_FILE_LIST" | tr ":" "\n")
 # remove empty line
 TARGET_FILE_LIST=$(echo "$TARGET_FILE_LIST" | sed "/^$/d")
 

@@ -38,8 +38,8 @@ namespace impl_neon {
 #if CXXPH_COMPILER_SUPPORTS_ARM_NEON && (CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM)
 static void aarch32_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT src_dest, float x, int n) CXXPH_NOEXCEPT
 {
-    int n1 = (n >> 4);
-    int n2 = (n & 0xf);
+    int32_t n1 = (n >> 4);
+    int32_t n2 = (n & 0xf);
 
     if (n1 > 0) {
         float *CXXPH_RESTRICT src = src_dest;
@@ -76,8 +76,8 @@ static void aarch32_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT src_dest,
 #if CXXPH_COMPILER_SUPPORTS_ARM_NEON && (CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM64)
 static void aarch64_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT src_dest, float x, int n) CXXPH_NOEXCEPT
 {
-    int n1 = (n >> 5);
-    int n2 = (n & 0x1f);
+    int32_t n1 = (n >> 5);
+    int32_t n2 = (n & 0x1f);
 
     if (n1 > 0) {
         float *CXXPH_RESTRICT src = src_dest;
@@ -100,7 +100,7 @@ static void aarch64_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT src_dest,
                      "st1 {v0.2d, v1.2d, v2.2d, v3.2d}, [%[dest]], #64\n\t"
                      "\n\t"
                      "prfm pldl1strm, [%[src], #128]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest]], #64\n\t"
                      "\n\t"
@@ -120,8 +120,8 @@ static void aarch64_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT src_dest,
 static void aarch32_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT dest, const float *CXXPH_RESTRICT src, float x,
                                                  int n) CXXPH_NOEXCEPT
 {
-    int n1 = (n >> 4);
-    int n2 = (n & 0xf);
+    int32_t n1 = (n >> 4);
+    int32_t n2 = (n & 0xf);
 
     if (n1 > 0) {
         asm volatile("vdup.32 d8, %[scale]\n"
@@ -157,8 +157,8 @@ static void aarch32_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT dest, con
 static void aarch64_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT dest, const float *CXXPH_RESTRICT src, float x,
                                                  int n) CXXPH_NOEXCEPT
 {
-    int n1 = (n >> 5);
-    int n2 = (n & 0x1f);
+    int32_t n1 = (n >> 5);
+    int32_t n2 = (n & 0x1f);
 
     if (n1 > 0) {
         asm volatile("prfm pldl1strm, [%[src], #128]\n\t"
@@ -180,7 +180,7 @@ static void aarch64_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT dest, con
                      "st1 {v0.2d, v1.2d, v2.2d, v3.2d}, [%[dest]], #64\n\t"
                      "\n\t"
                      "prfm pldl1strm, [%[src], #128]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest]], #64\n\t"
                      "prfm pstl1strm, [%[dest], #128]\n\t"
@@ -200,8 +200,8 @@ static void aarch64_neon_multiply_scaler_aligned(float *CXXPH_RESTRICT dest, con
 #if CXXPH_COMPILER_SUPPORTS_ARM_NEON && (CXXPH_TARGET_ARCH == CXXPH_ARCH_ARM64)
 static void aarch64_neon_multiply_scaler_aligned(double *CXXPH_RESTRICT src_dest, double x, int n) CXXPH_NOEXCEPT
 {
-    int n1 = (n >> 4);
-    int n2 = (n & 0xf);
+    int32_t n1 = (n >> 4);
+    int32_t n2 = (n & 0xf);
 
     if (n1 > 0) {
         double *CXXPH_RESTRICT src = src_dest;
@@ -224,7 +224,7 @@ static void aarch64_neon_multiply_scaler_aligned(double *CXXPH_RESTRICT src_dest
                      "st1 {v0.2d, v1.2d, v2.2d, v3.2d}, [%[dest]], #64\n\t"
                      "\n\t"
                      "prfm pldl1strm, [%[src], #128]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest]], #64\n\t"
                      "\n\t"
@@ -244,8 +244,8 @@ static void aarch64_neon_multiply_scaler_aligned(double *CXXPH_RESTRICT src_dest
 static void aarch64_neon_multiply_scaler_aligned(double *CXXPH_RESTRICT dest, const double *CXXPH_RESTRICT src,
                                                  double x, int n) CXXPH_NOEXCEPT
 {
-    int n1 = (n >> 4);
-    int n2 = (n & 0xf);
+    int32_t n1 = (n >> 4);
+    int32_t n2 = (n & 0xf);
 
     if (n1 > 0) {
         asm volatile("prfm pldl1strm, [%[src], #128]\n\t"
@@ -267,7 +267,7 @@ static void aarch64_neon_multiply_scaler_aligned(double *CXXPH_RESTRICT dest, co
                      "st1 {v0.2d, v1.2d, v2.2d, v3.2d}, [%[dest]], #64\n\t"
                      "\n\t"
                      "prfm pldl1strm, [%[src], #128]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest]], #64\n\t"
                      "prfm pstl1strm, [%[dest], #128]\n\t"
@@ -288,8 +288,8 @@ static void aarch64_neon_multiply_scaler_aligned(double *CXXPH_RESTRICT dest, co
 static void aarch32_neon_multiply_aligned(float *CXXPH_RESTRICT src_dest, const float *CXXPH_RESTRICT x, int n)
     CXXPH_NOEXCEPT
 {
-    int n1 = (n >> 4);
-    int n2 = (n & 0xf);
+    int32_t n1 = (n >> 4);
+    int32_t n2 = (n & 0xf);
 
     if (n1 > 0) {
         const float *CXXPH_RESTRICT src = src_dest;
@@ -329,8 +329,8 @@ static void aarch64_neon_multiply_aligned(float *CXXPH_RESTRICT src_dest, const 
     CXXPH_NOEXCEPT
 {
 
-    int n1 = (n >> 5);
-    int n2 = (n & 0x1f);
+    int32_t n1 = (n >> 5);
+    int32_t n2 = (n & 0x1f);
 
     if (n1 > 0) {
         const float *CXXPH_RESTRICT src = src_dest;
@@ -355,7 +355,7 @@ static void aarch64_neon_multiply_aligned(float *CXXPH_RESTRICT src_dest, const 
                      "\n\t"
                      "prfm pldl1strm, [%[src], #128]\n\t"
                      "prfm pldl1strm, [%[scale], #128]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest]], #64\n\t"
                      "\n\t"
@@ -375,8 +375,8 @@ static void aarch64_neon_multiply_aligned(float *CXXPH_RESTRICT src_dest, const 
 static void aarch32_neon_multiply_aligned(float *CXXPH_RESTRICT dest, const float *CXXPH_RESTRICT src,
                                           const float *CXXPH_RESTRICT x, int n) CXXPH_NOEXCEPT
 {
-    int n1 = (n >> 4);
-    int n2 = (n & 0xf);
+    int32_t n1 = (n >> 4);
+    int32_t n2 = (n & 0xf);
 
     if (n1 > 0) {
         asm volatile("1:\n\t"
@@ -414,9 +414,8 @@ static void aarch32_neon_multiply_aligned(float *CXXPH_RESTRICT dest, const floa
 static void aarch64_neon_multiply_aligned(float *CXXPH_RESTRICT dest, const float *CXXPH_RESTRICT src,
                                           const float *CXXPH_RESTRICT x, int n) CXXPH_NOEXCEPT
 {
-
-    int n1 = (n >> 5);
-    int n2 = (n & 0x1f);
+    int32_t n1 = (n >> 5);
+    int32_t n2 = (n & 0x1f);
 
     if (n1 > 0) {
         asm volatile("prfm pldl1strm, [%[src], #128]\n\t"
@@ -441,7 +440,7 @@ static void aarch64_neon_multiply_aligned(float *CXXPH_RESTRICT dest, const floa
                      "\n\t"
                      "prfm pldl1strm, [%[src], #128]\n\t"
                      "prfm pldl1strm, [%[scale], #128]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest]], #64\n\t"
                      "prfm pstl1strm, [%[dest], #128]\n\t"
@@ -462,9 +461,8 @@ static void aarch64_neon_multiply_aligned(float *CXXPH_RESTRICT dest, const floa
 static void aarch64_neon_multiply_aligned(double *CXXPH_RESTRICT src_dest, const double *CXXPH_RESTRICT x, int n)
     CXXPH_NOEXCEPT
 {
-
-    int n1 = (n >> 4);
-    int n2 = (n & 0xf);
+    int32_t n1 = (n >> 4);
+    int32_t n2 = (n & 0xf);
 
     if (n1 > 0) {
         const double *CXXPH_RESTRICT src = src_dest;
@@ -489,7 +487,7 @@ static void aarch64_neon_multiply_aligned(double *CXXPH_RESTRICT src_dest, const
                      "\n\t"
                      "prfm pldl1strm, [%[src], #128]\n\t"
                      "prfm pldl1strm, [%[scale], #128]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest]], #64\n\t"
                      "\n\t"
@@ -509,9 +507,8 @@ static void aarch64_neon_multiply_aligned(double *CXXPH_RESTRICT src_dest, const
 static void aarch64_neon_multiply_aligned(double *CXXPH_RESTRICT dest, const double *CXXPH_RESTRICT src,
                                           const double *CXXPH_RESTRICT x, int n) CXXPH_NOEXCEPT
 {
-
-    int n1 = (n >> 4);
-    int n2 = (n & 0xf);
+    int32_t n1 = (n >> 4);
+    int32_t n2 = (n & 0xf);
 
     if (n1 > 0) {
         asm volatile("prfm pldl1strm, [%[src], #128]\n\t"
@@ -536,7 +533,7 @@ static void aarch64_neon_multiply_aligned(double *CXXPH_RESTRICT dest, const dou
                      "\n\t"
                      "prfm pldl1strm, [%[src], #128]\n\t"
                      "prfm pldl1strm, [%[scale], #128]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v4.2d, v5.2d, v6.2d, v7.2d}, [%[dest]], #64\n\t"
                      "prfm pstl1strm, [%[dest], #128]\n\t"
@@ -561,8 +558,8 @@ static void aarch32_neon_multiply_aligned(std::complex<float> *CXXPH_RESTRICT sr
     // B = b0 + {b1}i
     // (A * B) = (a0*b0 - a1*b1) + {(a0*b1 + a1*b0)}i
 
-    int n1 = (n >> 3);
-    int n2 = (n & 0x7);
+    int32_t n1 = (n >> 3);
+    int32_t n2 = (n & 0x7);
 
     if (n1 > 0) {
         std::complex<float> *CXXPH_RESTRICT src = src_dest;
@@ -618,8 +615,8 @@ static void aarch64_neon_multiply_aligned(std::complex<float> *CXXPH_RESTRICT sr
     // A = a0 + {a1}i
     // B = b0 + {b1}i
     // (A * B) = (a0*b0 - a1*b1) + {(a0*b1 + a1*b0)}i
-    int n1 = (n >> 3);
-    int n2 = (n & 0x7);
+    int32_t n1 = (n >> 3);
+    int32_t n2 = (n & 0x7);
 
     if (n1 > 0) {
         std::complex<float> *CXXPH_RESTRICT src = src_dest;
@@ -653,7 +650,7 @@ static void aarch64_neon_multiply_aligned(std::complex<float> *CXXPH_RESTRICT sr
                      "\n\t"
                      "prfm pldl1strm, [%[src], #64]\n\t"
                      "prfm pldl1strm, [%[scale], #64]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st2 {v2.4s, v3.4s}, [%[dest]], #32\n\t"
                      "\n\t"
@@ -678,8 +675,8 @@ static void aarch32_neon_multiply_aligned(std::complex<float> *CXXPH_RESTRICT de
     // B = b0 + {b1}i
     // (A * B) = (a0*b0 - a1*b1) + {(a0*b1 + a1*b0)}i
 
-    int n1 = (n >> 3);
-    int n2 = (n & 0x7);
+    int32_t n1 = (n >> 3);
+    int32_t n2 = (n & 0x7);
 
     if (n1 > 0) {
         // q0,q2: dest.real
@@ -734,8 +731,8 @@ static void aarch64_neon_multiply_aligned(std::complex<float> *CXXPH_RESTRICT de
     // A = a0 + {a1}i
     // B = b0 + {b1}i
     // (A * B) = (a0*b0 - a1*b1) + {(a0*b1 + a1*b0)}i
-    int n1 = (n >> 3);
-    int n2 = (n & 0x7);
+    int32_t n1 = (n >> 3);
+    int32_t n2 = (n & 0x7);
 
     if (n1 > 0) {
         // v0,v2: dest.real
@@ -767,7 +764,7 @@ static void aarch64_neon_multiply_aligned(std::complex<float> *CXXPH_RESTRICT de
                      "\n\t"
                      "prfm pldl1strm, [%[src], #64]\n\t"
                      "prfm pldl1strm, [%[scale], #64]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st2 {v2.4s, v3.4s}, [%[dest]], #32\n\t"
                      "prfm pstl1strm, [%[dest], #64]\n\t"
@@ -791,8 +788,8 @@ static void aarch64_neon_multiply_aligned(std::complex<double> *CXXPH_RESTRICT s
     // A = a0 + {a1}i
     // B = b0 + {b1}i
     // (A * B) = (a0*b0 - a1*b1) + {(a0*b1 + a1*b0)}i
-    int n1 = (n >> 2);
-    int n2 = (n & 0x3);
+    int32_t n1 = (n >> 2);
+    int32_t n2 = (n & 0x3);
 
     if (n1 > 0) {
         std::complex<double> *CXXPH_RESTRICT src = src_dest;
@@ -825,7 +822,7 @@ static void aarch64_neon_multiply_aligned(std::complex<double> *CXXPH_RESTRICT s
                      "\n\t"
                      "prfm pldl1strm, [%[src], #64]\n\t"
                      "prfm pldl1strm, [%[scale], #64]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st2 {v2.2d, v3.2d}, [%[dest]], #32\n\t"
                      "\n\t"
@@ -849,8 +846,8 @@ static void aarch64_neon_multiply_aligned(std::complex<double> *CXXPH_RESTRICT d
     // A = a0 + {a1}i
     // B = b0 + {b1}i
     // (A * B) = (a0*b0 - a1*b1) + {(a0*b1 + a1*b0)}i
-    int n1 = (n >> 2);
-    int n2 = (n & 0x3);
+    int32_t n1 = (n >> 2);
+    int32_t n2 = (n & 0x3);
 
     if (n1 > 0) {
         // v0,v2: dest.real
@@ -882,7 +879,7 @@ static void aarch64_neon_multiply_aligned(std::complex<double> *CXXPH_RESTRICT d
                      "\n\t"
                      "prfm pldl1strm, [%[src], #64]\n\t"
                      "prfm pldl1strm, [%[scale], #64]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st2 {v2.2d, v3.2d}, [%[dest]], #32\n\t"
                      "prfm pstl1strm, [%[dest], #64]\n\t"
@@ -908,8 +905,8 @@ static void aarch32_neon_conj_aligned(std::complex<float> *CXXPH_RESTRICT src_de
         return;
     }
 
-    const int n1 = n >> 3;
-    const int n2 = n & 0x7;
+    const int32_t n1 = n >> 3;
+    const int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint32_t conj_bitptn[4] = { 0x80000000ul, // imag
@@ -954,8 +951,8 @@ static void aarch64_neon_conj_aligned(std::complex<float> *CXXPH_RESTRICT src_de
         return;
     }
 
-    const int n1 = n >> 4;
-    const int n2 = n & 0xf;
+    const int32_t n1 = n >> 4;
+    const int32_t n2 = n & 0xf;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint32_t conj_bitptn[4] = { 0x80000000ul, // imag
@@ -988,7 +985,7 @@ static void aarch64_neon_conj_aligned(std::complex<float> *CXXPH_RESTRICT src_de
                      "st2 {v4.4s, v5.4s}, [%[dest]], #32\n\t"
                      "st2 {v6.4s, v7.4s}, [%[dest]], #32\n\t"
                      "\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "bne 1b\n\t"
                      : [src] "+r"(u32_src), [dest] "+r"(u32_src_dest), [cnt] "+r"(cnt)
                      : [conj_bitptn] "r"(conj_bitptn)
@@ -1013,8 +1010,8 @@ static void aarch32_neon_conj_aligned(std::complex<float> *CXXPH_RESTRICT dest,
         return;
     }
 
-    const int n1 = n >> 3;
-    const int n2 = n & 0x7;
+    const int32_t n1 = n >> 3;
+    const int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint32_t conj_bitptn[4] = { 0x80000000ul, // imag
@@ -1062,8 +1059,8 @@ static void aarch64_neon_conj_aligned(std::complex<float> *CXXPH_RESTRICT dest,
         return;
     }
 
-    const int n1 = n >> 4;
-    const int n2 = n & 0xf;
+    const int32_t n1 = n >> 4;
+    const int32_t n2 = n & 0xf;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint32_t conj_bitptn[4] = { 0x80000000ul, // imag
@@ -1098,7 +1095,7 @@ static void aarch64_neon_conj_aligned(std::complex<float> *CXXPH_RESTRICT dest,
                      "\n\t"
                      "prfm pstl1strm, [%[dest], #128]\n\t"
                      "\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "bne 1b\n\t"
                      : [src] "+r"(u32_src), [dest] "+r"(u32_dest), [cnt] "+r"(cnt)
                      : [conj_bitptn] "r"(conj_bitptn)
@@ -1123,8 +1120,8 @@ static void aarch32_neon_conj_aligned(std::complex<double> *CXXPH_RESTRICT src_d
         return;
     }
 
-    const int n1 = n >> 3;
-    const int n2 = n & 0x7;
+    const int32_t n1 = n >> 3;
+    const int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint64_t conj_bitptn[2] = { 0x8000000000000000ul, // imag
@@ -1172,8 +1169,8 @@ static void aarch64_neon_conj_aligned(std::complex<double> *CXXPH_RESTRICT src_d
         return;
     }
 
-    const int n1 = n >> 3;
-    const int n2 = n & 0x7;
+    const int32_t n1 = n >> 3;
+    const int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint64_t conj_bitptn[2] = { 0x8000000000000000ul, // imag
@@ -1204,7 +1201,7 @@ static void aarch64_neon_conj_aligned(std::complex<double> *CXXPH_RESTRICT src_d
                      "\n\t"
                      "prfm pstl1strm, [%[dest], #128]\n\t"
                      "\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "bne 1b\n\t"
                      : [src] "+r"(u64_src), [dest] "+r"(u64_src_dest), [cnt] "+r"(cnt)
                      : [conj_bitptn] "r"(conj_bitptn)
@@ -1230,8 +1227,8 @@ static void aarch32_neon_conj_aligned(std::complex<double> *CXXPH_RESTRICT dest,
         return;
     }
 
-    const int n1 = n >> 3;
-    const int n2 = n & 0x7;
+    const int32_t n1 = n >> 3;
+    const int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint64_t conj_bitptn[2] = { 0x8000000000000000ul, // imag
@@ -1283,8 +1280,8 @@ static void aarch64_neon_conj_aligned(std::complex<double> *CXXPH_RESTRICT dest,
         return;
     }
 
-    const int n1 = n >> 3;
-    const int n2 = n & 0x7;
+    const int32_t n1 = n >> 3;
+    const int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint64_t conj_bitptn[2] = { 0x8000000000000000ul, // imag
@@ -1314,7 +1311,7 @@ static void aarch64_neon_conj_aligned(std::complex<double> *CXXPH_RESTRICT dest,
                      "\n\t"
                      "prfm pstl1strm, [%[dest], #128]\n\t"
                      "\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "bne 1b\n\t"
                      : [src] "+r"(u64_src), [dest] "+r"(dest), [cnt] "+r"(cnt)
                      : [conj_bitptn] "r"(conj_bitptn)
@@ -1340,8 +1337,8 @@ static void aarch32_neon_mirror_conj_aligned(std::complex<float> *CXXPH_RESTRICT
         return;
     }
 
-    const int n1 = 1;
-    const int n2 = (n - n1) >> 3;
+    const int32_t n1 = 1;
+    const int32_t n2 = (n - n1) >> 3;
     const int n3 = (n - n1) & 0x7;
 
     // adjust alignment
@@ -1413,8 +1410,8 @@ static void aarch64_neon_mirror_conj_aligned(std::complex<float> *CXXPH_RESTRICT
         return;
     }
 
-    const int n1 = 1;
-    const int n2 = (n - n1) >> 3;
+    const int32_t n1 = 1;
+    const int32_t n2 = (n - n1) >> 3;
     const int n3 = (n - n1) & 0x7;
 
     // adjust alignment
@@ -1453,7 +1450,7 @@ static void aarch64_neon_mirror_conj_aligned(std::complex<float> *CXXPH_RESTRICT
                      "eor v3.16b, v3.16b, v5.16b\n\t"
                      "\n\t"
                      "mov v20.16b, v16.16b\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v0.2d, v1.2d, v2.2d, v3.2d}, [%[dest]], #64\n\t"
                      "prfm pstl1strm, [%[dest], #64]\n\t"
@@ -1482,8 +1479,8 @@ static void aarch32_neon_mirror_conj_aligned(std::complex<double> *CXXPH_RESTRIC
         return;
     }
 
-    const int n1 = n >> 3;
-    const int n2 = n & 0x7;
+    const int32_t n1 = n >> 3;
+    const int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint64_t conj_bitptn[2] = { 0x0000000000000000ull, // real
@@ -1548,8 +1545,8 @@ static void aarch64_neon_mirror_conj_aligned(std::complex<double> *CXXPH_RESTRIC
         return;
     }
 
-    const int n1 = n >> 3;
-    const int n2 = n & 0x7;
+    const int32_t n1 = n >> 3;
+    const int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         CXXPH_ALIGNAS(16) static const uint64_t conj_bitptn[2] = { 0x0000000000000000ull, // real
@@ -1582,7 +1579,7 @@ static void aarch64_neon_mirror_conj_aligned(std::complex<double> *CXXPH_RESTRIC
                      "\n\t"
                      "sub %[src], %[src], #256\n\t"
                      "prfm pldl1strm, [%[src], %[pldoffset]]\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "\n\t"
                      "st1 {v7.2d}, [%[dest]], #16\n\t"
                      "st1 {v6.2d}, [%[dest]], #16\n\t"
@@ -1619,8 +1616,8 @@ void aarch32_neon_interleave(float *CXXPH_RESTRICT dest, const float *CXXPH_REST
     const uint32_t *CXXPH_RESTRICT u32_src1 = reinterpret_cast<const uint32_t *>(src1);
     const uint32_t *CXXPH_RESTRICT u32_src2 = reinterpret_cast<const uint32_t *>(src2);
 
-    int n1 = n >> 4;
-    int n2 = n & 0xf;
+    int32_t n1 = n >> 4;
+    int32_t n2 = n & 0xf;
 
     if (n1 > 0) {
         asm volatile("pld [%[src1], #64]\n\t"
@@ -1672,8 +1669,8 @@ void aarch64_neon_interleave(float *CXXPH_RESTRICT dest, const float *CXXPH_REST
     const uint32_t *CXXPH_RESTRICT u32_src1 = reinterpret_cast<const uint32_t *>(src1);
     const uint32_t *CXXPH_RESTRICT u32_src2 = reinterpret_cast<const uint32_t *>(src2);
 
-    int n1 = n >> 4;
-    int n2 = n & 0xf;
+    int32_t n1 = n >> 4;
+    int32_t n2 = n & 0xf;
 
     if (n1 > 0) {
         asm volatile("prfm pldl1strm, [%[src1], #64]\n\t"
@@ -1700,7 +1697,7 @@ void aarch64_neon_interleave(float *CXXPH_RESTRICT dest, const float *CXXPH_REST
                      "prfm pldl1strm, [%[src2], #64]\n\t"
                      "prfm pstl1strm, [%[dest], #64]\n\t"
                      "\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "bne 1b\n\t"
                      : [dest] "+r"(u32_dest), [src1] "+r"(u32_src1), [src2] "+r"(u32_src2), [cnt] "+r"(n1)
                      :
@@ -1727,8 +1724,8 @@ void aarch32_neon_interleave(double *CXXPH_RESTRICT dest, const double *CXXPH_RE
     const uint64_t *CXXPH_RESTRICT u64_src1 = reinterpret_cast<const uint64_t *>(src1);
     const uint64_t *CXXPH_RESTRICT u64_src2 = reinterpret_cast<const uint64_t *>(src2);
 
-    int n1 = n >> 3;
-    int n2 = n & 0x7;
+    int32_t n1 = n >> 3;
+    int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         asm volatile("pld [%[src1], #64]\n\t"
@@ -1780,8 +1777,8 @@ void aarch64_neon_interleave(double *CXXPH_RESTRICT dest, const double *CXXPH_RE
     const uint64_t *CXXPH_RESTRICT u64_src1 = reinterpret_cast<const uint64_t *>(src1);
     const uint64_t *CXXPH_RESTRICT u64_src2 = reinterpret_cast<const uint64_t *>(src2);
 
-    int n1 = n >> 3;
-    int n2 = n & 0x7;
+    int32_t n1 = n >> 3;
+    int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         asm volatile("prfm pldl1strm, [%[src1], #64]\n\t"
@@ -1808,7 +1805,7 @@ void aarch64_neon_interleave(double *CXXPH_RESTRICT dest, const double *CXXPH_RE
                      "prfm pldl1strm, [%[src2], #64]\n\t"
                      "prfm pstl1strm, [%[dest], #64]\n\t"
                      "\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "bne 1b\n\t"
                      : [dest] "+r"(u64_dest), [src1] "+r"(u64_src1), [src2] "+r"(u64_src2), [cnt] "+r"(n1)
                      :
@@ -1835,8 +1832,8 @@ void aarch32_neon_deinterleave(float *CXXPH_RESTRICT dest1, float *CXXPH_RESTRIC
     uint32_t *CXXPH_RESTRICT u32_dest2 = reinterpret_cast<uint32_t *>(dest2);
     const uint32_t *CXXPH_RESTRICT u32_src = reinterpret_cast<const uint32_t *>(src);
 
-    int n1 = n >> 4;
-    int n2 = n & 0xf;
+    int32_t n1 = n >> 4;
+    int32_t n2 = n & 0xf;
 
     if (n1 > 0) {
         asm volatile("pld [%[src], #64]\n\t"
@@ -1886,8 +1883,8 @@ void aarch64_neon_deinterleave(float *CXXPH_RESTRICT dest1, float *CXXPH_RESTRIC
     uint32_t *CXXPH_RESTRICT u32_dest2 = reinterpret_cast<uint32_t *>(dest2);
     const uint32_t *CXXPH_RESTRICT u32_src = reinterpret_cast<const uint32_t *>(src);
 
-    int n1 = n >> 4;
-    int n2 = n & 0xf;
+    int32_t n1 = n >> 4;
+    int32_t n2 = n & 0xf;
 
     if (n1 > 0) {
         asm volatile("prfm pldl1strm, [%[src], #64]\n\t"
@@ -1914,7 +1911,7 @@ void aarch64_neon_deinterleave(float *CXXPH_RESTRICT dest1, float *CXXPH_RESTRIC
                      "prfm pstl1strm, [%[dest1], #64]\n\t"
                      "prfm pstl1strm, [%[dest2], #64]\n\t"
                      "\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "bne 1b\n\t"
                      : [dest1] "+r"(u32_dest1), [dest2] "+r"(u32_dest2), [src] "+r"(u32_src), [cnt] "+r"(n1)
                      :
@@ -1941,8 +1938,8 @@ void aarch32_neon_deinterleave(double *CXXPH_RESTRICT dest1, double *CXXPH_RESTR
     uint64_t *CXXPH_RESTRICT u64_dest2 = reinterpret_cast<uint64_t *>(dest2);
     const uint64_t *CXXPH_RESTRICT u64_src = reinterpret_cast<const uint64_t *>(src);
 
-    int n1 = n >> 3;
-    int n2 = n & 0x7;
+    int32_t n1 = n >> 3;
+    int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         asm volatile("pld [%[src], #64]\n\t"
@@ -1992,8 +1989,8 @@ void aarch64_neon_deinterleave(double *CXXPH_RESTRICT dest1, double *CXXPH_RESTR
     uint64_t *CXXPH_RESTRICT u64_dest2 = reinterpret_cast<uint64_t *>(dest2);
     const uint64_t *CXXPH_RESTRICT u64_src = reinterpret_cast<const uint64_t *>(src);
 
-    int n1 = n >> 3;
-    int n2 = n & 0x7;
+    int32_t n1 = n >> 3;
+    int32_t n2 = n & 0x7;
 
     if (n1 > 0) {
         asm volatile("prfm pldl1strm, [%[src], #64]\n\t"
@@ -2020,7 +2017,7 @@ void aarch64_neon_deinterleave(double *CXXPH_RESTRICT dest1, double *CXXPH_RESTR
                      "prfm pstl1strm, [%[dest1], #64]\n\t"
                      "prfm pstl1strm, [%[dest2], #64]\n\t"
                      "\n\t"
-                     "subs %[cnt], %[cnt], #1\n\t"
+                     "subs %w[cnt], %w[cnt], #1\n\t"
                      "bne 1b\n\t"
                      : [dest1] "+r"(u64_dest1), [dest2] "+r"(u64_dest2), [src] "+r"(u64_src), [cnt] "+r"(n1)
                      :

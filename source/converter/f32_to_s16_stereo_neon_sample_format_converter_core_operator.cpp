@@ -147,7 +147,7 @@ void f32_to_s16_stereo_neon_sample_format_converter_core_operator::perform_impl(
 // for AArch64
 
 static inline void aarch64_perform_f32_to_s16_neon_unaligned(const float *CXXPH_RESTRICT src,
-                                                             int16_t *CXXPH_RESTRICT dest, int n) CXXPH_NOEXCEPT
+                                                             int16_t *CXXPH_RESTRICT dest, int32_t n) CXXPH_NOEXCEPT
 {
     static const float scale = (32767.0f / 32768);
 
@@ -161,7 +161,7 @@ static inline void aarch64_perform_f32_to_s16_neon_unaligned(const float *CXXPH_
                  "fcvtzs s0, s0, #16\n\t"
                  "sqrshrn h0, s0, #1\n\t"
                  "\n\t"
-                 "subs %[cnt], %[cnt], #1\n\t"
+                 "subs %w[cnt], %w[cnt], #1\n\t"
                  "\n\t"
                  "str h0, [%[dest]], #2\n\t"
                  "\n\t"
@@ -195,7 +195,7 @@ static inline void aarch64_perform_f32_to_s16_neon_unaligned(const float *CXXPH_
                  "sqrshrn v5.4h, v2.4s, #1\n\t"                                                                        \
                  "sqrshrn2 v5.8h, v3.4s, #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
-                 "subs %[cnt], %[cnt], #1\n\t"                                                                         \
+                 "subs %w[cnt], %w[cnt], #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
                  "st1 {v4." DEST_ALIGN ", v5." DEST_ALIGN "}, [%[dest]], #32\n\t"                                      \
                  "prfm pstl1strm, [%[dest], #32]\n\t"                                                                  \
@@ -206,7 +206,7 @@ static inline void aarch64_perform_f32_to_s16_neon_unaligned(const float *CXXPH_
                  : "memory", "v0", "v1", "v2", "v3", "v4", "v5", "v6")
 
 static inline void aarch64_perform_f32_to_s16_neon_both_aligned_x16(const float *CXXPH_RESTRICT src,
-                                                                    int16_t *CXXPH_RESTRICT dest, int n) CXXPH_NOEXCEPT
+                                                                    int16_t *CXXPH_RESTRICT dest, int32_t n) CXXPH_NOEXCEPT
 {
     assert(utils::is_aligned(src, 16));
     assert(utils::is_aligned(dest, 16));
@@ -215,7 +215,7 @@ static inline void aarch64_perform_f32_to_s16_neon_both_aligned_x16(const float 
 }
 
 static inline void aarch64_perform_f32_to_s16_neon_src_aligned_x16(const float *CXXPH_RESTRICT src,
-                                                                   int16_t *CXXPH_RESTRICT dest, int n) CXXPH_NOEXCEPT
+                                                                   int16_t *CXXPH_RESTRICT dest, int32_t n) CXXPH_NOEXCEPT
 {
     assert(utils::is_aligned(src, 16));
 

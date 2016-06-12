@@ -91,9 +91,9 @@ struct fftw {
     };
 
     /**
-     * Backward (Complex) FFT
+     * Inverse (Complex) FFT
      */
-    class backward : public fft_backend_base<fft_complex_t, fft_complex_t> {
+    class inverse : public fft_backend_base<fft_complex_t, fft_complex_t> {
         typedef fft_backend_base<fft_complex_t, fft_complex_t> base;
 
     public:
@@ -104,7 +104,7 @@ struct fftw {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), plan_(0)
+        inverse(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), plan_(0)
         {
             plan_ = ::fftwf_plan_dft_1d(n, reinterpret_cast<::fftwf_complex *>(in),
                                         reinterpret_cast<::fftwf_complex *>(out), FFTW_BACKWARD,
@@ -114,7 +114,7 @@ struct fftw {
         /**
          * Destructor.
          */
-        virtual ~backward()
+        virtual ~inverse()
         {
             ::fftwf_destroy_plan(plan_);
             plan_ = 0;
@@ -172,9 +172,9 @@ struct fftw {
     };
 
     /**
-     * Backward (Real) FFT
+     * Inverse (Real) FFT
      */
-    class backward_real : public fft_backend_base<fft_complex_t, fft_real_t> {
+    class inverse_real : public fft_backend_base<fft_complex_t, fft_real_t> {
         typedef fft_backend_base<fft_complex_t, fft_real_t> base;
 
     public:
@@ -185,7 +185,7 @@ struct fftw {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), plan_(0)
+        inverse_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), plan_(0)
         {
             plan_ = ::fftwf_plan_dft_c2r_1d(n, reinterpret_cast<::fftwf_complex *>(in), reinterpret_cast<float *>(out),
                                             FFTW_ESTIMATE | FFTW_PRESERVE_INPUT);
@@ -194,7 +194,7 @@ struct fftw {
         /**
          * Destructor.
          */
-        virtual ~backward_real()
+        virtual ~inverse_real()
         {
             ::fftwf_destroy_plan(plan_);
             plan_ = 0;
@@ -280,9 +280,9 @@ struct fftw {
     };
 
     /**
-     * Backward (Complex) FFT
+     * Inverse (Complex) FFT
      */
-    class backward : public fft_backend_base<fft_complex_t, fft_complex_t> {
+    class inverse : public fft_backend_base<fft_complex_t, fft_complex_t> {
         typedef fft_backend_base<fft_complex_t, fft_complex_t> base;
 
     public:
@@ -293,7 +293,7 @@ struct fftw {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), plan_(0)
+        inverse(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), plan_(0)
         {
             plan_ =
                 ::fftw_plan_dft_1d(n, reinterpret_cast<::fftw_complex *>(in), reinterpret_cast<::fftw_complex *>(out),
@@ -303,7 +303,7 @@ struct fftw {
         /**
          * Destructor.
          */
-        virtual ~backward()
+        virtual ~inverse()
         {
             ::fftw_destroy_plan(plan_);
             plan_ = 0;
@@ -361,9 +361,9 @@ struct fftw {
     };
 
     /**
-     * Backward (Real) FFT
+     * Inverse (Real) FFT
      */
-    class backward_real : public fft_backend_base<fft_complex_t, fft_real_t> {
+    class inverse_real : public fft_backend_base<fft_complex_t, fft_real_t> {
         typedef fft_backend_base<fft_complex_t, fft_real_t> base;
 
     public:
@@ -374,7 +374,7 @@ struct fftw {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), plan_(0)
+        inverse_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), plan_(0)
         {
             plan_ = ::fftw_plan_dft_c2r_1d(n, reinterpret_cast<::fftw_complex *>(in), reinterpret_cast<double *>(out),
                                            FFTW_ESTIMATE | FFTW_PRESERVE_INPUT);
@@ -383,7 +383,7 @@ struct fftw {
         /**
          * Destructor.
          */
-        virtual ~backward_real()
+        virtual ~inverse_real()
         {
             ::fftw_destroy_plan(plan_);
             plan_ = 0;

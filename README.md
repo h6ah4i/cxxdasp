@@ -36,6 +36,7 @@ I have tested on these platforms listed below:
 - Android (armeabi, armeabi-v7, armeabi-v7-hard, arm64-v8a, x86, x86_64, mips (*1), mips64(*1))
     - android-ndk-r9d (gcc 4.8, clang) (*2)
     - android-ndk-r10c (gcc 4.9, clang) (*2)
+    - android-ndk-r12
 
 (*1) No special optimization is provided. Just can be compiled and not tested.
 (*2) llvm-libc++ or gnustl is requred to build test applications.
@@ -45,7 +46,7 @@ I have tested on these platforms listed below:
 Latest version
 ---
 
-- Version 0.5.0  (November 23, 2014)
+- Version 0.6.0  (June 12, 2016)
 
 
 
@@ -100,6 +101,8 @@ Dependent libraries
 
 - [Google Mock : Google C++ Mocking Framework](https://code.google.com/p/googlemock/)
 - [The SoX Resampler library : High quality, one-dimensional sample-rate conversion library](http://sourceforge.net/projects/soxr/)
+- [libfresample : Fast, free sample rate conversion](https://github.com/depp/libfresample)
+- [Secret Rabbit Code (aka libsamplerate)](http://www.mega-nerd.com/SRC/index.html)
 - [android-ndk-profiler](https://code.google.com/p/android-ndk-profiler/)
 
 

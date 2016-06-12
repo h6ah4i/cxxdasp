@@ -45,7 +45,7 @@ struct bluestein_impl_helper {
     typedef typename Tbackend::fft_real_t fft_real_t;
     typedef typename Tbackend::fft_complex_t fft_complex_t;
     typedef fft<fft_complex_t, fft_complex_t, typename Tbackend::forward> backend_forward_fft;
-    typedef fft<fft_complex_t, fft_complex_t, typename Tbackend::backward> backend_backward_fft;
+    typedef fft<fft_complex_t, fft_complex_t, typename Tbackend::inverse> backend_inverse_fft;
 
     bluestein_impl_helper() = delete;
 
@@ -169,7 +169,7 @@ class forward : public fft_backend_base<Tin, Tout> {
     typedef typename helper::fft_real_t fft_real_t;
     typedef typename helper::fft_complex_t fft_complex_t;
     typedef typename helper::backend_forward_fft backend_forward_fft;
-    typedef typename helper::backend_backward_fft backend_backward_fft;
+    typedef typename helper::backend_inverse_fft backend_inverse_fft;
 
     forward(const forward &) = delete;
     forward &operator=(const forward &) = delete;
@@ -184,36 +184,36 @@ public:
      */
     forward(int n, Tin *in, Tout *out)
         : base(n, in, out, 1), m_(utils::next_pow_of_two(2 * n - 1)), normalize_coeff_(1), b_conj_(), f_b_(),
-          fft_b_src_(), fft_b_dest_f_src_(), fft_f_dest_(), fft_b_(), fft_f_()
+          fft_i_src_(), fft_i_dest_f_src_(), fft_f_dest_(), fft_i_(), fft_f_()
     {
         // allocate memory blocks
         cxxporthelper::aligned_memory<fft_complex_t> b_conj(m_);
         cxxporthelper::aligned_memory<fft_complex_t> f_b(m_);
-        cxxporthelper::aligned_memory<fft_complex_t> fft_b_src(m_);
-        cxxporthelper::aligned_memory<fft_complex_t> fft_b_dest_f_src(m_);
+        cxxporthelper::aligned_memory<fft_complex_t> fft_i_src(m_);
+        cxxporthelper::aligned_memory<fft_complex_t> fft_i_dest_f_src(m_);
         cxxporthelper::aligned_memory<fft_complex_t> fft_f_dest(m_);
 
-        backend_backward_fft fft_b(m_, &fft_b_src[0], &fft_b_dest_f_src[0]);
-        backend_forward_fft fft_f(m_, &fft_b_dest_f_src[0], &fft_f_dest[0]);
+        backend_inverse_fft fft_i(m_, &fft_i_src[0], &fft_i_dest_f_src[0]);
+        backend_forward_fft fft_f(m_, &fft_i_dest_f_src[0], &fft_f_dest[0]);
 
         // make the 'B' array and perform FFT
-        helper::make_b_array(&fft_b_src[0], base::n_, m_, -1);
-        fft_b.execute();
-        ::memcpy(&f_b[0], &fft_b_dest_f_src[0], sizeof(fft_complex_t) * m_);
+        helper::make_b_array(&fft_i_src[0], base::n_, m_, -1);
+        fft_i.execute();
+        ::memcpy(&f_b[0], &fft_i_dest_f_src[0], sizeof(fft_complex_t) * m_);
 
         // conjugate B
-        utils::conj_aligned(&b_conj[0], &fft_b_src[0], m_);
+        utils::conj_aligned(&b_conj[0], &fft_i_src[0], m_);
 
         // update fields
         b_conj_ = std::move(b_conj);
         f_b_ = std::move(f_b);
-        fft_b_src_ = std::move(fft_b_src);
-        fft_b_dest_f_src_ = std::move(fft_b_dest_f_src);
+        fft_i_src_ = std::move(fft_i_src);
+        fft_i_dest_f_src_ = std::move(fft_i_dest_f_src);
         fft_f_dest_ = std::move(fft_f_dest);
         fft_f_ = std::move(fft_f);
-        fft_b_ = std::move(fft_b);
+        fft_i_ = std::move(fft_i);
 
-        normalize_coeff_ = static_cast<fft_real_t>(1) / fft_b_.scale();
+        normalize_coeff_ = static_cast<fft_real_t>(1) / fft_i_.scale();
     }
 
     /**
@@ -232,16 +232,16 @@ public:
         fft_complex_t *x = base::in_;
         fft_complex_t *y = base::out_;
 
-        cxxporthelper::aligned_memory<fft_complex_t> &A = fft_b_src_;
+        cxxporthelper::aligned_memory<fft_complex_t> &A = fft_i_src_;
         const cxxporthelper::aligned_memory<fft_complex_t> &B_CONJ = b_conj_;
 
         // make the 'A' array and perform FFT
         helper::make_a_array_c2c(&A[0], &x[0], &B_CONJ[0], N, M);
 
-        cxxporthelper::aligned_memory<fft_complex_t> &F_A = fft_b_dest_f_src_; // and used for F_A x F_B
+        cxxporthelper::aligned_memory<fft_complex_t> &F_A = fft_i_dest_f_src_; // and used for F_A x F_B
         const cxxporthelper::aligned_memory<fft_complex_t> &F_B = f_b_;
 
-        fft_b_.execute();
+        fft_i_.execute();
 
         // multply
         utils::multiply_aligned(&F_A[0], &F_B[0], M);
@@ -261,32 +261,32 @@ private:
 
     cxxporthelper::aligned_memory<fft_complex_t> b_conj_;
     cxxporthelper::aligned_memory<fft_complex_t> f_b_;
-    cxxporthelper::aligned_memory<fft_complex_t> fft_b_src_;
-    cxxporthelper::aligned_memory<fft_complex_t> fft_b_dest_f_src_;
+    cxxporthelper::aligned_memory<fft_complex_t> fft_i_src_;
+    cxxporthelper::aligned_memory<fft_complex_t> fft_i_dest_f_src_;
     cxxporthelper::aligned_memory<fft_complex_t> fft_f_dest_;
-    backend_backward_fft fft_b_;
+    backend_inverse_fft fft_i_;
     backend_forward_fft fft_f_;
     /// @endcond
 };
 
 /**
- * Backward (Complex) FFT
+ * Inverse (Complex) FFT
  *
  * @tparam Tin input data type
  * @tparam Tout output data type
  * @tparam Tbackend base FFT backend class
  */
 template <typename Tin, typename Tout, class Tbackend>
-class backward : public fft_backend_base<Tin, Tout> {
+class inverse : public fft_backend_base<Tin, Tout> {
     typedef fft_backend_base<Tin, Tout> base;
     typedef bluestein_impl_helper<Tin, Tout, Tbackend> helper;
     typedef typename helper::fft_real_t fft_real_t;
     typedef typename helper::fft_complex_t fft_complex_t;
     typedef typename helper::backend_forward_fft backend_forward_fft;
-    typedef typename helper::backend_backward_fft backend_backward_fft;
+    typedef typename helper::backend_inverse_fft backend_inverse_fft;
 
-    backward(const backward &) = delete;
-    backward &operator=(const backward &) = delete;
+    inverse(const inverse &) = delete;
+    inverse &operator=(const inverse &) = delete;
 
 public:
     /**
@@ -296,19 +296,19 @@ public:
      * @param in [in] Input buffer
      * @param out [in] Output buffer
      */
-    backward(int n, Tin *in, Tout *out)
+    inverse(int n, Tin *in, Tout *out)
         : base(n, in, out, n), m_(utils::next_pow_of_two(2 * n - 1)), normalize_coeff_(1), b_conj_(), f_b_(),
-          fft_f_src_(), fft_f_dest_b_src_(), fft_b_dest_(), fft_f_(), fft_b_()
+          fft_f_src_(), fft_f_dest_b_src_(), fft_i_dest_(), fft_f_(), fft_i_()
     {
         // allocate memory blocks
         cxxporthelper::aligned_memory<fft_complex_t> b_conj(m_, FFT_MEMORY_ALIGNMENT);
         cxxporthelper::aligned_memory<fft_complex_t> f_b(m_, FFT_MEMORY_ALIGNMENT);
         cxxporthelper::aligned_memory<fft_complex_t> fft_f_src(m_, FFT_MEMORY_ALIGNMENT);
         cxxporthelper::aligned_memory<fft_complex_t> fft_f_dest_b_src(m_, FFT_MEMORY_ALIGNMENT);
-        cxxporthelper::aligned_memory<fft_complex_t> fft_b_dest(m_, FFT_MEMORY_ALIGNMENT);
+        cxxporthelper::aligned_memory<fft_complex_t> fft_i_dest(m_, FFT_MEMORY_ALIGNMENT);
 
         backend_forward_fft fft_f(m_, &fft_f_src[0], &fft_f_dest_b_src[0]);
-        backend_backward_fft fft_b(m_, &fft_f_dest_b_src[0], &fft_b_dest[0]);
+        backend_inverse_fft fft_i(m_, &fft_f_dest_b_src[0], &fft_i_dest[0]);
 
         // make the 'B' array and perform FFT
         helper::make_b_array(&fft_f_src[0], base::n_, m_, 1);
@@ -323,17 +323,17 @@ public:
         f_b_ = std::move(f_b);
         fft_f_src_ = std::move(fft_f_src);
         fft_f_dest_b_src_ = std::move(fft_f_dest_b_src);
-        fft_b_dest_ = std::move(fft_b_dest);
+        fft_i_dest_ = std::move(fft_i_dest);
         fft_f_ = std::move(fft_f);
-        fft_b_ = std::move(fft_b);
+        fft_i_ = std::move(fft_i);
 
-        normalize_coeff_ = static_cast<fft_real_t>(1) / fft_b_.scale();
+        normalize_coeff_ = static_cast<fft_real_t>(1) / fft_i_.scale();
     }
 
     /**
      * Destructor.
      */
-    virtual ~backward() {}
+    virtual ~inverse() {}
 
     /**
      * Execute FFT.
@@ -360,9 +360,9 @@ public:
         // multply
         utils::multiply_aligned(&F_A[0], &F_B[0], M);
 
-        fft_b_.execute();
+        fft_i_.execute();
 
-        const cxxporthelper::aligned_memory<fft_complex_t> &AB = fft_b_dest_;
+        const cxxporthelper::aligned_memory<fft_complex_t> &AB = fft_i_dest_;
 
         // multiply phase factors conj(b_{k})
         helper::calc_output_c2c(&y[0], &B_CONJ[0], &AB[0], normalize_coeff_, N);
@@ -377,9 +377,9 @@ private:
     cxxporthelper::aligned_memory<fft_complex_t> f_b_;
     cxxporthelper::aligned_memory<fft_complex_t> fft_f_src_;
     cxxporthelper::aligned_memory<fft_complex_t> fft_f_dest_b_src_;
-    cxxporthelper::aligned_memory<fft_complex_t> fft_b_dest_;
+    cxxporthelper::aligned_memory<fft_complex_t> fft_i_dest_;
     backend_forward_fft fft_f_;
-    backend_backward_fft fft_b_;
+    backend_inverse_fft fft_i_;
     /// @endcond
 };
 
@@ -397,7 +397,7 @@ class forward_real : public fft_backend_base<Tin, Tout> {
     typedef typename helper::fft_real_t fft_real_t;
     typedef typename helper::fft_complex_t fft_complex_t;
     typedef typename helper::backend_forward_fft backend_forward_fft;
-    typedef typename helper::backend_backward_fft backend_backward_fft;
+    typedef typename helper::backend_inverse_fft backend_inverse_fft;
 
     forward_real(const forward_real &) = delete;
     forward_real &operator=(const forward_real &) = delete;
@@ -412,17 +412,17 @@ public:
      */
     forward_real(int n, Tin *in, Tout *out)
         : base(n, in, out, 1), m_(utils::next_pow_of_two(2 * n - 1)), normalize_coeff_(1), b_conj_(), f_b_(),
-          fft_f_src_(), fft_f_dest_b_src_(), fft_b_dest_(), fft_f_(), fft_b_()
+          fft_f_src_(), fft_f_dest_b_src_(), fft_i_dest_(), fft_f_(), fft_i_()
     {
         // allocate memory blocks
         cxxporthelper::aligned_memory<fft_complex_t> b_conj(m_);
         cxxporthelper::aligned_memory<fft_complex_t> f_b(m_);
         cxxporthelper::aligned_memory<fft_complex_t> fft_f_src(m_);
         cxxporthelper::aligned_memory<fft_complex_t> fft_f_dest_b_src(m_);
-        cxxporthelper::aligned_memory<fft_complex_t> fft_b_dest(m_);
+        cxxporthelper::aligned_memory<fft_complex_t> fft_i_dest(m_);
 
         backend_forward_fft fft_f(m_, &fft_f_src[0], &fft_f_dest_b_src[0]);
-        backend_backward_fft fft_b(m_, &fft_f_dest_b_src[0], &fft_b_dest[0]);
+        backend_inverse_fft fft_i(m_, &fft_f_dest_b_src[0], &fft_i_dest[0]);
 
         // make the 'B' array and perform FFT
         helper::make_b_array(&fft_f_src[0], base::n_, m_, 1);
@@ -437,11 +437,11 @@ public:
         f_b_ = std::move(f_b);
         fft_f_src_ = std::move(fft_f_src);
         fft_f_dest_b_src_ = std::move(fft_f_dest_b_src);
-        fft_b_dest_ = std::move(fft_b_dest);
+        fft_i_dest_ = std::move(fft_i_dest);
         fft_f_ = std::move(fft_f);
-        fft_b_ = std::move(fft_b);
+        fft_i_ = std::move(fft_i);
 
-        normalize_coeff_ = static_cast<fft_real_t>(1) / fft_b_.scale();
+        normalize_coeff_ = static_cast<fft_real_t>(1) / fft_i_.scale();
     }
 
     /**
@@ -475,9 +475,9 @@ public:
         // multply
         utils::multiply_aligned(&F_A[0], &F_B[0], M);
 
-        fft_b_.execute();
+        fft_i_.execute();
 
-        const cxxporthelper::aligned_memory<fft_complex_t> &AB = fft_b_dest_;
+        const cxxporthelper::aligned_memory<fft_complex_t> &AB = fft_i_dest_;
 
         // multiply phase factors conj(b_{k})
         helper::calc_output_r2c(&y[0], &B_CONJ[0], &AB[0], normalize_coeff_, Ny);
@@ -492,30 +492,30 @@ private:
     cxxporthelper::aligned_memory<fft_complex_t> f_b_;
     cxxporthelper::aligned_memory<fft_complex_t> fft_f_src_;
     cxxporthelper::aligned_memory<fft_complex_t> fft_f_dest_b_src_;
-    cxxporthelper::aligned_memory<fft_complex_t> fft_b_dest_;
+    cxxporthelper::aligned_memory<fft_complex_t> fft_i_dest_;
     backend_forward_fft fft_f_;
-    backend_backward_fft fft_b_;
+    backend_inverse_fft fft_i_;
     /// @endcond
 };
 
 /**
- * Backward (Real) FFT
+ * Inverse (Real) FFT
  *
  * @tparam Tin input data type
  * @tparam Tout output data type
  * @tparam Tbackend base FFT backend class
  */
 template <typename Tin, typename Tout, class Tbackend>
-class backward_real : public fft_backend_base<Tin, Tout> {
+class inverse_real : public fft_backend_base<Tin, Tout> {
     typedef fft_backend_base<Tin, Tout> base;
     typedef bluestein_impl_helper<Tin, Tout, Tbackend> helper;
     typedef typename helper::fft_real_t fft_real_t;
     typedef typename helper::fft_complex_t fft_complex_t;
     typedef typename helper::backend_forward_fft backend_forward_fft;
-    typedef typename helper::backend_backward_fft backend_backward_fft;
+    typedef typename helper::backend_inverse_fft backend_inverse_fft;
 
-    backward_real(const backward_real &) = delete;
-    backward_real &operator=(const backward_real &) = delete;
+    inverse_real(const inverse_real &) = delete;
+    inverse_real &operator=(const inverse_real &) = delete;
 
 public:
     /**
@@ -525,19 +525,19 @@ public:
      * @param in [in] Input buffer
      * @param out [in] Output buffer
      */
-    backward_real(int n, Tin *in, Tout *out)
+    inverse_real(int n, Tin *in, Tout *out)
         : base(n, in, out, n), m_(utils::next_pow_of_two(2 * n - 1)), normalize_coeff_(1), b_conj_(), f_b_(),
-          fft_f_src_(), fft_f_dest_b_src_(), fft_b_dest_(), fft_f_(), fft_b_()
+          fft_f_src_(), fft_f_dest_b_src_(), fft_i_dest_(), fft_f_(), fft_i_()
     {
         // allocate memory blocks
         cxxporthelper::aligned_memory<fft_complex_t> b_conj(m_, FFT_MEMORY_ALIGNMENT);
         cxxporthelper::aligned_memory<fft_complex_t> f_b(m_, FFT_MEMORY_ALIGNMENT);
         cxxporthelper::aligned_memory<fft_complex_t> fft_f_src(m_, FFT_MEMORY_ALIGNMENT);
         cxxporthelper::aligned_memory<fft_complex_t> fft_f_dest_b_src(m_, FFT_MEMORY_ALIGNMENT);
-        cxxporthelper::aligned_memory<fft_complex_t> fft_b_dest(m_, FFT_MEMORY_ALIGNMENT);
+        cxxporthelper::aligned_memory<fft_complex_t> fft_i_dest(m_, FFT_MEMORY_ALIGNMENT);
 
         backend_forward_fft fft_f(m_, &fft_f_src[0], &fft_f_dest_b_src[0]);
-        backend_backward_fft fft_b(m_, &fft_f_dest_b_src[0], &fft_b_dest[0]);
+        backend_inverse_fft fft_i(m_, &fft_f_dest_b_src[0], &fft_i_dest[0]);
 
         // make the 'B' array and perform FFT
         helper::make_b_array(&fft_f_src[0], base::n_, m_, 1);
@@ -552,17 +552,17 @@ public:
         f_b_ = std::move(f_b);
         fft_f_src_ = std::move(fft_f_src);
         fft_f_dest_b_src_ = std::move(fft_f_dest_b_src);
-        fft_b_dest_ = std::move(fft_b_dest);
+        fft_i_dest_ = std::move(fft_i_dest);
         fft_f_ = std::move(fft_f);
-        fft_b_ = std::move(fft_b);
+        fft_i_ = std::move(fft_i);
 
-        normalize_coeff_ = static_cast<fft_real_t>(1) / fft_b_.scale();
+        normalize_coeff_ = static_cast<fft_real_t>(1) / fft_i_.scale();
     }
 
     /**
      * Destructor.
      */
-    virtual ~backward_real() {}
+    virtual ~inverse_real() {}
 
     /**
      * Execute FFT.
@@ -590,9 +590,9 @@ public:
         // multply
         utils::multiply_aligned(&F_A[0], &F_B[0], M);
 
-        fft_b_.execute();
+        fft_i_.execute();
 
-        const cxxporthelper::aligned_memory<fft_complex_t> &AB = fft_b_dest_;
+        const cxxporthelper::aligned_memory<fft_complex_t> &AB = fft_i_dest_;
 
         // multiply phase factors conj(b_{k})
         helper::calc_output_c2r(&y[0], &B_CONJ[0], &AB[0], normalize_coeff_, N);
@@ -607,9 +607,9 @@ private:
     cxxporthelper::aligned_memory<fft_complex_t> f_b_;
     cxxporthelper::aligned_memory<fft_complex_t> fft_f_src_;
     cxxporthelper::aligned_memory<fft_complex_t> fft_f_dest_b_src_;
-    cxxporthelper::aligned_memory<fft_complex_t> fft_b_dest_;
+    cxxporthelper::aligned_memory<fft_complex_t> fft_i_dest_;
     backend_forward_fft fft_f_;
-    backend_backward_fft fft_b_;
+    backend_inverse_fft fft_i_;
     /// @endcond
 };
 

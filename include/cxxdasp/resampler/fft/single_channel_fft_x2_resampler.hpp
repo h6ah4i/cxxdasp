@@ -164,7 +164,7 @@ private:
 
     /// @cond INTERNAL_FIELD
     typedef fft::fft<fft_real_t, fft_complex_t, typename TFFTBackend::forward_real> fft_forward_real;
-    typedef fft::fft<fft_complex_t, fft_real_t, typename TFFTBackend::backward_real> fft_backward_real;
+    typedef fft::fft<fft_complex_t, fft_real_t, typename TFFTBackend::inverse_real> fft_inverse_real;
 
     int M() const CXXPH_NOEXCEPT { return m_; }
 
@@ -321,7 +321,7 @@ public:
 private:
     /// @cond INTERNAL_FIELD
     typedef typename shared_context::fft_forward_real fft_forward_real;
-    typedef typename shared_context::fft_backward_real fft_backward_real;
+    typedef typename shared_context::fft_inverse_real fft_inverse_real;
 
     single_channel_fft_x2_resampler(const shared_context *p_shared_context, bool shared_context_is_private);
 
@@ -342,11 +342,11 @@ private:
     bool flushed_;
 
     cxxporthelper::aligned_memory<fft_real_t> mem_fft_f_in_;
-    cxxporthelper::aligned_memory<fft_complex_t> mem_fft_f_out_b_in_;
-    cxxporthelper::aligned_memory<fft_real_t> mem_fft_b_out_;
+    cxxporthelper::aligned_memory<fft_complex_t> mem_fft_f_out_i_in_;
+    cxxporthelper::aligned_memory<fft_real_t> mem_fft_i_out_;
 
     fft_forward_real fftr_f_;
-    fft_backward_real fftr_b_;
+    fft_inverse_real fftr_i_;
     /// @endcond
 };
 
@@ -378,6 +378,11 @@ inline single_channel_fft_x2_resampler_shared_context<
     ::memset(&mem_filter_kernel[M], 0, sizeof(fft_real_t) * L);
 
     fftr_f_filter.execute();
+
+    const fft_real_t post_scale = fft_real_t(1) / fftr_f_filter.scale();
+    if (post_scale != fft_real_t(1)) {
+        utils::multiply_scaler_aligned(&mem_f_filter_kernel[0], post_scale, N2);
+    }
 
     // update fields
     filter_length_ = filter_length;
@@ -420,7 +425,7 @@ inline single_channel_fft_x2_resampler<TSrc, TDest, TCoeffs, TFFTBackend>::singl
     const shared_context *p_shared_context, bool shared_context_is_private)
     : shared_context_(nullptr), shared_context_is_private_(false), num_pooled_input_data_(0),
       num_pooled_output_data_(0), num_removed_delay_(0), num_appended_zero_samples_(0), output_data_read_position_(0),
-      flushed_(false), mem_fft_f_in_(), mem_fft_f_out_b_in_(), mem_fft_b_out_(), fftr_f_(), fftr_b_()
+      flushed_(false), mem_fft_f_in_(), mem_fft_f_out_i_in_(), mem_fft_i_out_(), fftr_f_(), fftr_i_()
 {
     const int M = p_shared_context->filter_length_;
     const int N = p_shared_context->N();
@@ -430,23 +435,23 @@ inline single_channel_fft_x2_resampler<TSrc, TDest, TCoeffs, TFFTBackend>::singl
     {
         // allocate memory blocks
         cxxporthelper::aligned_memory<fft_real_t> mem_fft_f_in(N / 2, FFT_MEMORY_ALIGNMENT);
-        cxxporthelper::aligned_memory<fft_complex_t> mem_fft_f_out_b_in(N2, FFT_MEMORY_ALIGNMENT);
-        cxxporthelper::aligned_memory<fft_real_t> mem_fft_b_out(N, FFT_MEMORY_ALIGNMENT);
+        cxxporthelper::aligned_memory<fft_complex_t> mem_fft_f_out_i_in(N2, FFT_MEMORY_ALIGNMENT);
+        cxxporthelper::aligned_memory<fft_real_t> mem_fft_i_out(N, FFT_MEMORY_ALIGNMENT);
 
         // create fft objects
-        fft_forward_real fftr_f(N / 2, &mem_fft_f_in[0], &mem_fft_f_out_b_in[0]);
-        fft_backward_real fftr_b(N, &mem_fft_f_out_b_in[0], &mem_fft_b_out[0]);
+        fft_forward_real fftr_f(N / 2, &mem_fft_f_in[0], &mem_fft_f_out_i_in[0]);
+        fft_inverse_real fftr_i(N, &mem_fft_f_out_i_in[0], &mem_fft_i_out[0]);
 
         // update fields
         shared_context_ = p_shared_context;
         shared_context_is_private_ = shared_context_is_private;
 
         mem_fft_f_in_ = std::move(mem_fft_f_in);
-        mem_fft_f_out_b_in_ = std::move(mem_fft_f_out_b_in);
-        mem_fft_b_out_ = std::move(mem_fft_b_out);
+        mem_fft_f_out_i_in_ = std::move(mem_fft_f_out_i_in);
+        mem_fft_i_out_ = std::move(mem_fft_i_out);
 
         fftr_f_ = std::move(fftr_f);
-        fftr_b_ = std::move(fftr_b);
+        fftr_i_ = std::move(fftr_i);
     }
     catch (...)
     {
@@ -594,13 +599,13 @@ inline void single_channel_fft_x2_resampler<TSrc, TDest, TCoeffs, TFFTBackend>::
     // apply filter
     utils::multiply_aligned(&f_indata[0], &(shared_context_->mem_f_filter_kernel_[0]), N2);
 
-    // backward FFT
-    fftr_b_.execute();
+    // inverse FFT
+    fftr_i_.execute();
 
     // normalize
-    const fft_real_t post_scale = fft_real_t(2) / fftr_b_.scale(); // 2: to cancel zero insertion effect
+    const fft_real_t post_scale = fft_real_t(2) / (fftr_f_.scale() * fftr_i_.scale()); // 2: to cancel zero insertion effect
     if (post_scale != fft_real_t(1)) {
-        fft_real_t *out_data = fftr_b_.out();
+        fft_real_t *out_data = fftr_i_.out();
         utils::multiply_scaler_aligned(&out_data[M], post_scale, L);
     }
 
@@ -663,7 +668,7 @@ single_channel_fft_x2_resampler<TSrc, TDest, TCoeffs, TFFTBackend>::refer_direct
     fill_output_buffer();
 
     const int M = shared_context_->M();
-    const fft_real_t *CXXPH_RESTRICT out_data = fftr_b_.out();
+    const fft_real_t *CXXPH_RESTRICT out_data = fftr_i_.out();
     const size_t offset = M + output_data_read_position_;
 
     (*d) = &out_data[offset];

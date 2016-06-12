@@ -118,9 +118,9 @@ struct gp_fft {
     };
 
     /**
-     * Backward (Complex) FFT
+     * Inverse (Complex) FFT
      */
-    class backward : public fft_backend_base<fft_complex_t, fft_complex_t> {
+    class inverse : public fft_backend_base<fft_complex_t, fft_complex_t> {
         typedef fft_backend_base<fft_complex_t, fft_complex_t> base;
 
     public:
@@ -131,7 +131,7 @@ struct gp_fft {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), ip_(), w_()
+        inverse(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), ip_(), w_()
         {
             // verify parameters
             assert(n >= 1 && utils::is_pow_of_two(n));
@@ -155,7 +155,7 @@ struct gp_fft {
         /**
          * Destructor.
          */
-        virtual ~backward() {}
+        virtual ~inverse() {}
 
         /**
          * Execute FFT.
@@ -246,9 +246,9 @@ struct gp_fft {
     };
 
     /**
-     * Backward (Real) FFT
+     * Inverse (Real) FFT
      */
-    class backward_real : public fft_backend_base<fft_complex_t, fft_real_t> {
+    class inverse_real : public fft_backend_base<fft_complex_t, fft_real_t> {
         typedef fft_backend_base<fft_complex_t, fft_real_t> base;
 
     public:
@@ -259,7 +259,7 @@ struct gp_fft {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, (n / 2)), ip_(), w_()
+        inverse_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, (n / 2)), ip_(), w_()
         {
             // verify parameters
             assert(n >= 2 && utils::is_pow_of_two(n));
@@ -283,7 +283,7 @@ struct gp_fft {
         /**
          * Destructor.
          */
-        virtual ~backward_real() {}
+        virtual ~inverse_real() {}
 
         /**
          * Execute FFT.

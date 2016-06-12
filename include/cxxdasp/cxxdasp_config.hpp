@@ -52,6 +52,11 @@
 #define CXXDASP_USE_FFT_BACKEND_FFTWF 0
 #endif
 
+// FFT backend - Cricket FFT
+#ifndef CXXDASP_USE_FFT_BACKEND_CKFFT
+#define CXXDASP_USE_FFT_BACKEND_CKFFT 0
+#endif
+
 // FFT backend - General purpose FFT package
 #ifndef CXXDASP_USE_FFT_BACKEND_GP_FFT
 #define CXXDASP_USE_FFT_BACKEND_GP_FFT 0

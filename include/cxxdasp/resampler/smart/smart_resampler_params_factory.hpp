@@ -59,7 +59,7 @@ public:
     /**
      * 'bool' operator
      *
-     * @returns whether the parameters are vaild
+     * @returns whether the parameters are valid
      */
     operator bool() const CXXPH_NOEXCEPT { return is_valid_; }
 

@@ -68,9 +68,9 @@ public:
         const float *CXXPH_RESTRICT f32_src1 = reinterpret_cast<const float *>(src1);
         const float *CXXPH_RESTRICT f32_src2 = reinterpret_cast<const float *>(src2);
         const float *CXXPH_RESTRICT f32_coeffs1 =
-            reinterpret_cast<const float *>(utils::assume_aligned(coeffs1, CXXPH_PLATFORM_SIMD_ALIGNMENT));
+            reinterpret_cast<const float *>(CXXDASP_UTIL_ASSUME_ALIGNED_FUNC(coeffs1, CXXPH_PLATFORM_SIMD_ALIGNMENT));
         const float *CXXPH_RESTRICT f32_coeffs2 =
-            reinterpret_cast<const float *>(utils::assume_aligned(coeffs2, CXXPH_PLATFORM_SIMD_ALIGNMENT));
+            reinterpret_cast<const float *>(CXXDASP_UTIL_ASSUME_ALIGNED_FUNC(coeffs2, CXXPH_PLATFORM_SIMD_ALIGNMENT));
 
         __m128 t1, t2;
 

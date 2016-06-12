@@ -65,7 +65,7 @@ struct ffts {
          */
         forward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, 1), plan_(0)
         {
-            plan_ = ::ffts_init_1d(n, NEGATIVE_SIGN);
+            plan_ = ::ffts_init_1d(n, FFTS_FORWARD);
         }
 
         /**
@@ -89,9 +89,9 @@ struct ffts {
     };
 
     /**
-     * Backward (Complex) FFT
+     * Inverse (Complex) FFT
      */
-    class backward : public fft_backend_base<fft_complex_t, fft_complex_t> {
+    class inverse : public fft_backend_base<fft_complex_t, fft_complex_t> {
         typedef fft_backend_base<fft_complex_t, fft_complex_t> base;
 
     public:
@@ -102,15 +102,15 @@ struct ffts {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), plan_(0)
+        inverse(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, n), plan_(0)
         {
-            plan_ = ::ffts_init_1d(n, POSITIVE_SIGN);
+            plan_ = ::ffts_init_1d(n, FFTS_BACKWARD);
         }
 
         /**
          * Destructor.
          */
-        virtual ~backward()
+        virtual ~inverse()
         {
             ::ffts_free(plan_);
             plan_ = 0;
@@ -143,7 +143,7 @@ struct ffts {
          */
         forward_real(int n, fft_real_t *in, fft_complex_t *out) : base(n, in, out, 1), plan_(0)
         {
-            plan_ = ::ffts_init_1d_real(n, NEGATIVE_SIGN);
+            plan_ = ::ffts_init_1d_real(n, FFTS_FORWARD);
         }
 
         /**
@@ -167,9 +167,9 @@ struct ffts {
     };
 
     /**
-     * Backward (Real) FFT
+     * Inverse (Real) FFT
      */
-    class backward_real : public fft_backend_base<fft_complex_t, fft_real_t> {
+    class inverse_real : public fft_backend_base<fft_complex_t, fft_real_t> {
         typedef fft_backend_base<fft_complex_t, fft_real_t> base;
 
     public:
@@ -180,15 +180,15 @@ struct ffts {
          * @param in [in] Input buffer
          * @param out [in] Output buffer
          */
-        backward_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), plan_(0)
+        inverse_real(int n, fft_complex_t *in, fft_real_t *out) : base(n, in, out, n), plan_(0)
         {
-            plan_ = ::ffts_init_1d_real(n, POSITIVE_SIGN);
+            plan_ = ::ffts_init_1d_real(n, FFTS_BACKWARD);
         }
 
         /**
          * Destructor.
          */
-        virtual ~backward_real()
+        virtual ~inverse_real()
         {
             ::ffts_free(plan_);
             plan_ = 0;

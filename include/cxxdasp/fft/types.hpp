@@ -91,7 +91,7 @@ public:
     /**
      * Scale factor of FFT applied data
      * @returns Scale of FFT applied datavalue
-     * @note Normally this method returns 1 for forward FFT and "n" for backward FFT.
+     * @note Normally this method returns 1 for forward FFT and "n" for inverse FFT.
      */
     int scale() const CXXPH_NOEXCEPT { return scale_; }
 
@@ -200,7 +200,7 @@ public:
     /**
      * Scale of FFT applied datavalue
      * @returns Scale of FFT applied datavalue
-     * @note Normally this method returns 1 for forward FFT and "n" for backward FFT.
+     * @note Normally this method returns 1 for forward FFT and "n" for inverse FFT.
      */
     int scale() const CXXPH_NOEXCEPT { return backend_->scale(); }
 

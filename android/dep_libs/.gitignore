@@ -6,6 +6,8 @@
 /kiss_fft/
 /gp_fft/
 /ne10/
+/ckfft/
+/mufft/
 /gmock/
 /android-ndk-profiler/
 
