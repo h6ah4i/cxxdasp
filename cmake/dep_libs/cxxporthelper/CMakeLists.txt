@@ -22,7 +22,7 @@ include(ExternalProject)
 ExternalProject_Add(ext_cxxporthelper
     PREFIX master
     GIT_REPOSITORY https://github.com/h6ah4i/cxxporthelper.git
-    GIT_TAG 30c774dde7cd283e238d0434ba68989f9604e027
+    GIT_TAG b17619379e43089e214fe476b31ee800660e9acd
     CMAKE_ARGS -G ${CMAKE_GENERATOR} ../ext_cxxporthelper
     CMAKE_CACHE_ARGS ${CXXDASP_DEP_LIBS_CMAKE_CACHE_ARGS}
     INSTALL_COMMAND ""
