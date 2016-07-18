@@ -367,7 +367,7 @@ smart_resampler<TSrc, TDest, THBFRCoreOperator, TFFTBackend, TPolyCoreOperator>:
         }
     } else if (CXXPH_LIKELY(stage1_halfband_resampler_)) {
         auto &s1_resampler = stage1_halfband_resampler_;
-        src_frame_t work[128];
+        src_frame_t work[128] CXXPH_ALIGNAS(16);
 
         int s2_remains = s2_n_can_put;
         while (CXXPH_LIKELY(s2_remains > 0)) {
