@@ -46,7 +46,7 @@ I have tested on these platforms listed below:
 Latest version
 ---
 
-- Version 0.6.0  (June 12, 2016)
+- Version 0.6.1  (July 18, 2016)
 
 
 
