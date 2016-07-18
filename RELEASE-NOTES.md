@@ -1,3 +1,8 @@
+## 0.6.2
+
+- Update cxxporthelper library to v0.5.2
+
+
 ## 0.6.1
 
 - Fix segmentation fault bug due to alignment issue
