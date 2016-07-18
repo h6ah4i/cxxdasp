@@ -1,3 +1,8 @@
+## 0.6.1
+
+- Fix segmentation fault bug due to alignment issue
+
+
 ## 0.6.0
 
 - Improved compatibility with new compilers
