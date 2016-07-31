@@ -1,3 +1,10 @@
+## 0.6.3
+
+- Fix compilation failure on Clang 7.3.0
+- Update GoogleTest library
+- Update Ne10 library
+
+
 ## 0.6.2
 
 - Update cxxporthelper library to v0.5.2
