@@ -22,7 +22,7 @@ set(TEST_TOP_DIR ${CXXDASP_TOP_DIR}/test)
 #
 # Sub directories
 #
-add_subdirectory(gmock)
+add_subdirectory(googletest)
 
 if (${CXXDASP_BUILD_TEST_UTILS_UTILS})
     add_subdirectory(utils_utils)
