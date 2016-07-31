@@ -20,40 +20,43 @@ CXXDASP_TOP_DIR := $(MY_DIR)/../../../..
 #
 # library (libgmock)
 #
-LOCAL_PATH := $(CXXDASP_TOP_DIR)/android/dep_libs/gmock
+LOCAL_PATH := $(CXXDASP_TOP_DIR)/android/dep_libs/googletest/googlemock
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := gmock_static
 LOCAL_MODULE_FILENAME := gmock
 
-LOCAL_SRC_FILES := src/gmock-all.cc 
+LOCAL_SRC_FILES := src/gmock-all.cc
+LOCAL_STATIC_LIBRARIES := gtest_static
 
 LOCAL_C_FLAGS := -DGTEST_HAS_PTHREAD=0
 LOCAL_EXPORT_CFLAGS := -DGTEST_HAS_PTHREAD=0
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/include $(LOCAL_PATH)/gtest/include
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include $(LOCAL_PATH)/gtest/include
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 
 include $(BUILD_STATIC_LIBRARY)
 
 #
 # library (libgmock-main)
 #
-LOCAL_PATH := $(CXXDASP_TOP_DIR)/android/dep_libs/gmock
+LOCAL_PATH := $(CXXDASP_TOP_DIR)/android/dep_libs/googletest/googlemock
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := gmock-main_static
 LOCAL_MODULE_FILENAME := gmock-main
 
-LOCAL_SRC_FILES := src/gmock_main.cc 
+LOCAL_SRC_FILES := src/gmock_main.cc
+LOCAL_STATIC_LIBRARIES := gtest_static
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/include $(LOCAL_PATH)/gtest/include
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 
 include $(BUILD_STATIC_LIBRARY)
 
 #
 # library (libgtest)
 #
-LOCAL_PATH := $(CXXDASP_TOP_DIR)/android/dep_libs/gmock/gtest
+LOCAL_PATH := $(CXXDASP_TOP_DIR)/android/dep_libs/googletest/googletest
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := gtest_static

@@ -8,7 +8,7 @@
 /ne10/
 /ckfft/
 /mufft/
-/gmock/
+/googletest/
 /android-ndk-profiler/
 
 # Exclude temporary cmake's build directory

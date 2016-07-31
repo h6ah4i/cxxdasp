@@ -84,10 +84,10 @@ else()
     message("INFO: ''android-ndk-profiler'' directory is already exists.")
 endif()
 
-if (NOT EXISTS ${DEP_LIBS_PLACEMENT_DIR}/gmock/)
-    add_subdirectory(gmock)
+if (NOT EXISTS ${DEP_LIBS_PLACEMENT_DIR}/googletest/)
+    add_subdirectory(googletest)
 else()
-    message("INFO: ''gmock'' directory is already exists.")
+    message("INFO: ''googletest'' directory is already exists.")
 endif()
 
 message("")
