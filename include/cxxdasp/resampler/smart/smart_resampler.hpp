@@ -158,6 +158,8 @@ private:
     std::unique_ptr<stage1_fft_resampler_type> stage1_fft_resampler_;
     std::unique_ptr<stage2_resampler_type> stage2_resampler_;
 
+    cxxporthelper::aligned_memory<src_frame_t> work_buffer_;
+
     // verify template parameters
     static_assert(static_cast<int>(src_frame_t::num_channels) == static_cast<int>(dest_frame_t::num_channels),
                   "channel count requirements");
@@ -169,11 +171,12 @@ template <typename TSrc, typename TDest, class THBFRCoreOperator, class TFFTBack
 inline smart_resampler<TSrc, TDest, THBFRCoreOperator, TFFTBackend, TPolyCoreOperator>::smart_resampler(
     const smart_resampler_params &params)
     : params_(params), stage1_flushed_(false), stage2_flushed_(false), stage1_halfband_resampler_(),
-      stage1_fft_resampler_(), stage2_resampler_()
+      stage1_fft_resampler_(), stage2_resampler_(), work_buffer_()
 {
     std::unique_ptr<stage1_halfband_resampler_type> s1_halfband_resampler;
     std::unique_ptr<stage1_fft_resampler_type> s1_fft_resampler;
     std::unique_ptr<stage2_resampler_type> s2_resampler;
+    cxxporthelper::aligned_memory<src_frame_t> work_buffer;
 
     try
     {
@@ -202,6 +205,8 @@ inline smart_resampler<TSrc, TDest, THBFRCoreOperator, TFFTBackend, TPolyCoreOpe
             s2_resampler.reset(
                 new stage2_resampler_type(s2.coeffs, s2.n_coeffs, !(s2.is_static), s2.m, s2.l, s2_block_size));
         }
+
+        work_buffer.allocate(128, 16, false);
     }
     catch (...) { throw; }
 
@@ -209,6 +214,7 @@ inline smart_resampler<TSrc, TDest, THBFRCoreOperator, TFFTBackend, TPolyCoreOpe
     stage1_halfband_resampler_ = std::move(s1_halfband_resampler);
     stage1_fft_resampler_ = std::move(s1_fft_resampler);
     stage2_resampler_ = std::move(s2_resampler);
+    work_buffer_ = std::move(work_buffer);
 }
 
 template <typename TSrc, typename TDest, class THBFRCoreOperator, class TFFTBackend, class TPolyCoreOperator>
@@ -367,7 +373,7 @@ smart_resampler<TSrc, TDest, THBFRCoreOperator, TFFTBackend, TPolyCoreOperator>:
         }
     } else if (CXXPH_LIKELY(stage1_halfband_resampler_)) {
         auto &s1_resampler = stage1_halfband_resampler_;
-        src_frame_t work[128] CXXPH_ALIGNAS(16);
+        cxxporthelper::aligned_memory<src_frame_t> &work = work_buffer_;
 
         int s2_remains = s2_n_can_put;
         while (CXXPH_LIKELY(s2_remains > 0)) {
@@ -378,11 +384,11 @@ smart_resampler<TSrc, TDest, THBFRCoreOperator, TFFTBackend, TPolyCoreOperator>:
 
             int n_consumed;
             n_consumed = (std::min)(s2_remains, s1_n_available);
-            n_consumed = (std::min)(n_consumed, static_cast<int>(sizeof(work) / sizeof(work[0])));
+            n_consumed = (std::min)(n_consumed, static_cast<int>(work.size()));
 
-            s1_resampler->get_n(work, n_consumed);
+            s1_resampler->get_n(&work[0], n_consumed);
 
-            stage2_resampler_->put_n(work, n_consumed);
+            stage2_resampler_->put_n(&work[0], n_consumed);
 
             s2_remains -= n_consumed;
         }
