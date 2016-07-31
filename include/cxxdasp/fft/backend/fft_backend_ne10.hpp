@@ -82,11 +82,11 @@ public:
          */
         forward(int n, fft_complex_t *in, fft_complex_t *out) : base(n, in, out, 1), cfg_(0)
         {
-            cfg_ = ::ne10_fft_alloc_c2c_float32(n);
-
             if (cxxporthelper::platform_info::support_arm_neon()) {
+                cfg_ = ::ne10_fft_alloc_c2c_float32_neon(n);
                 fp_execute_ = ne10_fft_c2c_1d_float32_neon;
             } else {
+                cfg_ = ::ne10_fft_alloc_c2c_float32_c(n);
                 fp_execute_ = ne10_fft_c2c_1d_float32_c;
             }
         }
@@ -134,11 +134,11 @@ public:
         inverse(int n, fft_complex_t *in, fft_complex_t *out)
             : base(n, in, out, 1), cfg_(nullptr), fp_execute_(nullptr)
         {
-            cfg_ = ::ne10_fft_alloc_c2c_float32(n);
-
             if (cxxporthelper::platform_info::support_arm_neon()) {
+                cfg_ = ::ne10_fft_alloc_c2c_float32_neon(n);
                 fp_execute_ = ne10_fft_c2c_1d_float32_neon;
             } else {
+                cfg_ = ::ne10_fft_alloc_c2c_float32_c(n);
                 fp_execute_ = ne10_fft_c2c_1d_float32_c;
             }
         }

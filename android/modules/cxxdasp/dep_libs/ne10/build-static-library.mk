@@ -36,19 +36,35 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/inc
 
 LOCAL_SRC_FILES := \
     modules/dsp/NE10_fft.c \
-    modules/dsp/NE10_rfft_float32.c \
-    modules/dsp/NE10_fft_float32.c
+    modules/dsp/NE10_fft_float32.c \
+    modules/dsp/NE10_fft_int16.c \
+    modules/dsp/NE10_fft_int32.c \
+    modules/dsp/NE10_fft_generic_float32.c \
+    modules/dsp/NE10_fft_generic_int32.cpp \
+    modules/dsp/NE10_rfft_float32.c
+
+ifneq (, $(filter armeabi-v7a armeabi-v7a-hard arm64-v8a, $(TARGET_ARCH_ABI)))
+LOCAL_SRC_FILES += \
+    modules/dsp/NE10_fft_generic_float32.neonintrinsic.cpp \
+    modules/dsp/NE10_fft_generic_int32.neonintrinsic.cpp \
+    modules/dsp/NE10_fft_int16.neonintrinsic.c \
+    modules/dsp/NE10_fft_int32.neonintrinsic.c
+endif
 
 ifneq (, $(filter armeabi-v7a armeabi-v7a-hard, $(TARGET_ARCH_ABI)))
     LOCAL_ARM_NEON := true
     LOCAL_SRC_FILES += \
-        modules/dsp/NE10_fft_float32.neon.c
+        modules/dsp/NE10_fft_float32.neon.c \
+        modules/dsp/NE10_fft_int16.neon.c \
+        modules/dsp/NE10_fft_int32.neon.c
 endif
 
 ifneq (, $(filter arm64-v8a, $(TARGET_ARCH_ABI)))
-LOCAL_SRC_FILES += \
-    modules/dsp/NE10_rfft_float32.neonintrinsic.c \
-    modules/dsp/NE10_fft_float32.neonintrinsic.c
+    LOCAL_SRC_FILES += \
+        modules/dsp/NE10_rfft_float32.neonintrinsic.c \
+        modules/dsp/NE10_fft_float32.neonintrinsic.c
+    # LOCAL_SRC_FILES += \
+    #     modules/dsp/NE10_fft_float32.neon.c
 endif
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/inc
