@@ -20,9 +20,9 @@
 
 include(ExternalProject)
 ExternalProject_Add(ext_libsamplerate
-    PREFIX 0.1.8
-    URL http://www.mega-nerd.com/SRC/libsamplerate-0.1.8.tar.gz
-    URL_HASH MD5=1c7fb25191b4e6e3628d198a66a84f47
+    PREFIX 0.1.9
+    URL http://www.mega-nerd.com/SRC/libsamplerate-0.1.9.tar.gz
+    URL_HASH MD5=2b78ae9fe63b36b9fbb6267fad93f259
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./configure --disable-fftw --disable-shared --enable-static --disable-sndfile
     PATCH_COMMAND ""
