@@ -22,12 +22,14 @@ include(ExternalProject)
 
 if (MSVC)
 if (CMAKE_GENERATOR MATCHES " Win64$")
+
 ### MSVC - x86_64
+### (use pre-built DLLs)
 
 ExternalProject_Add(ext_fftwf
     PREFIX 3.3.4
     URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.4-dll64.zip
-    URL_HASH MD5=c840c5450f57a98578783fa633047d83
+    URL_HASH MD5=cb3c5ad19a89864f036e7a2dd5be168c
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
     PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gen_vc_libs_x64.cmd <SOURCE_DIR>/gen_vc_libs_x64.cmd
@@ -53,16 +55,21 @@ set_property(TARGET fftwf APPEND PROPERTY
     INTERFACE_INCLUDE_DIRECTORIES_NO_EXIST_CHECK ${SOURCE_DIR})
 
 elseif (CMAKE_GENERATOR MATCHES "ARM$")
+
 ### MSVC - ARM
+### (not supported)
+
 message(SEND_ERROR "ARM processor is not supported")
 
 else()
+
 ### MSVC - x86
+### (use pre-built DLLs)
 
 ExternalProject_Add(ext_fftwf
-    PREFIX 3.3.4
-    URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.4-dll32.zip
-    URL_HASH MD5=757ce6282e7cab2dfa2dd40ba46f1c1f
+    PREFIX 3.3.5
+    URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll32.zip
+    URL_HASH MD5=f9928318c8a35fa8b594aa75af9f0550
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
     PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gen_vc_libs_x86.cmd <SOURCE_DIR>/gen_vc_libs_x86.cmd
@@ -107,9 +114,9 @@ else()
 endif()
 
 ExternalProject_Add(ext_fftwf
-    PREFIX 3.3.4
-    URL http://www.fftw.org/fftw-3.3.4.tar.gz
-    URL_HASH MD5=2edab8c06b24feeb3b82bbb3ebf3e7b3
+    PREFIX 3.3.5
+    URL http://www.fftw.org/fftw-3.3.5.tar.gz
+    URL_HASH MD5=6cc08a3b9c7ee06fdd5b9eb02e06f569
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./configure ${CONFIGURE_OPTIONS}
     BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} -j8
