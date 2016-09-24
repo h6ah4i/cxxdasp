@@ -1,0 +1,12 @@
+diff -u original/GNUmakefile patched/GNUmakefile
+--- original/GNUmakefile	2016-09-24 20:11:42.000000000 +0900
++++ patched/GNUmakefile	2016-09-24 20:07:20.000000000 +0900
+@@ -27,7 +27,7 @@
+ PREFIX = /usr/local
+ 
+ CFLAGS += -std=gnu99 -Wall -Wextra
+-LDFLAGS += -lm -Wl,-no-undefined
++LDFLAGS += -lm
+ 
+ ifeq ($(PLATFORM),win)
+ 	CC = $(TOOLCHAIN_PREFIX)gcc

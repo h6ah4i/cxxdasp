@@ -19,17 +19,35 @@
 #
 include(ExternalProject)
 
-ExternalProject_Add(ext_mufft
-    PREFIX latest
-    URL https://github.com/Themaister/muFFT/archive/6d716abf9d813627338b9580589fc442975559d1.tar.gz
-    URL_HASH MD5=ea8363a7b6c0ca4c7177439e2d035411
-    # GIT_REPOSITORY https://github.com/Themaister/muFFT.git
-    # GIT_TAG 6d716abf9d813627338b9580589fc442975559d1
-    CMAKE_ARGS -G ${CMAKE_GENERATOR} ../ext_mufft
-    CMAKE_CACHE_ARGS ${CXXDASP_DEP_LIBS_CMAKE_CACHE_ARGS}
-    PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists-mufft.txt <SOURCE_DIR>/CMakeLists.txt
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ../ext_mufft/fft.h <SOURCE_DIR>/inc/mufft/fft.h
-)
+if (MSVC)
+    ExternalProject_Add(ext_mufft
+        PREFIX latest
+        URL https://github.com/Themaister/muFFT/archive/6d716abf9d813627338b9580589fc442975559d1.tar.gz
+        URL_HASH MD5=ea8363a7b6c0ca4c7177439e2d035411
+        # GIT_REPOSITORY https://github.com/Themaister/muFFT.git
+        # GIT_TAG 6d716abf9d813627338b9580589fc442975559d1
+        CMAKE_ARGS -G ${CMAKE_GENERATOR} ../ext_mufft
+        CMAKE_CACHE_ARGS ${CXXDASP_DEP_LIBS_CMAKE_CACHE_ARGS}
+        PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists-mufft.txt <SOURCE_DIR>/CMakeLists.txt
+        INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ../ext_mufft/fft.h <SOURCE_DIR>/inc/mufft/fft.h
+    )
+else()
+    ExternalProject_Add(ext_mufft
+        PREFIX latest
+        URL https://github.com/Themaister/muFFT/archive/6d716abf9d813627338b9580589fc442975559d1.tar.gz
+        URL_HASH MD5=ea8363a7b6c0ca4c7177439e2d035411
+        # GIT_REPOSITORY https://github.com/Themaister/muFFT.git
+        # GIT_TAG 6d716abf9d813627338b9580589fc442975559d1
+        BUILD_IN_SOURCE 1
+        CONFIGURE_COMMAND ""
+        PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/fix_makefile.patch
+        BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} -j8
+        INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ../ext_mufft/fft.h <SOURCE_DIR>/inc/mufft/fft.h
+        # CMAKE_ARGS -G ${CMAKE_GENERATOR} ../ext_mufft
+        # CMAKE_CACHE_ARGS ${CXXDASP_DEP_LIBS_CMAKE_CACHE_ARGS}
+        # PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists-mufft.txt <SOURCE_DIR>/CMakeLists.txt
+    )
+endif()
 
 add_library(mufft STATIC IMPORTED GLOBAL)
 add_dependencies(mufft ext_mufft)
