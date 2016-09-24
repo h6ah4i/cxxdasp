@@ -23,9 +23,9 @@ set(CXXDASP_TOP_DIR ${PROJECT_SOURCE_DIR})
 # Tweak compiler options
 #
 
-# enable C++11
+# enable C++14
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
 endif()
 
 # enable SSE, SSE2 and SSE3

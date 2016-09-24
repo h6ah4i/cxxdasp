@@ -30,8 +30,10 @@ using namespace cxxdasp;
 // #undef CXXDASP_USE_FFT_BACKEND_NE10
 // #undef CXXDASP_USE_FFT_BACKEND_CKFFT
 // #undef CXXDASP_USE_FFT_BACKEND_MUFFT
+// #undef CXXDASP_USE_FFT_BACKEND_KFR_F
 // #undef CXXDASP_USE_FFT_BACKEND_FFTW
 // #undef CXXDASP_USE_FFT_BACKEND_GP_FFT
+// #undef CXXDASP_USE_FFT_BACKEND_KFR_D
 
 template <typename TFFTBackend, typename T>
 class ForwardFFTTest : public ::testing::Test {
@@ -472,6 +474,23 @@ TEST_F(InverseRealFFTTest_MUFFT_Float, inverse_real) { do_inverse_real_fft_test(
 #endif
 
 //
+// KFR
+//
+#if CXXDASP_USE_FFT_BACKEND_KFR_F
+typedef ForwardFFTTest<fft::backend::f::kfr, float> ForwardFFTTest_KFR_Float;
+TEST_F(ForwardFFTTest_KFR_Float, forward) { do_forward_fft_test(this); }
+
+typedef InverseFFTTest<fft::backend::f::kfr, float> InverseFFTTest_KFR_Float;
+TEST_F(InverseFFTTest_KFR_Float, inverse) { do_inverse_fft_test(this); }
+
+typedef ForwardRealFFTTest<fft::backend::f::kfr, float> ForwardRealFFTTest_KFR_Float;
+TEST_F(ForwardRealFFTTest_KFR_Float, forward_real) { do_forward_real_fft_test(this); }
+
+typedef InverseRealFFTTest<fft::backend::f::kfr, float> InverseRealFFTTest_KFR_Float;
+TEST_F(InverseRealFFTTest_KFR_Float, inverse_real) { do_inverse_real_fft_test(this); }
+#endif
+
+//
 // FFTW
 //
 #if CXXDASP_USE_FFT_BACKEND_FFTW
@@ -503,4 +522,21 @@ TEST_F(ForwardRealFFTTest_GP_FFT_Double, forward_real) { do_forward_real_fft_tes
 
 typedef InverseRealFFTTest<fft::backend::d::gp_fft, double> InverseRealFFTTest_GP_FFT_Double;
 TEST_F(InverseRealFFTTest_GP_FFT_Double, inverse_real) { do_inverse_real_fft_test(this); }
+#endif
+
+//
+// KFR (double precision)
+//
+#if CXXDASP_USE_FFT_BACKEND_KFR_D
+typedef ForwardFFTTest<fft::backend::d::kfr, double> ForwardFFTTest_KFR_Double;
+TEST_F(ForwardFFTTest_KFR_Double, forward) { do_forward_fft_test(this); }
+
+typedef InverseFFTTest<fft::backend::d::kfr, double> InverseFFTTest_KFR_Double;
+TEST_F(InverseFFTTest_KFR_Double, inverse) { do_inverse_fft_test(this); }
+
+typedef ForwardRealFFTTest<fft::backend::d::kfr, double> ForwardRealFFTTest_KFR_Double;
+TEST_F(ForwardRealFFTTest_KFR_Double, forward_real) { do_forward_real_fft_test(this); }
+
+typedef InverseRealFFTTest<fft::backend::d::kfr, double> InverseRealFFTTest_KFR_Double;
+TEST_F(InverseRealFFTTest_KFR_Double, inverse_real) { do_inverse_real_fft_test(this); }
 #endif

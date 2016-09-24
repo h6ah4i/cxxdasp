@@ -92,6 +92,12 @@ if (${CXXDASP_CONFIG_USE_FFT_BACKEND_MUFFT})
     target_compile_definitions(cxxdasp INTERFACE -DCXXDASP_USE_FFT_BACKEND_MUFFT=1)
 endif()
 
+if (${CXXDASP_CONFIG_USE_FFT_BACKEND_KFR_F})
+    # target_link_libraries(cxxdasp kfr) # NOTE: KFR is header-only library
+    target_include_directories(cxxdasp PUBLIC $<TARGET_PROPERTY:kfr,INTERFACE_INCLUDE_DIRECTORIES_NO_EXIST_CHECK>)
+    target_compile_definitions(cxxdasp INTERFACE -DCXXDASP_USE_FFT_BACKEND_KFR_F=1)
+endif()
+
 ### double-precision FFT
 if (${CXXDASP_CONFIG_USE_FFT_BACKEND_GP_FFT})
     target_link_libraries(cxxdasp gp_fft)
@@ -103,6 +109,12 @@ if (${CXXDASP_CONFIG_USE_FFT_BACKEND_FFTW})
     target_link_libraries(cxxdasp fftw)
     target_include_directories(cxxdasp PUBLIC $<TARGET_PROPERTY:fftw,INTERFACE_INCLUDE_DIRECTORIES_NO_EXIST_CHECK>)
     target_compile_definitions(cxxdasp INTERFACE -DCXXDASP_USE_FFT_BACKEND_FFTW=1)
+endif()
+
+if (${CXXDASP_CONFIG_USE_FFT_BACKEND_KFR_D})
+    # target_link_libraries(cxxdasp kfr) # NOTE: KFR is header-only library
+    target_include_directories(cxxdasp PUBLIC $<TARGET_PROPERTY:kfr,INTERFACE_INCLUDE_DIRECTORIES_NO_EXIST_CHECK>)
+    target_compile_definitions(cxxdasp INTERFACE -DCXXDASP_USE_FFT_BACKEND_KFR_D=1)
 endif()
 
 #

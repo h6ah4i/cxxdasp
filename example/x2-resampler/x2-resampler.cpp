@@ -279,6 +279,8 @@ int main(int argc, char const *argv[])
     typedef fft::backend::f::ckfft app_fft_backend_f;
 #elif CXXDASP_USE_FFT_BACKEND_MUFFT
     typedef fft::backend::f::mufft app_fft_backend_f;
+#elif CXXDASP_USE_FFT_BACKEND_KFR_F
+    typedef fft::backend::f::kfr app_fft_backend_f;
 #else
 #error No FFT library available
 #endif
@@ -288,6 +290,8 @@ int main(int argc, char const *argv[])
     typedef fft::backend::d::gp_fft app_fft_backend_d;
 #elif CXXDASP_USE_FFT_BACKEND_FFTW
     typedef fft::backend::d::fftw app_fft_backend_d;
+#elif CXXDASP_USE_FFT_BACKEND_KFR_D
+    typedef fft::backend::d::kfr app_fft_backend_d;
 #else
 #if CXXPH_COMPILER_IS_MSVC
 #pragma message("Double - precision FFT library is not available.")

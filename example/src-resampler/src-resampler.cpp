@@ -15,8 +15,8 @@
 //
 
 // NOTE:
-// This code is NOT an example of the audio-resampler library.
-// It uses soxr (The SoX Resampling library) instead of the audio-resampler
+// This code is NOT an example of the cxxdasp library.
+// It uses soxr (The SoX Resampling library) instead of the cxxdasp
 // and used for benchmark purpose.
 
 #include <iostream>
