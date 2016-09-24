@@ -41,8 +41,10 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STRE
 endif()
 
 # enable profiling
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pg")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pg")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+endif()
 
 #
 # Sub directories
