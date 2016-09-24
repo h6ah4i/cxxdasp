@@ -103,8 +103,8 @@ function calc_stage1_halfband_filter_coeffs() {
 
 # (INPUT_FREQ < OUTPUT_FREQ)
 #
-# 8000, 16000, 32000        -> 44100
-# 8000, 16000, 32000, 44100 -> 48000
+# 8000, 11025, 12000, 16000, 22050, 24000, 32000        -> 44100
+# 8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100 -> 48000
 calc_stage1_fft_filter_coeffs 1 1 "stage1_fft_nyq.inc"
 
 # ((INPUT_FREQ/2) == OUTPUT_FREQ)
@@ -138,12 +138,19 @@ calc_stage1_halfband_filter_coeffs 129 14.0 "stage1_halfband_mq.inc"
 # 
 
 # 8000  x2  {M = 441, L = 160}
+# 12000 x2  {M = 441, L = 240}
 # 16000 x2  {M = 441, L = 320}
+# 24000 x2  {M = 441, L = 480}
 # 32000 x2  {M = 441, L = 640}
 # 48000 x2  {M = 441, L = 960}
 # 96000 x2  {M = 441, L = 1920}
 calc_stage2_filter_coeffs 32000 44100 "stage2_lq_m441.inc" 0
 calc_stage2_filter_coeffs 32000 44100 "stage2_hq_m441.inc" 1
+
+# 11025 x2 -> 44100 {M = 2, L = 1}
+# 12000 x2 -> 48000 {M = 2, L = 1}
+calc_stage2_filter_coeffs 12000 48000 "stage2_lq_m2.inc" 0
+calc_stage2_filter_coeffs 12000 48000 "stage2_hq_m2.inc" 1
 
 # 8000  x2  {M = 3, L = 1}
 # 16000 x2  {M = 3, L = 2}
@@ -155,3 +162,8 @@ calc_stage2_filter_coeffs 8000 48000 "stage2_hq_m3.inc" 1
 # 88200 x2  {M = 80, L = 294}
 calc_stage2_filter_coeffs 44100 48000 "stage2_lq_m80.inc" 0
 calc_stage2_filter_coeffs 44100 48000 "stage2_hq_m80.inc" 1
+
+# 11025 x2  {M = 320, L = 147}
+# 22050 x2  {M = 320, L = 294}
+calc_stage2_filter_coeffs 11025 48000 "stage2_lq_m320.inc" 0
+calc_stage2_filter_coeffs 11025 48000 "stage2_hq_m320.inc" 1
