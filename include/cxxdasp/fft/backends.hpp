@@ -25,5 +25,6 @@
 #include <cxxdasp/fft/backend/fft_backend_ckfft.hpp>
 #include <cxxdasp/fft/backend/fft_backend_mufft.hpp>
 #include <cxxdasp/fft/backend/fft_backend_gp_fft.hpp>
+#include <cxxdasp/fft/backend/fft_backend_kfr.hpp>
 
 #endif // CXXDASP_FFT_BACKENDS_HPP_

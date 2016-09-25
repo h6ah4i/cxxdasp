@@ -8,11 +8,13 @@ option(CXXDASP_CONFIG_USE_FFT_BACKEND_KISS_FFT  "Use Kiss FFT library for single
 option(CXXDASP_CONFIG_USE_FFT_BACKEND_FFTWF     "Use FFTWF library for single-precision FFT backend  (not compatible with MSVC)"          NO)
 option(CXXDASP_CONFIG_USE_FFT_BACKEND_NE10      "Use Ne10 library for single-precision FFT backend  (compatible with ARMv7 only)"         NO)
 option(CXXDASP_CONFIG_USE_FFT_BACKEND_CKFFT     "Use Cricket FFT library for single-precision FFT backend  (compatible with all platforms)"  NO)
-option(CXXDASP_CONFIG_USE_FFT_BACKEND_MUFFT     "Use muFFT library for single-precision FFT backend  (compatible with all platforms)"  YES)
+option(CXXDASP_CONFIG_USE_FFT_BACKEND_MUFFT     "Use muFFT library for single-precision FFT backend  (compatible with all platforms)"     YES)
+option(CXXDASP_CONFIG_USE_FFT_BACKEND_KFR_F     "Use KFR library for single-precision FFT backend  (compatible with all platforms)"       NO)
 
 ### double-precision FFT libraries
 option(CXXDASP_CONFIG_USE_FFT_BACKEND_GP_FFT    "Use General Purpose FFT package for double-precision FFT backend (compatible with all platforms)" YES)
 option(CXXDASP_CONFIG_USE_FFT_BACKEND_FFTW      "Use FFTW library for double-precision FFT backend  (not compatible with MSVC)"           NO)
+option(CXXDASP_CONFIG_USE_FFT_BACKEND_KFR_D     "Use KFR library for double-precision FFT backend  (compatible with all platforms)"       NO)
 
 #
 # Build targets

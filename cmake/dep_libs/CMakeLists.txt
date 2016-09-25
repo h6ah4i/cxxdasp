@@ -55,6 +55,10 @@ if (CXXDASP_CONFIG_USE_FFT_BACKEND_FFTW)
     add_subdirectory(fftw)
 endif()
 
+if (CXXDASP_CONFIG_USE_FFT_BACKEND_KFR_F OR CXXDASP_CONFIG_USE_FFT_BACKEND_KFR_D)
+    add_subdirectory(kfr)
+endif()
+
 if (CXXDASP_BUILD_EXAMPLE_SOXR_RESAMPLER)
     add_subdirectory(soxr)
 endif()

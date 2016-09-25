@@ -1,3 +1,9 @@
+## 0.6.4
+
+- Added 11.025 kHz, 12 kHz, 22.05 kHz and 24 kHz support
+- Updated soxr, libsamplerate, FFTW and PFFFT libraries
+
+
 ## 0.6.3
 
 - Fix compilation failure on Clang 7.3.0

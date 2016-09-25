@@ -29,12 +29,12 @@ set(SOXR_CMAKE_CXX_FLAGS)
 endif()
 
 ExternalProject_Add(ext_soxr
-    PREFIX 0.1.1
+    PREFIX 0.1.2
     # NOTE: tar.xz support was added since cmake 3.1
-    # URL http://sourceforge.net/projects/soxr/files/soxr-0.1.1-Source.tar.xz/download
+    # URL http://sourceforge.net/projects/soxr/files/soxr-0.1.2-Source.tar.xz/download
     # GIT_REPOSITORY git://git.code.sf.net/p/soxr/code
     GIT_REPOSITORY http://git.code.sf.net/p/soxr/code
-    GIT_TAG 0.1.1
+    GIT_TAG 0.1.2
     CMAKE_ARGS -G ${CMAKE_GENERATOR} ../ext_soxr
     CMAKE_CACHE_ARGS ${CXXDASP_DEP_LIBS_CMAKE_CACHE_ARGS} -DCMAKE_C_FLAGS:STRING=${SOXR_CMAKE_C_FLAGS} -DCMAKE_CXX_FLAGS:STRING=${SOXR_CMAKE_CXX_FLAGS} -DBUILD_TESTS:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=OFF -DWITH_OPENMP:BOOL=OFF -DWITH_LSR_BINDINGS:BOOL=OFF
     INSTALL_COMMAND ""

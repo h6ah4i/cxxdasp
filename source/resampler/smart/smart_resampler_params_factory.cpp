@@ -114,6 +114,10 @@ DECL_ALIGNED_COEFFS static const float stage1_halfband_coeffs_mq[] = {
 DECL_ALIGNED_COEFFS static const float stage2_coeffs_m1[] = { 1.0f };
 
 #if CXXDASP_ENABLE_POLYPHASE_RESAMPLER_FACTORY_LOW_QUALITY
+DECL_ALIGNED_COEFFS static const float stage2_coeffs_lq_m2[] = {
+#include "resampler/smart/coeffs/stage2_lq_m2.inc"
+};
+
 DECL_ALIGNED_COEFFS static const float stage2_coeffs_lq_m3[] = {
 #include "resampler/smart/coeffs/stage2_lq_m3.inc"
 };
@@ -122,18 +126,30 @@ DECL_ALIGNED_COEFFS static const float stage2_coeffs_lq_m80[] = {
 #include "resampler/smart/coeffs/stage2_lq_m80.inc"
 };
 
+DECL_ALIGNED_COEFFS static const float stage2_coeffs_lq_m320[] = {
+#include "resampler/smart/coeffs/stage2_lq_m320.inc"
+};
+
 DECL_ALIGNED_COEFFS static const float stage2_coeffs_lq_m441[] = {
 #include "resampler/smart/coeffs/stage2_lq_m441.inc"
 };
 #endif
 
 #if CXXDASP_ENABLE_POLYPHASE_RESAMPLER_FACTORY_HIGH_QUALITY
+DECL_ALIGNED_COEFFS static const float stage2_coeffs_hq_m2[] = {
+#include "resampler/smart/coeffs/stage2_hq_m2.inc"
+};
+
 DECL_ALIGNED_COEFFS static const float stage2_coeffs_hq_m3[] = {
 #include "resampler/smart/coeffs/stage2_hq_m3.inc"
 };
 
 DECL_ALIGNED_COEFFS static const float stage2_coeffs_hq_m80[] = {
 #include "resampler/smart/coeffs/stage2_hq_m80.inc"
+};
+
+DECL_ALIGNED_COEFFS static const float stage2_coeffs_hq_m320[] = {
+#include "resampler/smart/coeffs/stage2_hq_m320.inc"
 };
 
 DECL_ALIGNED_COEFFS static const float stage2_coeffs_hq_m441[] = {
@@ -149,14 +165,18 @@ VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_88200_48000);
 VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_96000_44100);
 
 #if CXXDASP_ENABLE_POLYPHASE_RESAMPLER_FACTORY_LOW_QUALITY
+VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_lq_m2, 2);
 VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_lq_m3, 3);
 VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_lq_m80, 80);
+VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_lq_m320, 320);
 VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_lq_m441, 441);
 #endif
 
 #if CXXDASP_ENABLE_POLYPHASE_RESAMPLER_FACTORY_HIGH_QUALITY
+VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_hq_m2, 2);
 VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_hq_m3, 3);
 VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_hq_m80, 80);
+VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_hq_m320, 320);
 VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_hq_m441, 441);
 #endif
 
@@ -176,6 +196,8 @@ static const stage2_poly_fir_info stage2_m1_l1[] = { DECL_LQ_POLY_FIR_INFO(stage
                                                      DECL_HQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 1), };
 static const stage2_poly_fir_info stage2_m1_l4[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 4),
                                                      DECL_HQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 4), };
+static const stage2_poly_fir_info stage2_m2_l1[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m2, 2, 1),
+                                                     DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m2, 2, 1), };
 static const stage2_poly_fir_info stage2_m3_l1[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m3, 3, 1),
                                                      DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m3, 3, 1), };
 static const stage2_poly_fir_info stage2_m3_l2[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m3, 3, 2),
@@ -186,10 +208,18 @@ static const stage2_poly_fir_info stage2_m80_l147[] = { DECL_LQ_POLY_FIR_INFO(st
                                                         DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m80, 80, 147), };
 static const stage2_poly_fir_info stage2_m80_l294[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m80, 80, 294),
                                                         DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m80, 80, 294), };
+static const stage2_poly_fir_info stage2_m320_l147[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m320, 320, 147),
+                                                         DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m320, 320, 147), };
+static const stage2_poly_fir_info stage2_m320_l294[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m320, 320, 294),
+                                                         DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m320, 320, 294), };
 static const stage2_poly_fir_info stage2_m441_l160[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m441, 441, 160),
                                                          DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m441, 441, 160), };
+static const stage2_poly_fir_info stage2_m441_l240[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m441, 441, 240),
+                                                         DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m441, 441, 240), };
 static const stage2_poly_fir_info stage2_m441_l320[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m441, 441, 320),
                                                          DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m441, 441, 320), };
+static const stage2_poly_fir_info stage2_m441_l480[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m441, 441, 480),
+                                                         DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m441, 441, 480), };
 static const stage2_poly_fir_info stage2_m441_l640[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m441, 441, 640),
                                                          DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m441, 441, 640), };
 static const stage2_poly_fir_info stage2_m441_l960[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m441, 441, 960),
@@ -243,8 +273,20 @@ static const stage2_poly_fir_info *get_stage2_filter_info(int input_freq, int ou
         case 8000:
             info = stage2_m441_l160;
             break;
+        case 11025:
+            info = stage2_m2_l1;
+            break;
+        case 12000:
+            info = stage2_m441_l240;
+            break;
         case 16000:
             info = stage2_m441_l320;
+            break;
+        case 22050:
+            info = stage2_m1_l1;
+            break;
+        case 24000:
+            info = stage2_m441_l480;
             break;
         case 32000:
             info = stage2_m441_l640;
@@ -270,8 +312,20 @@ static const stage2_poly_fir_info *get_stage2_filter_info(int input_freq, int ou
         case 8000:
             info = stage2_m3_l1;
             break;
+        case 11025:
+            info = stage2_m320_l147;
+            break;
+        case 12000:
+            info = stage2_m2_l1;
+            break;
         case 16000:
             info = stage2_m3_l2;
+            break;
+        case 22050:
+            info = stage2_m320_l294;
+            break;
+        case 24000:
+            info = stage2_m1_l1;
             break;
         case 32000:
             info = stage2_m3_l4;

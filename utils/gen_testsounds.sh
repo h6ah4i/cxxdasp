@@ -56,7 +56,11 @@ if [ ! -d $DEST_DIR ]; then
 fi
 
 gen_float_sweep_sound_files 8000
+gen_float_sweep_sound_files 11025
+gen_float_sweep_sound_files 12000
 gen_float_sweep_sound_files 16000
+gen_float_sweep_sound_files 22050
+gen_float_sweep_sound_files 24000
 gen_float_sweep_sound_files 32000
 gen_float_sweep_sound_files 44100
 gen_float_sweep_sound_files 48000

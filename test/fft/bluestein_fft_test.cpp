@@ -31,8 +31,10 @@ using namespace cxxdasp;
 #undef CXXDASP_USE_FFT_BACKEND_NE10
 #undef CXXDASP_USE_FFT_BACKEND_CKFFT
 #undef CXXDASP_USE_FFT_BACKEND_MUFFT
+#undef CXXDASP_USE_FFT_BACKEND_KFR_F
 #undef CXXDASP_USE_FFT_BACKEND_FFTW
 #undef CXXDASP_USE_FFT_BACKEND_GP_FFT
+#undef CXXDASP_USE_FFT_BACKEND_KFR_D
 
 #if CXXDASP_USE_FFT_BACKEND_PFFFT
 typedef fft::backend::f::pffft sp_fft_backend_class;
@@ -48,6 +50,8 @@ typedef fft::backend::f::ne10 sp_fft_backend_class;
 typedef fft::backend::f::ckfft sp_fft_backend_class;
 #elif CXXDASP_USE_FFT_BACKEND_MUFFT
 typedef fft::backend::f::mufft sp_fft_backend_class;
+#elif CXXDASP_USE_FFT_BACKEND_KFR_F
+typedef fft::backend::f::kfr sp_fft_backend_class;
 #else
 #define SINGLE_PRECISION_FFT_IS_NOT_AVAILABLE
 #endif
@@ -56,6 +60,8 @@ typedef fft::backend::f::mufft sp_fft_backend_class;
 typedef fft::backend::d::fftw dp_fft_backend_class;
 #elif CXXDASP_USE_FFT_BACKEND_GP_FFT
 typedef fft::backend::d::gp_fft dp_fft_backend_class;
+#elif CXXDASP_USE_FFT_BACKEND_KFR_D
+typedef fft::backend::d::kfr dp_fft_backend_class;
 #else
 #define DOUBLE_PRECISION_FFT_IS_NOT_AVAILABLE
 #endif
@@ -833,6 +839,34 @@ TEST_F(BluesteinInverseRealFFTTest_Ne10_Float, inverse_real_npot) { do_npot_inve
 #endif
 
 //
+// KFR (single precision)
+//
+#if CXXDASP_USE_FFT_BACKEND_KFR_F
+typedef BluesteinForwardFFTTest<fft::backend::f::kfr, float> BluesteinForwardFFTTest_KFR_Float;
+TEST_F(BluesteinForwardFFTTest_KFR_Float, forward_pot) { do_pot_forward_fft_test(this); }
+
+typedef BluesteinInverseFFTTest<fft::backend::f::kfr, float> BluesteinInverseFFTTest_KFR_Float;
+TEST_F(BluesteinInverseFFTTest_KFR_Float, inverse_pot) { do_pot_inverse_fft_test(this); }
+
+typedef BluesteinForwardRealFFTTest<fft::backend::f::kfr, float> BluesteinForwardRealFFTTest_KFR_Float;
+TEST_F(BluesteinForwardRealFFTTest_KFR_Float, forward_real_pot) { do_pot_forward_real_fft_test(this); }
+
+typedef BluesteinInverseRealFFTTest<fft::backend::f::kfr, float> BluesteinInverseRealFFTTest_KFR_Float;
+TEST_F(BluesteinInverseRealFFTTest_KFR_Float, inverse_real_pot) { do_pot_inverse_real_fft_test(this); }
+typedef BluesteinForwardFFTTest<fft::backend::f::kfr, float> BluesteinForwardFFTTest_KFR_Float;
+TEST_F(BluesteinForwardFFTTest_KFR_Float, forward_npot) { do_npot_forward_fft_test(this); }
+
+typedef BluesteinInverseFFTTest<fft::backend::f::kfr, float> BluesteinInverseFFTTest_KFR_Float;
+TEST_F(BluesteinInverseFFTTest_KFR_Float, inverse_npot) { do_npot_inverse_fft_test(this); }
+
+typedef BluesteinForwardRealFFTTest<fft::backend::f::kfr, float> BluesteinForwardRealFFTTest_KFR_Float;
+TEST_F(BluesteinForwardRealFFTTest_KFR_Float, forward_real_npot) { do_npot_forward_real_fft_test(this); }
+
+typedef BluesteinInverseRealFFTTest<fft::backend::f::kfr, float> BluesteinInverseRealFFTTest_KFR_Float;
+TEST_F(BluesteinInverseRealFFTTest_KFR_Float, inverse_real_npot) { do_npot_inverse_real_fft_test(this); }
+#endif
+
+//
 // FFTW
 //
 #if CXXDASP_USE_FFT_BACKEND_FFTW
@@ -886,4 +920,32 @@ TEST_F(BluesteinForwardRealFFTTest_GP_FFT_Double, forward_real_npot) { do_npot_f
 
 typedef BluesteinInverseRealFFTTest<fft::backend::d::gp_fft, double> BluesteinInverseRealFFTTest_GP_FFT_Double;
 TEST_F(BluesteinInverseRealFFTTest_GP_FFT_Double, inverse_real_npot) { do_npot_inverse_real_fft_test(this); }
+#endif
+
+//
+// KFR (double precision)
+//
+#if CXXDASP_USE_FFT_BACKEND_KFR_D
+typedef BluesteinForwardFFTTest<fft::backend::d::kfr, double> BluesteinForwardFFTTest_KFR_Double;
+TEST_F(BluesteinForwardFFTTest_KFR_Double, forward_pot) { do_pot_forward_fft_test(this); }
+
+typedef BluesteinInverseFFTTest<fft::backend::d::kfr, double> BluesteinInverseFFTTest_KFR_Double;
+TEST_F(BluesteinInverseFFTTest_KFR_Double, inverse_pot) { do_pot_inverse_fft_test(this); }
+
+typedef BluesteinForwardRealFFTTest<fft::backend::d::kfr, double> BluesteinForwardRealFFTTest_KFR_Double;
+TEST_F(BluesteinForwardRealFFTTest_KFR_Double, forward_real_pot) { do_pot_forward_real_fft_test(this); }
+
+typedef BluesteinInverseRealFFTTest<fft::backend::d::kfr, double> BluesteinInverseRealFFTTest_KFR_Double;
+TEST_F(BluesteinInverseRealFFTTest_KFR_Double, inverse_real_pot) { do_pot_inverse_real_fft_test(this); }
+typedef BluesteinForwardFFTTest<fft::backend::d::kfr, double> BluesteinForwardFFTTest_KFR_Double;
+TEST_F(BluesteinForwardFFTTest_KFR_Double, forward_npot) { do_npot_forward_fft_test(this); }
+
+typedef BluesteinInverseFFTTest<fft::backend::d::kfr, double> BluesteinInverseFFTTest_KFR_Double;
+TEST_F(BluesteinInverseFFTTest_KFR_Double, inverse_npot) { do_npot_inverse_fft_test(this); }
+
+typedef BluesteinForwardRealFFTTest<fft::backend::d::kfr, double> BluesteinForwardRealFFTTest_KFR_Double;
+TEST_F(BluesteinForwardRealFFTTest_KFR_Double, forward_real_npot) { do_npot_forward_real_fft_test(this); }
+
+typedef BluesteinInverseRealFFTTest<fft::backend::d::kfr, double> BluesteinInverseRealFFTTest_KFR_Double;
+TEST_F(BluesteinInverseRealFFTTest_KFR_Double, inverse_real_npot) { do_npot_inverse_real_fft_test(this); }
 #endif

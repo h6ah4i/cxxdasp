@@ -62,15 +62,23 @@ $r_mkdir $REMOTE_RESAMPLED_RAW_DIR
 
 # to 44100 Hz
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_8000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_8000_44100.raw 1 8000 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_11025.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_11025_44100.raw 1 11025 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_12000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_12000_44100.raw 1 12000 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_16000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_16000_44100.raw 1 16000 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_22050.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_22050_44100.raw 1 22050 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_24000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_24000_44100.raw 1 24000 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_32000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_32000_44100.raw 1 32000 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_44100.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_44100_44100.raw 1 44100 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_48000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_48000_44100.raw 1 48000 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_88200.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_88200_44100.raw 1 88200 44100 $QUALITY
-$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_96000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_96000_44100.raw 1 88200 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_96000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_96000_44100.raw 1 96000 44100 $QUALITY
 
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_8000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_8000_44100.raw 2 8000 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_11025.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_11025_44100.raw 2 11025 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_12000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_12000_44100.raw 2 12000 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_16000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_16000_44100.raw 2 16000 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_22050.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_22050_44100.raw 2 22050 44100 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_24000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_24000_44100.raw 2 24000 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_32000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_32000_44100.raw 2 32000 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_44100.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_44100_44100.raw 2 44100 44100 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_48000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_48000_44100.raw 2 48000 44100 $QUALITY
@@ -79,7 +87,11 @@ $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_96000.raw $REMOTE_RESAMPLE
 
 # to 48000 Hz
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_8000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_8000_48000.raw 1 8000 48000 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_11025.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_11025_48000.raw 1 11025 48000 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_12000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_12000_48000.raw 1 12000 48000 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_16000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_16000_48000.raw 1 16000 48000 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_22050.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_22050_48000.raw 1 22050 48000 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_24000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_24000_48000.raw 1 24000 48000 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_32000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_32000_48000.raw 1 32000 48000 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_44100.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_44100_48000.raw 1 44100 48000 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_48000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_48000_48000.raw 1 48000 48000 $QUALITY
@@ -87,7 +99,11 @@ $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_88200.raw $REMOTE_RESAMPLED_
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_mono_96000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_mono_96000_48000.raw 1 96000 48000 $QUALITY
 
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_8000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_8000_48000.raw 2 8000 48000 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_11025.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_11025_48000.raw 2 11025 48000 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_12000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_12000_48000.raw 2 12000 48000 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_16000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_16000_48000.raw 2 16000 48000 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_22050.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_22050_48000.raw 2 22050 48000 $QUALITY
+$r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_24000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_24000_48000.raw 2 24000 48000 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_32000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_32000_48000.raw 2 32000 48000 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_44100.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_44100_48000.raw 2 44100 48000 $QUALITY
 $r_simple_resampler $REMOTE_ORIG_RAW_DIR/sweep_stereo_48000.raw $REMOTE_RESAMPLED_RAW_DIR/resampled_stereo_48000_48000.raw 2 48000 48000 $QUALITY
