@@ -113,6 +113,12 @@ calc_stage1_fft_filter_coeffs 1 1 "stage1_fft_nyq.inc"
 # 96000 -> 48000
 calc_stage1_fft_filter_coeffs 2 1 "stage1_fft_half_nyq.inc"
 
+# ((INPUT_FREQ/4) == OUTPUT_FREQ)
+#
+# 176400 -> 44100
+# 192000 -> 48000
+calc_stage1_fft_filter_coeffs 4 1 "stage1_fft_quarter_nyq.inc"
+
 # (INPUT_FREQ > OUTPUT_FREQ)
 #
 
@@ -125,6 +131,11 @@ calc_stage1_fft_filter_coeffs 88200 48000 "stage1_fft_88200_48000.inc"
 # 96000 -> 44100
 calc_stage1_fft_filter_coeffs 96000 44100 "stage1_fft_96000_44100.inc"
 
+# 176400 -> 48000
+calc_stage1_fft_filter_coeffs 176400 48000 "stage1_fft_176400_48000.inc"
+
+# 192000 -> 44100
+calc_stage1_fft_filter_coeffs 192000 44100 "stage1_fft_192000_44100.inc"
 
 #
 # STAGE 1 (Halbband)

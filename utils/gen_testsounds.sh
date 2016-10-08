@@ -66,3 +66,5 @@ gen_float_sweep_sound_files 44100
 gen_float_sweep_sound_files 48000
 gen_float_sweep_sound_files 88200
 gen_float_sweep_sound_files 96000
+gen_float_sweep_sound_files 176400
+gen_float_sweep_sound_files 192000

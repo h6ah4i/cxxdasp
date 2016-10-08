@@ -85,6 +85,10 @@ DECL_ALIGNED_COEFFS static const float stage1_fft_coeffs_half_nyq[] = {
 #include "resampler/smart/coeffs/stage1_fft_half_nyq.inc"
 };
 
+DECL_ALIGNED_COEFFS static const float stage1_fft_coeffs_quarter_nyq[] = {
+#include "resampler/smart/coeffs/stage1_fft_quarter_nyq.inc"
+};
+
 DECL_ALIGNED_COEFFS static const float stage1_fft_coeffs_48000_44100[] = {
 #include "resampler/smart/coeffs/stage1_fft_48000_44100.inc"
 };
@@ -95,6 +99,14 @@ DECL_ALIGNED_COEFFS static const float stage1_fft_coeffs_88200_48000[] = {
 
 DECL_ALIGNED_COEFFS static const float stage1_fft_coeffs_96000_44100[] = {
 #include "resampler/smart/coeffs/stage1_fft_96000_44100.inc"
+};
+
+DECL_ALIGNED_COEFFS static const float stage1_fft_coeffs_176400_48000[] = {
+#include "resampler/smart/coeffs/stage1_fft_176400_48000.inc"
+};
+
+DECL_ALIGNED_COEFFS static const float stage1_fft_coeffs_192000_44100[] = {
+#include "resampler/smart/coeffs/stage1_fft_192000_44100.inc"
 };
 
 //
@@ -160,9 +172,12 @@ DECL_ALIGNED_COEFFS static const float stage2_coeffs_hq_m441[] = {
 // verify filter coefficients
 VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_nyq);
 VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_half_nyq);
+VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_quarter_nyq);
 VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_48000_44100);
 VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_88200_48000);
 VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_96000_44100);
+VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_176400_48000);
+VERIFY_FFT_FIR_COEFFS_SIZE(stage1_fft_coeffs_192000_44100);
 
 #if CXXDASP_ENABLE_POLYPHASE_RESAMPLER_FACTORY_LOW_QUALITY
 VERIFY_POLY_FIR_COEFFS_SIZE(stage2_coeffs_lq_m2, 2);
@@ -188,14 +203,19 @@ static const stage1_x2_fir_info stage1_halfband_mq = DECL_HALFBAND_FIR_INFO(stag
 
 static const stage1_x2_fir_info stage1_fft_nyq = DECL_FFT_FIR_INFO(stage1_fft_coeffs_nyq);
 static const stage1_x2_fir_info stage1_fft_half_nyq = DECL_FFT_FIR_INFO(stage1_fft_coeffs_half_nyq);
+static const stage1_x2_fir_info stage1_fft_quarter_nyq = DECL_FFT_FIR_INFO(stage1_fft_coeffs_quarter_nyq);
 static const stage1_x2_fir_info stage1_fft_48000_44100 = DECL_FFT_FIR_INFO(stage1_fft_coeffs_48000_44100);
 static const stage1_x2_fir_info stage1_fft_88200_48000 = DECL_FFT_FIR_INFO(stage1_fft_coeffs_88200_48000);
 static const stage1_x2_fir_info stage1_fft_96000_44100 = DECL_FFT_FIR_INFO(stage1_fft_coeffs_96000_44100);
+static const stage1_x2_fir_info stage1_fft_176400_48000 = DECL_FFT_FIR_INFO(stage1_fft_coeffs_176400_48000);
+static const stage1_x2_fir_info stage1_fft_192000_44100 = DECL_FFT_FIR_INFO(stage1_fft_coeffs_192000_44100);
 
 static const stage2_poly_fir_info stage2_m1_l1[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 1),
                                                      DECL_HQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 1), };
 static const stage2_poly_fir_info stage2_m1_l4[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 4),
                                                      DECL_HQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 4), };
+static const stage2_poly_fir_info stage2_m1_l8[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 8),
+                                                     DECL_HQ_POLY_FIR_INFO(stage2_coeffs_m1, 1, 8), };
 static const stage2_poly_fir_info stage2_m2_l1[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m2, 2, 1),
                                                      DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m2, 2, 1), };
 static const stage2_poly_fir_info stage2_m3_l1[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m3, 3, 1),
@@ -208,6 +228,8 @@ static const stage2_poly_fir_info stage2_m80_l147[] = { DECL_LQ_POLY_FIR_INFO(st
                                                         DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m80, 80, 147), };
 static const stage2_poly_fir_info stage2_m80_l294[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m80, 80, 294),
                                                         DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m80, 80, 294), };
+static const stage2_poly_fir_info stage2_m80_l588[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m80, 80, 588),
+                                                        DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m80, 80, 588), };
 static const stage2_poly_fir_info stage2_m320_l147[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m320, 320, 147),
                                                          DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m320, 320, 147), };
 static const stage2_poly_fir_info stage2_m320_l294[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m320, 320, 294),
@@ -226,6 +248,8 @@ static const stage2_poly_fir_info stage2_m441_l960[] = { DECL_LQ_POLY_FIR_INFO(s
                                                          DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m441, 441, 960), };
 static const stage2_poly_fir_info stage2_m441_l1920[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m441, 441, 1920),
                                                           DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m441, 441, 1920), };
+static const stage2_poly_fir_info stage2_m441_l3840[] = { DECL_LQ_POLY_FIR_INFO(stage2_coeffs_lq_m441, 441, 3840),
+                                                          DECL_HQ_POLY_FIR_INFO(stage2_coeffs_hq_m441, 441, 3840), };
 
 //
 // utilities
@@ -249,6 +273,8 @@ static const stage1_x2_fir_info *get_stage1_filter_info(int input_freq, int outp
 
     if ((output_freq * 2) == input_freq) {
         return &stage1_fft_half_nyq;
+    } else if ((output_freq * 4) == input_freq) {
+        return &stage1_fft_quarter_nyq;
     } else if (output_freq > input_freq) {
         return &stage1_fft_nyq;
     } else if ((input_freq == 48000) && (output_freq == 44100)) {
@@ -257,6 +283,10 @@ static const stage1_x2_fir_info *get_stage1_filter_info(int input_freq, int outp
         return &stage1_fft_88200_48000;
     } else if ((input_freq == 96000) && (output_freq == 44100)) {
         return &stage1_fft_96000_44100;
+    } else if ((input_freq == 176400) && (output_freq == 48000)) {
+        return &stage1_fft_176400_48000;
+    } else if ((input_freq == 192000) && (output_freq == 44100)) {
+        return &stage1_fft_192000_44100;
     }
 
     return nullptr;
@@ -303,6 +333,12 @@ static const stage2_poly_fir_info *get_stage2_filter_info(int input_freq, int ou
         case 96000:
             info = stage2_m441_l1920;
             break;
+        case 176400:
+            info = stage2_m1_l8;
+            break;
+        case 192000:
+            info = stage2_m441_l3840;
+            break;
         default:
             break;
         }
@@ -341,6 +377,12 @@ static const stage2_poly_fir_info *get_stage2_filter_info(int input_freq, int ou
             break;
         case 96000:
             info = stage2_m1_l4;
+            break;
+        case 176400:
+            info = stage2_m80_l588;
+            break;
+        case 192000:
+            info = stage2_m1_l8;
             break;
         default:
             break;

@@ -1,3 +1,8 @@
+## 0.6.5
+
+- Added 176.4 kHz and 192 kHz support
+
+
 ## 0.6.4
 
 - Added 11.025 kHz, 12 kHz, 22.05 kHz and 24 kHz support
