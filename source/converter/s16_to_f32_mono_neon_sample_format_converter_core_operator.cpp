@@ -156,7 +156,7 @@ static inline void aarch64_perform_s16_to_f32_neon_unaligned(const int16_t *CXXP
                  "scvtf s0, s0, #15\n\t"
                  "fmul s0, s0, s1\n\t"
                  "\n\t"
-                 "subs %[cnt], %[cnt], #1\n\t"
+                 "subs %w[cnt], %w[cnt], #1\n\t"
                  "\n\t"
                  "str s0, [%[dest]], #4\n\t"
                  "\n\t"
@@ -189,7 +189,7 @@ static inline void aarch64_perform_s16_to_f32_neon_unaligned(const int16_t *CXXP
                  "fmul v2.4s, v2.4s, v6.4s\n\t"                                                                        \
                  "fmul v3.4s, v3.4s, v6.4s\n\t"                                                                        \
                  "\n\t"                                                                                                \
-                 "subs %[cnt], %[cnt], #1\n\t"                                                                         \
+                 "subs %w[cnt], %w[cnt], #1\n\t"                                                                       \
                  "\n\t"                                                                                                \
                  "st1 {v0." DEST_ALIGN ", v1." DEST_ALIGN ", "                                                         \
                  "v2." DEST_ALIGN ", v3." DEST_ALIGN "}, [%[dest]], #64\n\t"                                           \
