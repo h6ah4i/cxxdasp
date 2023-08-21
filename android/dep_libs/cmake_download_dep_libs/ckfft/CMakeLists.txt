@@ -4,9 +4,9 @@
 include(ExternalProject)
 
 ExternalProject_Add(download_ckfft
-    PREFIX latest
-    URL http://www.crickettechnology.com/public/ckfft-1.3.zip
-    URL_HASH MD5=33a4adffd7ad58c6c25d34c143829064
+    PREFIX master
+    GIT_REPOSITORY https://github.com/sjmerel/ckfft.git
+    GIT_TAG 64eb5dad4c569e1dd19264cd09db08c7519a49a6
     SOURCE_DIR ${DEP_LIBS_PLACEMENT_DIR}/ckfft
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""

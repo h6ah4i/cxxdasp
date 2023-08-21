@@ -4,12 +4,9 @@
 include(ExternalProject)
 
 ExternalProject_Add(download_pffft
-    PREFIX latest
-    # URL https://bitbucket.org/jpommier/pffft/get/default.tar.gz
-    # URL https://bitbucket.org/h6a_h4i/pffft/get/default.tar.gz
-    URL https://bitbucket.org/h6a_h4i/pffft/get/bc00500.tar.gz
-    # HG_REPOSITORY https://jpommier@bitbucket.org/h6a_h4i/pffft
-    # HG_REPOSITORY https://h6a_h4i@bitbucket.org/h6a_h4i/pffft
+    PREFIX master
+    GIT_REPOSITORY https://bitbucket.org/jpommier/pffft.git
+    GIT_TAG 1adf4b936bcf4a61c5ae457efc6d6e33692a8c9e
     SOURCE_DIR ${DEP_LIBS_PLACEMENT_DIR}/pffft
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
