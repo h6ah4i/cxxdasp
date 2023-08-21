@@ -46,7 +46,7 @@ namespace mixer {
     asm volatile("prfm pldl1strm, [%[src], #128]\n\t"                                                                  \
                  "prfm pstl1strm, [%[dest], #128]\n\t"                                                                 \
                  "ld1 {v4.2s}, [%[scale]]\n\t"                                                                         \
-                 "ins v4.2d[1], v4.2d[0]\n"                                                                            \
+                 "ins v4.d[1], v4.d[0]\n"                                                                              \
                  "1:\n\t"                                                                                              \
                  "ld1 {v0." SRC_ALIGN ", v1." SRC_ALIGN "}, [%[src]], #32\n\t"                                         \
                  "fmul v0.4s, v0.4s, v4.4s\n\t"                                                                        \
@@ -129,7 +129,7 @@ static void neon_f32_stereo_mul_scale_src_aligned_dest_unaligned(
     asm volatile("prfm pldl1strm, [%[src], #128]\n\t"                                                                  \
                  "prfm pldl1strm, [%[dest], #128]\n\t"                                                                 \
                  "ld1 {v16.2s}, [%[scale]]\n\t"                                                                        \
-                 "ins v16.2d[1], v16.2d[0]\n"                                                                          \
+                 "ins v16.d[1], v16.d[0]\n"                                                                            \
                  "1:\n\t"                                                                                              \
                  "ld1 {v0." DEST_ALIGN ", v1." DEST_ALIGN "}, [%[dest]], #32\n\t"                                      \
                  "ld1 {v4." SRC_ALIGN ", v5." SRC_ALIGN "}, [%[src]], #32\n\t"                                         \
@@ -231,7 +231,7 @@ neon_mac_scale_src_unaligned_dest_aligned(f32_stereo_neon_mixer_core_operator::f
                  "prfm pstl1strm, [%[dest], #128]\n\t"                                                                 \
                  "prfm pldl1strm, [%[table], #64]\n\t"                                                                 \
                  "ld1 {v20.2s}, [%[scale]]\n\t"                                                                        \
-                 "ins v20.2d[1], v20.2d[0]\n"                                                                          \
+                 "ins v20.d[1], v20.d[0]\n"                                                                            \
                  "1:\n\t"                                                                                              \
                  "ld1 {v16." TBL_ALIGN "}, [%[table]], #16\n\t"                                                        \
                  "zip2 v17.4s, v16.4s, v16.4s\n\t"                                                                     \
@@ -373,7 +373,7 @@ void neon_f32_stereo_mul_forward_table_and_scale_src_aligned_dest_unaligned_tabl
                  "prfm pldl1strm, [%[dest], #128]\n\t"                                                                 \
                  "prfm pldl1strm, [%[table], #64]\n\t"                                                                 \
                  "ld1 {v20.2s}, [%[scale]]\n\t"                                                                        \
-                 "ins v20.2d[1], v20.2d[0]\n"                                                                          \
+                 "ins v20.d[1], v20.d[0]\n"                                                                            \
                  "1:\n\t"                                                                                              \
                  "ld1 {v16." TBL_ALIGN "}, [%[table]], #16\n\t"                                                        \
                  "zip2 v17.4s, v16.4s, v16.4s\n\t"                                                                     \
@@ -519,7 +519,7 @@ void neon_mac_forward_table_and_scale_src_unaligned_dest_aligned_table_unaligned
                  "prfm pldl1strm, [%[table], %[offset_m64]]\n\t"                                                       \
                  "sub %[table], %[table], #(4 * 3)\n\t"                                                                \
                  "ld1 {v20.2s}, [%[scale]]\n\t"                                                                        \
-                 "ins v20.2d[1], v20.2d[0]\n"                                                                          \
+                 "ins v20.d[1], v20.d[0]\n"                                                                            \
                  "1:\n\t"                                                                                              \
                  "ld1 {v16." TBL_ALIGN "}, [%[table]], %[offset_m16]\n\t"                                              \
                  "rev64 v16.4s, v16.4s\n\t"                                                                            \
@@ -668,7 +668,7 @@ void neon_f32_stereo_mul_backward_table_and_scale_src_aligned_dest_unaligned_tab
                  "prfm pldl1strm, [%[table], %[offset_m64]]\n\t"                                                       \
                  "sub %[table], %[table], #(4 * 3)\n\t"                                                                \
                  "ld1 {v20.2s}, [%[scale]]\n\t"                                                                        \
-                 "ins v20.2d[1], v20.2d[0]\n"                                                                          \
+                 "ins v20.d[1], v20.d[0]\n"                                                                            \
                  "1:\n\t"                                                                                              \
                  "ld1 {v16." TBL_ALIGN "}, [%[table]], %[offset_m16]\n\t"                                              \
                  "rev64 v16.4s, v16.4s\n\t"                                                                            \
