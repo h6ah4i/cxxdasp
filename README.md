@@ -86,7 +86,6 @@ Dependent libraries
 ### Single-precision FFT backend
 
 - [PFFFT : a pretty fast FFT](https://bitbucket.org/jpommier/pffft)
-    - [PFFFT (h6a h4i forked version)](https://bitbucket.org/h6a_h4i/pffft)
 - [FFTS : The Fastest Fourier Transform in the South](https://github.com/anthonix/ffts)
 - [Kiss FFT : "Keep It Simple, Stupid." FFT library](http://sourceforge.net/projects/kissfft/)
 - [Ne10 : An Open Optimized Software Library Project for the ARM Architecture](http://projectne10.github.io/Ne10/)
